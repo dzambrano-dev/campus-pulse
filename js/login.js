@@ -1,3 +1,8 @@
+document.getElementById("login-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    login();
+});
+
 async function login() {
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -13,7 +18,7 @@ async function login() {
 
     try {
         // Load users
-        const response = await fetch("users.json");
+        const response = await fetch("data/users.json");
         const data = await response.json();
 
         // Check user login

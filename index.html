@@ -11,9 +11,11 @@
     <div class="login-container">
         <h2>Beach Pulse Login</h2>
         <img class="brand" src="assets/images/CSULB_brand.png" alt="CSULB brand">
-        <input id="username" type="text" placeholder="Username or Email">
-        <input id="password" type="password" placeholder="Password">
-        <button onclick="login()">Login</button>
+        <form id="login-form">
+            <input id="username" type="text" placeholder="Username or Email" autofocus>
+            <input id="password" type="password" placeholder="Password">
+            <button type="submit">Login</button>
+        </form>
         <div id="error"></div>
     </div>
     <script src="js/login.js"></script>
