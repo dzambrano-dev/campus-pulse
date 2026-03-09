@@ -26,6 +26,8 @@ body {
         sans-serif;
 }
 
+/* Log in */
+
 .login-container {
     width: 360px;
     padding: 45px;
@@ -99,34 +101,55 @@ button:hover {
     text-align: center;
 }
 
+.interests-container h2 {
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
 .interests-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    max-height: 300px;
+    gap: 12px;
+    max-height: 320px;
     overflow-y: auto;
     padding: 10px;
     margin: 20px 0;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
 }
 
 .interest-button {
-    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
     background: white;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    cursor: pointer;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
     font-size: 14px;
-    transition: all 0.2s ease;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+            transform 0.12s ease,
+            border-color 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
 }
 
 .interest-button:hover {
     border-color: var(--primary);
 }
 
+.interest-button:active {
+    transform: scale(0.95);
+}
+
 .interest-button.selected {
     border-color: var(--primary);
-    background: rgba(0, 0, 0, 0.03);
-    transform: scale(0.97);
+    background: rgba(253, 181, 21, 0.15);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    color: var(--text);
 }
 
 /* Media Queries */

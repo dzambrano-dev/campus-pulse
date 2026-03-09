@@ -10,11 +10,11 @@ if (!username) {
 async function loadInterests() {
     try {
         // Fetch list of possible interests
-        const interestsResponse = await fetch("interests.json");
+        const interestsResponse = await fetch("data/interests.json");
         const interestsData = await interestsResponse.json();
 
         // Fetch user data
-        const usersResponse = await fetch("users.json");
+        const usersResponse = await fetch("data/users.json");
         const usersData = await usersResponse.json();
 
         // Find current user data
@@ -57,13 +57,13 @@ document.getElementById("interests-form").addEventListener("submit", async funct
 
     // Collect selected interests
     const selectedInterests = [];
-    document.querySelectorAll("#interests-list input:checked").forEach(box => {
+    document.querySelectorAll("#interests-list .interest-button.selected").forEach(box => {
         selectedInterests.push(box.value);
     });
 
     try {
         // Send interests to worker
-        await fetch("/api/update-interests", {
+        const response = await fetch("/api/update-interests", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
