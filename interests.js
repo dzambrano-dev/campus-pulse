@@ -2,6 +2,11 @@
 const params = new URLSearchParams(window.location.search);
 const username = params.get("user");
 
+// If username is not available, redirect to log in
+if (!username) {
+    window.location.href = "index.html";
+}
+
 async function loadInterests() {
     try {
         // Fetch list of possible interests
@@ -21,6 +26,8 @@ async function loadInterests() {
         container.innerHTML = "";
         interestsData.interests.forEach(interest => {
             const label = document.createElement("label");
+            label.style.display = "block";
+
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.value = interest;
@@ -33,7 +40,6 @@ async function loadInterests() {
             label.appendChild(checkbox);
             label.appendChild(document.createTextNode(" " + interest));
             container.appendChild(label);
-            container.appendChild(document.createElement("br"));
         });
 
     } catch(err) {
@@ -63,6 +69,9 @@ document.getElementById("interests-form").addEventListener("submit", async funct
                 interests: selectedInterests
             })
         });
+
+        // Server error
+        if (!response.ok) { throw new Error("Update rejected"); }
 
         // Switch to feed
         window.location.href = `app.html?user=${username}`;
