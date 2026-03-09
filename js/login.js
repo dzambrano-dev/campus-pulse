@@ -4,6 +4,10 @@ document.getElementById("login-form").addEventListener("submit", function(event)
     login();
 });
 
+// Add listener for log in
+document.getElementById("signup-button").addEventListener("click", signup);
+
+// Switch to the app
 async function login() {
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -46,4 +50,8 @@ async function login() {
         error.textContent = "Failed to login";
         console.error(err);
     }
+}
+
+async function signup() {
+    // Testing
 }
