@@ -90,6 +90,45 @@ button:hover {
     color: #dc2626;
 }
 
+/* Interests */
+
+.interests-container {
+    width: 400px;
+    max-width: 90vw;
+    margin: auto;
+    text-align: center;
+}
+
+.interests-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    margin: 20px 0;
+}
+
+.interest-button {
+    padding: 12px;
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.interest-button:hover {
+    border-color: var(--primary);
+}
+
+.interest-button.selected {
+    border-color: var(--primary);
+    background: rgba(0, 0, 0, 0.03);
+    transform: scale(0.97);
+}
+
 /* Media Queries */
 
 @media (max-width: 500px) {

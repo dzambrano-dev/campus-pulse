@@ -25,21 +25,23 @@ async function loadInterests() {
         const container = document.getElementById("interests-list");
         container.innerHTML = "";
         interestsData.interests.forEach(interest => {
-            const label = document.createElement("label");
-            label.style.display = "block";
+            // Create a button
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = interest;
+            button.classList.add("interest-button");
 
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.value = interest;
-
-            // If user already selected this interest, toggle it on
+            // Select previously saved interests
             if (userInterests.includes(interest)) {
-                checkbox.checked = true;
+                button.classList.add("selected");
             }
 
-            label.appendChild(checkbox);
-            label.appendChild(document.createTextNode(" " + interest));
-            container.appendChild(label);
+            // Add a listener to toggle each button
+            button.addEventListener("click", () => {
+                button.classList.toggle("selected");
+            });
+
+            container.appendChild(button);
         });
 
     } catch(err) {
