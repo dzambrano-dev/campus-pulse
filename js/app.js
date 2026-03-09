@@ -58,6 +58,9 @@ async function loadFeed(){
     } catch(err){
         console.error("Failed to load feed:", err);
     }
+
+    const data = await response.json();
+    console.log("Feed loded:", data);
 }
 
-loadFeed();
+document.addEventListener("DOMContentLoaded", loadFeed);
