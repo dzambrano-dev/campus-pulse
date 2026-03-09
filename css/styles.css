@@ -1,3 +1,5 @@
+/* Variables */
+
 :root {
     --primary: #FDB515;         /* CSULB Gold */
     --primary-dark: #E5A100;    /* Dark Gold */
@@ -6,6 +8,8 @@
     --text: #2B2B2B;            /* CSULB Dark Gray */
     --border: #d6d6d6;
 }
+
+/* Basics */
 
 * {
     scrollbar-width: thin;
@@ -51,6 +55,32 @@ body {
     overflow-x: hidden;
 }
 
+/* Universal */
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: var(--primary-dark);
+}
+
+#error {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #dc2626;
+}
+
 /* Log in */
 
 .login-container {
@@ -91,30 +121,6 @@ input {
 input:focus {
     outline: none;
     border: 1px solid var(--primary);
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 6px;
-    border: none;
-    border-radius: 8px;
-    background: var(--primary);
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-button:hover {
-    background: var(--primary-dark);
-}
-
-#error {
-    margin-top: 20px;
-    font-size: 12px;
-    color: #dc2626;
 }
 
 /* Interests */
@@ -213,7 +219,7 @@ button:hover {
     display: block;
 }
 
-/* Bottom Navigation Bar */
+/* Bottom Navigation Bar (within the app) */
 
 .bottom-nav {
     display: flex;
