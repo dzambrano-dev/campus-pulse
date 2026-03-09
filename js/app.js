@@ -1,9 +1,17 @@
-// Get all nav buttons
-const navButtons = document.querySelectorAll(".nav-button");
+// Get username from URL
+const params = new URLSearchParams(window.location.search);
+const username = params.get("user");
 
-// Get all app pages
+// Redirect to log in if username is missing
+if (!username) {
+    window.location.href = "index.html";
+}
+
+// Fetch buttons and pages
+const navButtons = document.querySelectorAll(".nav-button");
 const pages = document.querySelectorAll(".app-page");
 
+// Add listeners to each button
 navButtons.forEach(button => {
     button.addEventListener("click", () => {
         // Page belonging to current button

@@ -1,13 +1,26 @@
+// Wait until DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+    // Generate interest buttons
+    loadInterests();
+
+    // Add submit button listener
+    document.getElementById("interests-form").addEventListener("submit", submit);
+});
+
 // Get username from URL
 const params = new URLSearchParams(window.location.search);
 const username = params.get("user");
 
-// If username is not available, redirect to log in
+// Redirect to log in if username is missing
 if (!username) {
     window.location.href = "index.html";
 }
 
+// Generate interest buttons
 async function loadInterests() {
+    const error = document.getElementById("error");
+    error.textContent = "";
+
     try {
         // Fetch list of possible interests
         const interestsResponse = await fetch("data/interests.json");
@@ -19,7 +32,13 @@ async function loadInterests() {
 
         // Find current user data
         const user = usersData.users.find(u => u.username === username);
-        const userInterests = user && user.interests ? user.interests : [];
+
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const userInterests = user.interests || [];
 
         // Generate interest checkboxes
         const container = document.getElementById("interests-list");
@@ -41,23 +60,24 @@ async function loadInterests() {
                 button.classList.toggle("selected");
             });
 
+            // Append each button to the container
             container.appendChild(button);
         });
 
     } catch(err) {
+        error.textContent = "Failed to load interests";
         console.log("Failed to load interests:", err);
     }
 }
 
-loadInterests();
-
 // Form submission
-document.getElementById("interests-form").addEventListener("submit", async function (event) {
+async function submit(event) {
     event.preventDefault();
 
     const error = document.getElementById("error");
+    error.textContent = "";
 
-    // Collect selected interests
+    // Collect pre-selected interests
     const selectedInterests = [];
     document.querySelectorAll("#interests-list .interest-button.selected").forEach(box => {
         selectedInterests.push(box.textContent);
@@ -92,4 +112,4 @@ document.getElementById("interests-form").addEventListener("submit", async funct
         error.textContent = "Failed to save interests";
         console.error("Failed to update interests:", err);
     }
-});
+}

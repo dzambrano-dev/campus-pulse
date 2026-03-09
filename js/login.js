@@ -1,3 +1,4 @@
+// Add listener for log in
 document.getElementById("login-form").addEventListener("submit", function(event) {
     event.preventDefault();
     login();
@@ -7,7 +8,6 @@ async function login() {
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
     const error = document.getElementById("error");
-
     error.textContent = "";
 
     // Prevent empty logins
