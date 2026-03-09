@@ -9,18 +9,23 @@ async function login() {
         // Load JSON
         const response = await fetch("users.json");
         const data = await response.json();
-        const users = data.users;
 
         // Check user login
-        const validUser = users.find(user =>
+        const validUser = data.users.find(user =>
             user.username === username &&
             user.password === password
         );
 
         // Login response
         if(validUser) {
-            // Switch to feed
-            window.location.href = "app.html";
+            // Check whether the user has any interests on record
+            if (!validUser.interests || validUser.interests.length === 0) {
+                // Switch to interests
+                window.location.href = "interests.html";
+            } else {
+                // Switch to feed
+                window.location.href = "app.html";
+            }
         } else {
             // Deny login
             error.textContent = "Invalid username or password";
