@@ -20,7 +20,7 @@ async function login() {
         // Login response
         if(validUser) {
             // Switch to feed
-            window.location.href = "feed.html";
+            window.location.href = "app.html";
         } else {
             // Deny login
             error.textContent = "Invalid username or password";
