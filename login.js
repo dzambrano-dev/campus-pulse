@@ -5,8 +5,14 @@ async function login() {
 
     error.textContent = "";
 
+    // Prevent empty logins
+    if (!username || !password) {
+        error.textContent = "Please enter a username and password";
+        return;
+    }
+
     try {
-        // Load JSON
+        // Load users
         const response = await fetch("users.json");
         const data = await response.json();
 
@@ -21,10 +27,10 @@ async function login() {
             // Check whether the user has any interests on record
             if (!validUser.interests || validUser.interests.length === 0) {
                 // Switch to interests
-                window.location.href = "interests.html";
+                window.location.href = `interests.html?user=${username}`;
             } else {
                 // Switch to feed
-                window.location.href = "app.html";
+                window.location.href = `app.html?user=${username}`;
             }
         } else {
             // Deny login
