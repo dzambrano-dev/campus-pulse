@@ -1,0 +1,25 @@
+
+{
+    "events": [
+        {
+            "title": "CSULB Hackathon",
+            "description": "Join a 24-hour coding challenge.",
+            "category": "Hackathons"
+        },
+        {
+            "title": "Beach Volleyball Tournament",
+            "description": "Rec center tournament open to all studnets.",
+            "category": "Music Events"
+        },
+        {
+            "title": "Live Music Night",
+            "description": "Studnet bands preforming at the union.",
+            "category": "Music Events"
+        },
+        {
+            "title": "Engineering Club Meeting",
+            "description": "Weekly robotics and engineering meetup.",
+            "category": "Engineering Clubs"
+        }
+    ]
+}

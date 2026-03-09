@@ -1,3 +1,4 @@
+//app.js
 // Get username from URL
 const params = new URLSearchParams(window.location.search);
 const username = params.get("user");
@@ -34,3 +35,29 @@ navButtons.forEach(button => {
         button.classList.add("active");
     });
 });
+
+async function loadFeed(){
+    try{
+        const response = await fetch("data/events.json");
+        const data = await response.json();
+
+        const feed = document.getElementById("feed-container");
+
+        data.events.forEach(event =>{
+            const card = document.createElement("div");
+            card.classList.add("feed-card");
+
+            card.innerHTML = `
+                <h3>${event.title}</h3>
+                <p>${event.description}</p>
+                <p><strong>${event.category}</strong></p>
+            `;
+
+            feed.appendChild(card);
+        });
+    } catch(err){
+        console.error("Failed to load feed:", err);
+    }
+}
+
+loadFeed();
