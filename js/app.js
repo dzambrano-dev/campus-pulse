@@ -43,6 +43,9 @@ async function loadFeed(){
 
         const feed = document.getElementById("feed-container");
 
+        //sho newest events first
+        data.events.reverse();
+
         data.events.forEach(event =>{
             const card = document.createElement("div");
             card.classList.add("feed-card");
