@@ -43,7 +43,7 @@ async function login() {
         }
 
     } catch(err) {
-        error.textContent = "Could not connect to the server";
+        error.textContent = "Failed to login";
         console.error(err);
     }
 }
