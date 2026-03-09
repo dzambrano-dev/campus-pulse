@@ -55,30 +55,41 @@ loadInterests();
 document.getElementById("interests-form").addEventListener("submit", async function (event) {
     event.preventDefault();
 
+    const error = document.getElementById("error");
+
     // Collect selected interests
     const selectedInterests = [];
     document.querySelectorAll("#interests-list .interest-button.selected").forEach(box => {
-        selectedInterests.push(box.value);
+        selectedInterests.push(box.textContent);
     });
 
-    try {
-        // Send interests to worker
-        const response = await fetch("/api/update-interests", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                username: username,
-                interests: selectedInterests
-            })
-        });
+    // Require at least 3 interests
+    if (selectedInterests.length < 3) {
+        error.textContent = "Select at least 3 interests";
+        return;
+    }
 
-        // Server error
-        if (!response.ok) { throw new Error("Update rejected"); }
+    try {
+        // This section will be implemented after repository is converted to GitHub Pages
+
+        //// Send interests to worker
+        // const response = await fetch("/api/update-interests", {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({
+        //         username: username,
+        //         interests: selectedInterests
+        //     })
+        // });
+        //
+        // // Server error
+        // if (!response.ok) { throw new Error("Update rejected"); }
 
         // Switch to feed
         window.location.href = `app.html?user=${username}`;
 
     } catch(err) {
+        error.textContent = "Failed to save interests";
         console.error("Failed to update interests:", err);
     }
 });
