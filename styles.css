@@ -1,0 +1,45 @@
+:root {
+    --primary: #FDB515;         /* CSULB Gold */
+    --primary-dark: #E5A100;    /* Dark Gold */
+    --background: #f4f4f4;      /* Light Gray */
+    --card: #ffffff;
+    --text: #2B2B2B;            /* CSULB Dark Gray */
+    --border: #d6d6d6;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--background);
+    font-family:
+        -apple-system,
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+.login-container {
+    width: 360px;
+    padding: 45px;
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.10),
+        0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    color: var(--text);
+    font-weight: 600;
+    letter-spacing: 1px;
+}
