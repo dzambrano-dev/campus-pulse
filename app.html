@@ -2,9 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beach Pulse</title>
+    <link rel="icon" type="image/x-icon" href="">  <!-- Icon -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body class="app-body">
+    <div class="app-container">
+        <!-- Content container -->
+        <div class="app-content">
+            <div id="feed-page" class="app-page active">Feed</div>
+            <div id="map-page" class="app-page">Map</div>
+            <div id="page-3" class="app-page">Page 3</div>
+        </div>
 
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav">
+            <button class="nav-button active" data-page="feed-page">Feed</button>
+            <button class="nav-button" data-page="map-page">Map</button>
+            <button class="nav-button" data-page="page-3">Page 3</button>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
 </body>
 </html>
