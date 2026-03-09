@@ -273,35 +273,11 @@ input:focus {
 
 /* Feed */
 #feed-container{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.feed-card{
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 2px 8px egba(0,0,0,0.08);
-}
-
-.feed-card h3{
-    margin-bottom: 6px;
-}
-
-.feed-card p{
-    font-size: 14px;
-    color: #555;
-}
-
-/*Feed Layout */
-#feed-container{
     max-width: 700px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
-
     padding-bottom: 80px;
 }
 
@@ -309,8 +285,14 @@ input:focus {
     background: white;
     border-radius: 12px;
     padding: 18px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     border: 1px solid var(--border);
+    
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: transform 0.15s ease;
+}
+
+.feed-card:hover{
+    transform: translateY(-2px);
 }
 
 .feed-card h3{
@@ -320,4 +302,5 @@ input:focus {
 .feed-card p{
     font-size: 14px;
     margin-bottom: 4px;
+    color: #555;
 }
