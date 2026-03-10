@@ -1,5 +1,7 @@
 # Campus Pulse
 
+https://dzambrano-dev.github.io/campus-pulse/
+
 Campus Pulse is a location-based mobile application designed to provide students at university campuses with real-time updates into events, incidents, and activities around their campus.
 
 The application combines a personalized feed, a real-time map, and a chat that allows users to communicate with each other about what's going on.
