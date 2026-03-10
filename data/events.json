@@ -8,7 +8,7 @@
     "time": "10:00 AM",
     "location": "ECS Building",
     "description": "A 24-hour coding competition where students build projects, learn new tools, and collaborate with other developers.",
-    "image": "images/hackathon.png"
+    "image": "eventImages/hackathon.png"
   },
   {
     "id": 2,
@@ -19,7 +19,7 @@
     "time": "7:00 PM",
     "location": "USU Lawn",
     "description": "Live performances by student bands and local artists. Food trucks and merch stands available.",
-    "image": "images/concert.png"
+    "image": "eventImages/concert.png"
   },
   {
     "id": 3,
@@ -30,7 +30,7 @@
     "time": "6:00 PM",
     "location": "Campus Soccer Fields",
     "description": "The first match of the intramural soccer season. Open to spectators and participants.",
-    "image": "images/soccer.png"
+    "image": "eventImages/soccer.png"
   },
   {
     "id": 4,
@@ -41,7 +41,7 @@
     "time": "5:30 PM",
     "location": "COB Hall",
     "description": "Meet startup founders, investors, and students interested in building new ventures.",
-    "image": "images/startup.png"
+    "image": "eventImages/startup.png"
   },
   {
     "id": 5,
@@ -52,7 +52,7 @@
     "time": "4:00 PM",
     "location": "ECS Lab 201",
     "description": "Compete in hacking challenges and security puzzles. Beginners welcome.",
-    "image": "images/ctf.png"
+    "image": "eventImages/ctf.png"
   },
   {
     "id": 6,
@@ -63,7 +63,7 @@
     "time": "3:00 PM",
     "location": "Fine Arts Building",
     "description": "Casual sketching meetup with artists from across campus.",
-    "image": "images/art.png"
+    "image": "eventImages/art.png"
   },
   {
     "id": 7,
@@ -74,7 +74,7 @@
     "time": "9:00 AM",
     "location": "SRWC Lawn",
     "description": "Outdoor bootcamp workout session led by certified trainers.",
-    "image": "images/fitness.png"
+    "image": "eventImages/fitness.png"
   },
   {
     "id": 8,
@@ -85,7 +85,7 @@
     "time": "2:00 PM",
     "location": "ECS Room 105",
     "description": "Learn the basics of Unity and game design from experienced developers.",
-    "image": "images/gamedev.png"
+    "image": "eventImages/gamedev.png"
   },
   {
     "id": 9,
@@ -96,7 +96,7 @@
     "time": "7:00 PM",
     "location": "USU Coffeehouse",
     "description": "Students share poetry and spoken word performances.",
-    "image": "images/poetry.png"
+    "image": "eventImages/poetry.png"
   },
   {
     "id": 10,
@@ -107,7 +107,7 @@
     "time": "1:00 PM",
     "location": "Campus Volleyball Courts",
     "description": "Teams compete in a campus-wide beach volleyball tournament.",
-    "image": "images/volleyball.png"
+    "image": "eventImages/volleyball.png"
   },
   {
     "id": 11,
@@ -118,7 +118,7 @@
     "time": "6:00 PM",
     "location": "ECS Auditorium",
     "description": "Panel discussion with professors and researchers about the future of AI.",
-    "image": "images/ai.png"
+    "image": "eventImages/ai.png"
   },
   {
     "id": 12,
@@ -129,6 +129,6 @@
     "time": "12:00 PM",
     "location": "Friendship Walk",
     "description": "Food stands from cultures around the world hosted by student organizations.",
-    "image": "images/foodfest.png"
+    "image": "eventImages/foodfest.png"
   }
 ]
