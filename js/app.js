@@ -56,7 +56,7 @@ async function loadFeed()
             card.innerHTML = `
                 <img src="${event.image}" 
                     class="event-image"
-                    onerror="this.src='eventImages/default.png>
+                    onerror="this.src='eventImages/default.png'">
                 <h3>${event.title}</h3>
                 <p>${event.description}</p>
                 <p><strong>${event.category}</strong></p>
