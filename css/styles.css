@@ -78,7 +78,7 @@ button:hover {
 .error {
     margin-top: 20px;
     font-size: 12px;
-    color: var(--error-text);
+    color: var(--error);
 }
 
 /* Log in */
