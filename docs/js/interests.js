@@ -13,7 +13,7 @@ const username = params.get("user");
 
 // Redirect to log in if username is missing
 if (!username) {
-    window.location.href = "../index.html";
+    window.location.href = "index.html";
 }
 
 // Generate interest buttons
