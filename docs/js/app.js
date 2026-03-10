@@ -30,9 +30,16 @@ navButtons.forEach(button => {
 
         // Show selected page
         document.getElementById(targetPage).classList.add("active");
-
-        // Mark button as active
         button.classList.add("active");
+
+        //redraw map whne tab opens
+        if (targetPage === "map-page") {
+            setTimeout(() => {
+                if (window.map) {
+                    window.map.invalidateSize();
+                }
+            }, 100);
+        }
     });
 });
 
