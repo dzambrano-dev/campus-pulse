@@ -68,17 +68,29 @@ button {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition:
+            background 0.2s,
+            transform 0.05s;
 }
 
 button:hover {
     background: var(--primary-dark);
 }
 
+button:active {
+    transform: scale(0.97);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .error {
     margin-top: 20px;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--error);
+    min-height: 18px;
 }
 
 /* Log in */
@@ -89,19 +101,23 @@ button:hover {
     background: var(--card);
     border-radius: 16px;
     box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.10),
-        0 4px 12px rgba(0, 0, 0, 0.05);
+            0 10px 30px rgba(0, 0, 0, 0.10),
+            0 4px 12px rgba(0, 0, 0, 0.05);
     text-align: center;
     display: none;
     opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform: translateY(10px) scale(0.98);
+    pointer-events: none;
+    transition:
+            opacity 0.25s ease,
+            transform 0.25s ease;
 }
 
 .login-container.active {
     display: block;
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
 }
 
 .login-container h2 {
@@ -125,12 +141,25 @@ input {
     border-radius: 8px;
     border: 1px solid var(--border);
     font-size: 14px;
+    color: var(--text);
     transition: border 0.2s;
 }
 
 input:focus {
     outline: none;
     border: 1px solid var(--primary);
+}
+
+#signup-button,
+#back-button {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+#signup-button:hover,
+#back-button:hover {
+    background: rgba(253, 181, 21, 0.12);
 }
 
 /* Interests */
