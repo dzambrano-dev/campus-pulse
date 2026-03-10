@@ -23,11 +23,11 @@ async function loadInterests() {
 
     try {
         // Fetch list of possible interests
-        const interestsResponse = await fetch("/frontend/data/interests.json");
+        const interestsResponse = await fetch("data/interests.json");
         const interestsData = await interestsResponse.json();
 
         // Fetch user data
-        const usersResponse = await fetch("/frontend/data/users.json");
+        const usersResponse = await fetch("data/users.json");
         const usersData = await usersResponse.json();
 
         // Find current user data
