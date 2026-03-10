@@ -7,7 +7,7 @@
     "date": "2026-03-22",
     "time": "10:00 AM",
     "location": "ECS Building",
-    "description": "A 24-hour coding competition where students build projects, learn new tools, and collaborate with other developers.",
+    "description": "ACM is hosting a 24-hour campus hackathon where students form teams to design, build, and present creative software projects. Participants will work with mentors from industry, explore new technologies, and compete for prizes. Whether you're a beginner or an experienced developer, this event is a great opportunity to collaborate, learn, and showcase your skills.",
     "image": "eventImages/hackathon.png"
   },
   {
@@ -18,7 +18,7 @@
     "date": "2026-03-25",
     "time": "7:00 PM",
     "location": "USU Lawn",
-    "description": "Live performances by student bands and local artists. Food trucks and merch stands available.",
+    "description": "Join the CSULB Music Society for an evening of live music featuring student bands and local artists performing a mix of indie, alternative, and acoustic sets. The event will include food trucks, merch booths, and plenty of space to relax with friends while enjoying the performances under the evening lights.",
     "image": "eventImages/concert.png"
   },
   {
@@ -29,7 +29,7 @@
     "date": "2026-03-24",
     "time": "6:00 PM",
     "location": "Campus Soccer Fields",
-    "description": "The first match of the intramural soccer season. Open to spectators and participants.",
+    "description": "The intramural soccer season officially begins with a kickoff event open to players and spectators. Teams from across campus will compete in friendly matches while recreation staff provide sign-ups and information for the upcoming season. Come support your friends, meet other students, and enjoy a lively start to the competition.",
     "image": "eventImages/soccer.png"
   },
   {
@@ -40,7 +40,7 @@
     "date": "2026-03-26",
     "time": "5:30 PM",
     "location": "COB Hall",
-    "description": "Meet startup founders, investors, and students interested in building new ventures.",
+    "description": "The Entrepreneur Society is hosting a networking evening for students interested in startups, business innovation, and venture creation. Local founders and alumni entrepreneurs will be present to share insights about launching companies, building teams, and navigating the startup ecosystem. This is a great opportunity to build connections and explore career paths in entrepreneurship.",
     "image": "eventImages/startup.png"
   },
   {
@@ -51,7 +51,7 @@
     "date": "2026-03-27",
     "time": "4:00 PM",
     "location": "ECS Lab 201",
-    "description": "Compete in hacking challenges and security puzzles. Beginners welcome.",
+    "description": "Test your cybersecurity skills in a Capture-the-Flag competition featuring challenges in cryptography, web security, reverse engineering, and digital forensics. Participants will work through realistic security problems while learning techniques used by professional security analysts. Beginners are encouraged to join and learn alongside experienced competitors.",
     "image": "eventImages/ctf.png"
   },
   {
@@ -62,7 +62,7 @@
     "date": "2026-03-23",
     "time": "3:00 PM",
     "location": "Fine Arts Building",
-    "description": "Casual sketching meetup with artists from across campus.",
+    "description": "The Art Collective invites students of all skill levels to participate in a relaxed sketch meetup. Attendees can bring their own sketchbooks or materials while collaborating and exchanging ideas with other artists on campus. The event provides a creative space for students to explore drawing techniques and connect with fellow creatives.",
     "image": "eventImages/art.png"
   },
   {
@@ -73,7 +73,7 @@
     "date": "2026-03-28",
     "time": "9:00 AM",
     "location": "SRWC Lawn",
-    "description": "Outdoor bootcamp workout session led by certified trainers.",
+    "description": "Start your morning with an outdoor bootcamp session led by certified trainers from the Student Recreation Center. This high-energy workout will include strength exercises, cardio circuits, and group challenges designed to push participants while maintaining a fun and motivating atmosphere.",
     "image": "eventImages/fitness.png"
   },
   {
@@ -84,7 +84,7 @@
     "date": "2026-03-29",
     "time": "2:00 PM",
     "location": "ECS Room 105",
-    "description": "Learn the basics of Unity and game design from experienced developers.",
+    "description": "The Game Development Club is hosting a hands-on workshop introducing students to game design using Unity. Participants will learn basic mechanics such as scene creation, object interaction, and simple scripting while building a small playable prototype. No prior experience is required.",
     "image": "eventImages/gamedev.png"
   },
   {
@@ -95,7 +95,7 @@
     "date": "2026-03-30",
     "time": "7:00 PM",
     "location": "USU Coffeehouse",
-    "description": "Students share poetry and spoken word performances.",
+    "description": "The Literature Society is hosting an open mic night where students can share original poetry, spoken word pieces, or short readings. Whether performing or listening, this event provides a welcoming environment for creative expression and thoughtful conversation.",
     "image": "eventImages/poetry.png"
   },
   {
@@ -106,7 +106,7 @@
     "date": "2026-04-01",
     "time": "1:00 PM",
     "location": "Campus Volleyball Courts",
-    "description": "Teams compete in a campus-wide beach volleyball tournament.",
+    "description": "Teams from across campus will compete in a beach volleyball tournament hosted by CSULB Athletics. Students are invited to participate or watch the matches while enjoying a lively atmosphere filled with competition and school spirit.",
     "image": "eventImages/volleyball.png"
   },
   {
@@ -117,7 +117,7 @@
     "date": "2026-04-02",
     "time": "6:00 PM",
     "location": "ECS Auditorium",
-    "description": "Panel discussion with professors and researchers about the future of AI.",
+    "description": "Faculty members and guest researchers will discuss the ethical implications of artificial intelligence and emerging technologies. Topics include AI decision making, privacy concerns, and the societal impact of intelligent systems.",
     "image": "eventImages/ai.png"
   },
   {
@@ -128,7 +128,7 @@
     "date": "2026-04-03",
     "time": "12:00 PM",
     "location": "Friendship Walk",
-    "description": "Food stands from cultures around the world hosted by student organizations.",
+    "description": "Experience a variety of cuisines from around the world as student organizations host food booths representing different cultures. The festival will include music, performances, and cultural displays that celebrate the diverse international community at CSULB.",
     "image": "eventImages/foodfest.png"
   }
 ]
