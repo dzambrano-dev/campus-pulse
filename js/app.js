@@ -36,17 +36,20 @@ navButtons.forEach(button => {
     });
 });
 
-async function loadFeed(){
-    try{
+async function loadFeed()
+{
+    try
+    {
         const response = await fetch("data/events.json");
         const data = await response.json();
 
         const feed = document.getElementById("feed-container");
 
-        //sho newest events first
-        data.events.reverse();
+        // show newest events first
+        data.reverse();
 
-        data.events.forEach(event =>{
+        data.forEach(event =>
+        {
             const card = document.createElement("div");
             card.classList.add("feed-card");
 
@@ -58,7 +61,9 @@ async function loadFeed(){
 
             feed.appendChild(card);
         });
-    } catch(err){
+    }
+    catch(err)
+    {
         console.error("Failed to load feed:", err);
     }
 }
