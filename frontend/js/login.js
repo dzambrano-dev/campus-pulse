@@ -131,7 +131,8 @@ async function signup(event) {
 
     try {
         // Worker endpoint
-        const response = await fetch("/api/signup", {
+        const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/signup"
+        const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

@@ -1,0 +1,22 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "campus-pulse-worker",
+	"main": "src/index.js",
+	"compatibility_date": "2026-03-01",
+	"observability": {
+		"enabled": true
+	},
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"kv_namespaces": [
+		{
+			"binding": "USERS",
+			"id": "913118715ca54781a04612c731d6bd7a"
+		}
+	]
+}
