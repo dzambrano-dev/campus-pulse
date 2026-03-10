@@ -54,6 +54,7 @@ async function loadFeed()
             card.classList.add("feed-card");
 
             card.innerHTML = `
+                <img src="${event.image}" class="event-image">
                 <h3>${event.title}</h3>
                 <p>${event.description}</p>
                 <p><strong>${event.category}</strong></p>
