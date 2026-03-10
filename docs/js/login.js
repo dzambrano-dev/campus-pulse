@@ -70,7 +70,7 @@ async function login(event) {
 
     try {
         // Load users
-        const response = await fetch("/frontend/data/users.json");
+        const response = await fetch("data/users.json");
 
         // Failed to fetch users.json
         if (!response.ok) {
@@ -95,10 +95,10 @@ async function login(event) {
         }
 
         // Switch to feed
-        // window.location.href = `/app.html?user=${username}`;
+        // window.location.href = `app.html?user=${username}`;
 
         // Switch to interests for testing
-        window.location.href = `/interests.html?user=${username}`;
+        window.location.href = `interests.html?user=${username}`;
     } catch(err) {
         loginError.textContent = "Failed to login";
         loginButton.disabled = false;
