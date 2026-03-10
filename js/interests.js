@@ -18,7 +18,7 @@ if (!username) {
 
 // Generate interest buttons
 async function loadInterests() {
-    const error = document.getElementById("error");
+    const error = document.getElementById("interests-error");
     error.textContent = "";
 
     try {
@@ -74,7 +74,7 @@ async function loadInterests() {
 async function submit(event) {
     event.preventDefault();
 
-    const error = document.getElementById("error");
+    const error = document.getElementById("interests-error");
     error.textContent = "";
 
     // Collect pre-selected interests

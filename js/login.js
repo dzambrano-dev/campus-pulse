@@ -11,7 +11,7 @@ document.getElementById("signup-button").addEventListener("click", signup);
 async function login() {
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
-    const error = document.getElementById("error");
+    const error = document.getElementById("login-error");
     error.textContent = "";
 
     // Prevent empty logins

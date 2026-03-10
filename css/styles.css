@@ -7,6 +7,7 @@ styles.css
     --background: #f4f4f4;      /* Light Gray */
     --card: #ffffff;
     --text: #2B2B2B;            /* CSULB Dark Gray */
+    --error-text: #dc2626;
     --border: #d6d6d6;
 }
 
@@ -76,10 +77,10 @@ button:hover {
     background: var(--primary-dark);
 }
 
-#error {
+.error {
     margin-top: 20px;
     font-size: 12px;
-    color: #dc2626;
+    color: var(--error-text);
 }
 
 /* Log in */
@@ -93,6 +94,16 @@ button:hover {
         0 10px 30px rgba(0, 0, 0, 0.10),
         0 4px 12px rgba(0, 0, 0, 0.05);
     text-align: center;
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.login-container.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .login-container h2 {
