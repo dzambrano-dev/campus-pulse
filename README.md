@@ -1,38 +1,21 @@
-# csulb-events-map
-Location-based campus awareness mobile app featuring interactive maps, user-reported events, and real-time updates.
 # Campus Pulse
 
-Campus Pulse is a location-based mobile application designed to provide students with real-time visibility into events, incidents, and noteworthy activity occurring around campus.
+Campus Pulse is a location-based mobile application designed to provide students at university campuses with real-time updates into events, incidents, and activities around their campus.
 
-The application combines geospatial visualization with secure authentication and a cloud-based backend to deliver an interactive and community-driven awareness platform.
+The application combines a personalized feed, a real-time map, and a chat that allows users to communicate with each other about what's going on.
+
+It's hosted through GitHub Pages and uses Cloudflare Workers as its backend.
 
 ---
 
 ## Features
 
+- Personalized event feed
 - Interactive map interface
-- Location-based event markers
+- Location-based markers
 - User-reported campus events
-- Event feed / timeline
 - Secure Microsoft authentication
-- Firebase backend and database
-- Comment system (planned)
-
----
-
-## Tech Stack
-
-Frontend:
-- Mobile application
-
-Maps and Geolocation:
-- Mapbox SDK
-
-Authentication:
-- Microsoft Entra ID / MSAL
-
-Backend and Database:
-- Firebase (Firestore)
+- Chat system
 
 ---
 
@@ -49,4 +32,4 @@ Backend and Database:
 
 Campus Pulse is a student-developed academic project created for educational purposes.
 
-Event data displayed within the application is user-generated and does not represent official university alerts or safety communications.
+Event data displayed within the application is user-generated and does not always represent official university alerts or safety communications.
