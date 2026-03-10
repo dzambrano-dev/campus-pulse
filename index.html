@@ -13,8 +13,8 @@
         <h2>Beach Pulse Login</h2>
         <img class="brand" src="assets/images/CSULB_brand.png" alt="CSULB brand">
         <form id="login-form">
-            <input id="username" type="text" placeholder="Username or Email" autofocus>
-            <input id="password" type="password" placeholder="Password">
+            <input id="username" type="text" placeholder="Username or Email" autocomplete="username" autofocus>
+            <input id="password" type="password" placeholder="Password" autocomplete="current-password">
             <button type="submit" id="login-button">Login</button>
             <button type="button" id="signup-button">Sign Up</button>
         </form>
@@ -24,10 +24,10 @@
         <h2>Beach Pulse Signup</h2>
         <img class="brand" src="assets/images/CSULB_brand.png" alt="CSULB brand">
         <form id="signup-form">
-            <input id="signup-username" type="text" placeholder="Username">
-            <input id="signup-email" type="email" placeholder="Email">
-            <input id="signup-password" type="password" placeholder="Password">
-            <button type="submit">Create Account</button>
+            <input id="signup-username" type="text" placeholder="Username" autocomplete="username">
+            <input id="signup-email" type="email" placeholder="Email" autocomplete="email">
+            <input id="signup-password" type="password" placeholder="Password" autocomplete="new-password">
+            <button type="submit" id="signup-submit-button">Create Account</button>
             <button type="button" id="back-button">Back</button>
         </form>
         <div class="error" id="signup-error"></div>
