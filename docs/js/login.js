@@ -56,8 +56,6 @@ async function checkSession() {
 
     if (!token) return;
 
-    document.body.style.visibility = "visible";
-
     try {
         const endpoint = `${API}/user`
         const response = await fetch(endpoint, {
@@ -66,6 +64,7 @@ async function checkSession() {
 
         if (!response.ok) {
             localStorage.removeItem("sessionToken");
+            document.body.style.visibility = "visible";
             return;
         }
 
@@ -73,6 +72,7 @@ async function checkSession() {
         window.location.assign("app.html");
     } catch (err) {
         console.error("Session validation failed:", err);
+        document.body.style.visibility = "visible";
     }
 }
 
