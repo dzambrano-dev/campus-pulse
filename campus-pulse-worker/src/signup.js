@@ -43,7 +43,7 @@ export async function signup(request, env) {
 
 		// Save username and email in KVs
 		await env.USERS.put(username, JSON.stringify(newUser));
-		await env.EMAILS.put(emailKey, username);
+		await env.EMAILS.put(email, username);
 
 		// Generate a session token
 		const token = crypto.randomUUID();
