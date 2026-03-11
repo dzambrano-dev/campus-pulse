@@ -1,12 +1,12 @@
+let token;
+
 // Wait until DOM is loaded
-let username;
-
 document.addEventListener("DOMContentLoaded", () => {
-    const params = new URLSearchParams(window.location.search);
-    username = params.get("user");
+    token = localStorage.getItem("sessionToken");
 
-    if (!username) {
-        window.location.href = "index.html";
+    // Redirect if not logged in
+    if (!token) {
+        window.location.assign("/index.html");
         return;
     }
 
@@ -17,10 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("interests-form").addEventListener("submit", submit);
 });
 
-// Redirect to log in if username is missing
-if (!username) {
-    window.location.href = "index.html";
-}
+const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 
 // Generate interest buttons
 async function loadInterests() {
@@ -33,23 +30,18 @@ async function loadInterests() {
         const interestsData = await interestsResponse.json();
 
         // Fetch user interests
-        const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/user"
+        const endpoint = `${API}/user`
         const userResponse = await fetch(endpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                username
-            })
+            headers: { "Authorization": `Bearer ${token}` }
         });
 
-        const userData = await userResponse.json();
-
         if (!userResponse.ok) {
-            window.location.href = "index.html";
+            window.location.assign("index.html");
             return;
         }
 
         // Find current user data
+        const userData = await userResponse.json();
         const userInterests = userData.interests || [];
 
         // Generate interest checkboxes
@@ -78,7 +70,7 @@ async function loadInterests() {
 
     } catch(err) {
         error.textContent = "Failed to load interests";
-        console.log("Failed to load interests:", err);
+        console.log(err);
     }
 }
 
@@ -103,12 +95,14 @@ async function submit(event) {
 
     try {
         // Send interests to worker
-        const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/update-interests"
+        const endpoint = `${API}/update-interests`
         const response = await fetch(endpoint, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
             body: JSON.stringify({
-                username: username,
                 interests: selectedInterests
             })
         });
@@ -122,8 +116,7 @@ async function submit(event) {
         }
 
         // Switch to feed
-        window.location.href = `app.html?user=${username}`;
-
+        window.location.assign("/app.html");
     } catch(err) {
         error.textContent = "Failed to save interests";
         console.error(err);
