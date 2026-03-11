@@ -35,7 +35,6 @@ export async function signup(request, env) {
 
 		// Create user record
 		const newUser = {
-			username,
 			email,
 			passwordHash,
 			interests: []
