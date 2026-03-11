@@ -69,14 +69,14 @@ async function hashPassword(password) {
 // Validation Helpers
 function validateSignup(username, email, password) {
     if (!username || !email || !password ) { return "Missing required fields"; }
-    if (!validateUsername(username)) { return "Username must be 6-20 characters and contain only letters or numbers"; }
+    if (!validateUsername(username)) { return "Username must be 5-20 characters and contain only letters or numbers"; }
     if (!validateEmail(email)) { return "Invalid email address"; }
-    if (!validatePassword(password)) { return "Password must be 8-16 characters"; }
+    if (!validatePassword(password)) { return "Password must be 3-16 characters"; }
     return null;
 }
 
 function validateUsername(username) {
-    return /^[a-zA-Z0-9]{6,20}$/.test(username);
+    return /^[a-zA-Z0-9]{5,20}$/.test(username);
 }
 
 function validateEmail(email) {
@@ -84,7 +84,7 @@ function validateEmail(email) {
 }
 
 function validatePassword(password) {
-    return password.length >= 8 && password.length <= 16;
+    return password.length >= 3 && password.length <= 16;
 }
 
 // Error Response
