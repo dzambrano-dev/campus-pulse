@@ -26,7 +26,7 @@ async function loadInterests() {
 
     try {
         // Fetch list of possible interests
-        const interestsResponse = await fetch("/data/interests.json");
+        const interestsResponse = await fetch("data/interests.json");
         const interestsData = await interestsResponse.json();
 
         // Fetch user interests
