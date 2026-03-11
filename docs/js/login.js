@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", checkSession);
 async function checkSession() {
     const token = localStorage.getItem("sessionToken");
 
-    if (!token) return;
+    if (!token || token === "undefined") return;
 
     try {
         const endpoint = `${API}/user`
