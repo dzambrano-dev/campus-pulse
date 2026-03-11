@@ -54,7 +54,10 @@ document.addEventListener("DOMContentLoaded", checkSession);
 async function checkSession() {
     const token = localStorage.getItem("sessionToken");
 
-    if (!token || token === "undefined") return;
+    if (!token || token === "undefined" || token === "null") {
+        localStorage.removeItem("sessionToken");
+        return;
+    }
 
     try {
         const endpoint = `${API}/user`
@@ -111,7 +114,7 @@ async function login(event) {
         try { result = await response.json(); } catch(err) {}
 
         // Failed to fetch users
-        if (!response.ok) {
+        if (!response.ok || !result.token) {
             loginError.textContent = result.error || "Login failed";
             loginButton.disabled = false;
             return;
@@ -165,6 +168,13 @@ async function signup(event) {
 
         // Cloudflare Worker error
         if (!response.ok) {
+            signupError.textContent = result.error || "Signup failed";
+            signupSubmitButton.disabled = false;
+            return;
+        }
+
+        // Failed to sign up
+        if (!result.token) {
             signupError.textContent = result.error || "Signup failed";
             signupSubmitButton.disabled = false;
             return;
