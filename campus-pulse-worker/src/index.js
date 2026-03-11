@@ -41,7 +41,9 @@ export default {
 			case "/api/update-interests":
 				const interestsResponse = await updateInterests(request, env);
 				return addCors(interestsResponse);
-			case "/api/health": return Response.json({ status: "OK" });
+			case "/api/health":
+				const healthResponse = Response.json({ status: "OK" });
+				return addCors(healthResponse);
 			default: return new Response("Not Found", { status: 404, headers: corsHeaders });
 		}
 	},

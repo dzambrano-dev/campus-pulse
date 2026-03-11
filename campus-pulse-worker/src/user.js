@@ -1,28 +1,38 @@
 export async function user(request, env) {
-	if (request.method !== "POST") {
+	if (request.method !== "GET") {
 		return jsonError("Method not allowed", 405);
 	}
 
-	try {
-		const { username } = await request.json();
+	const auth = request.headers.get("Authorization");
 
-		if (!username) {
-			return jsonError("Missing username", 400);
-		}
-
-		const storedUser = await env.USERS.get(username);
-
-		if (!storedUser) {
-			return jsonError("User not found", 404);
-		}
-
-		const user = JSON.parse(storedUser);
-
-		return Response.json({
-			username: user.username,
-			interests: user.interests
-		});
-	} catch {
-		return jsonError("Invalid request", 400);
+	if (!auth || !auth.startsWith("Bearer ")) {
+		return jsonError("Unauthorized", 401);
 	}
+
+	const token = auth.replace("Bearer ", "");
+	const username = await env.SESSIONS.get(token);
+
+	if (!username) {
+		return jsonError("Invalid session", 401);
+	}
+
+	const storedUser = await env.USERS.get(username);
+
+	if (!storedUser) {
+		return jsonError("User not found", 404);
+	}
+
+	const user = JSON.parse(storedUser);
+
+	return Response.json({
+		username: user.username,
+		interests: user.interests
+	});
+}
+
+function jsonError(message, status = 400) {
+	return new Response(JSON.stringify({error: message}), {
+		status,
+		headers: {"Content-Type": "application/json"}
+	});
 }
