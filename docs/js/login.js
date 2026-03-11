@@ -93,10 +93,9 @@ async function login(event) {
 
         // Store session token
         localStorage.setItem("sessionToken", result.token);
-        localStorage.setItem("username", result.username);
 
         // Switch to feed
-        window.location.assign("/app.html");
+        window.location.assign("app.html");
     } catch(err) {
         loginError.textContent = "Failed to login";
         loginButton.disabled = false;
@@ -147,10 +146,9 @@ async function signup(event) {
 
         // Store session token
         localStorage.setItem("sessionToken", result.token);
-        localStorage.setItem("username", result.username);
 
         // Switch to interests
-        window.location.assign("/interests.html");
+        window.location.assign("interests.html");
     } catch(err) {
         signupError.textContent = "Failed to create account";
         signupSubmitButton.disabled = false;

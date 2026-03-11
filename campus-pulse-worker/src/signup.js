@@ -41,11 +41,17 @@ export async function signup(request, env) {
 		// Save email lookup
 		await env.EMAILS.put(emailKey, username);
 
-		return new Response(JSON.stringify({
-			success: true
-		}), {
-			headers: { "Content-Type": "application/json" }
+		// Generate token
+		const token = crypto.randomUUID();
+		const week = 60 * 60 * 24 * 7
+		await env.SESSIONS.put(token, username, { expirationTtl: week });
+
+		// Create a response
+		return Response.json({
+			success: true,
+			token
 		});
+
 	} catch (err) {
 		return jsonError("Invalid request", 400);
 	}

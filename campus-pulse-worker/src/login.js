@@ -1,11 +1,4 @@
 export async function login(request, env) {
-
-	console.log("LOGIN REQUEST");
-	const body = await request.text();
-	console.log("BODY:", body);
-	let { username, password } = JSON.parse(body);
-	console.log("USERNAME:", username);
-
 	if (request.method !== "POST") {
 		return jsonError("Method not allowed", 405);
 	}
@@ -22,8 +15,17 @@ export async function login(request, env) {
 			return jsonError("Missing username or password");
 		}
 
+		let lookupUsername = username;
+
+		// If input looks like an email, resolve it
+		if (username.includes("@")) {
+			const resolved = await env.EMAILS.get(username);
+			if (!resolved) { return jsonError("Invalid username/email or password", 401); }
+			lookupUsername = resolved;
+		}
+
 		// Retrieve user from KV
-		const storedUser = await env.USERS.get(username);
+		const storedUser = await env.USERS.get(lookupUsername);
 		if (!storedUser) {
 			return jsonError("Invalid username or password", 401);
 		}
@@ -38,14 +40,17 @@ export async function login(request, env) {
 			return jsonError("Invalid username or password", 401);
 		}
 
+		// Generate token
+		const token = crypto.randomUUID();
+		const week = 60 * 60 * 24 * 7
+		await env.SESSIONS.put(token, lookupUsername, { expirationTtl: week });
+
 		// Create a response
-		return new Response(JSON.stringify({
+		return Response.json({
 			success: true,
-			username: user.username,
-			interests: user.interests
-		}), {
-			headers: { "Content-Type": "application/json" }
+			token
 		});
+
 	} catch (err) {
 		return jsonError("Invalid request", 400);
 	}
