@@ -98,10 +98,7 @@ async function login(event) {
         }
 
         // Switch to feed
-        // window.location.href = `/app.html?user=${username}`;
-
-        // Switch to interests for testing
-        window.location.href = `/interests.html?user=${username}`;
+        window.location.href = `/app.html?user=${username}`;
     } catch(err) {
         loginError.textContent = "Failed to login";
         loginButton.disabled = false;

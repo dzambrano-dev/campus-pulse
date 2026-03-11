@@ -26,19 +26,25 @@ async function loadInterests() {
         const interestsResponse = await fetch("data/interests.json");
         const interestsData = await interestsResponse.json();
 
-        // Fetch user data
-        const usersResponse = await fetch("data/users.json");
-        const usersData = await usersResponse.json();
+        // Fetch user interests
+        const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/user"
+        const userResponse = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username
+            })
+        });
 
-        // Find current user data
-        const user = usersData.users.find(u => u.username === username);
+        const userData = await userResponse.json();
 
-        if (!user) {
+        if (!userResponse.ok) {
             window.location.href = "index.html";
             return;
         }
 
-        const userInterests = user.interests || [];
+        // Find current user data
+        const userInterests = userData.interests || [];
 
         // Generate interest checkboxes
         const container = document.getElementById("interests-list");
@@ -90,26 +96,30 @@ async function submit(event) {
     }
 
     try {
-        // This section will be implemented after repository is converted to GitHub Pages
+        // Send interests to worker
+        const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/update-interests"
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: username,
+                interests: selectedInterests
+            })
+        });
 
-        //// Send interests to worker
-        // const response = await fetch("/api/update-interests", {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({
-        //         username: username,
-        //         interests: selectedInterests
-        //     })
-        // });
-        //
-        // // Server error
-        // if (!response.ok) { throw new Error("Update rejected"); }
+        const result = await response.json();
+
+        // Server error
+        if (!response.ok) {
+            error.textContent = result.error || "Failed to update interests";
+            return;
+        }
 
         // Switch to feed
         window.location.href = `app.html?user=${username}`;
 
     } catch(err) {
         error.textContent = "Failed to save interests";
-        console.error("Failed to update interests:", err);
+        console.error(err);
     }
 }
