@@ -69,6 +69,9 @@ async function login(event) {
     }
 
     try {
+        // Test
+        console.log("Sending:", username, password);
+
         // Fetch users
         const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/login"
         const response = await fetch(endpoint, {
