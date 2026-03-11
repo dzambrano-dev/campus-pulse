@@ -13,7 +13,7 @@ const username = params.get("user");
 
 // Redirect to log in if username is missing
 if (!username) {
-    window.location.href = "../index.html";
+    window.location.href = "index.html";
 }
 
 // Generate interest buttons
@@ -23,11 +23,11 @@ async function loadInterests() {
 
     try {
         // Fetch list of possible interests
-        const interestsResponse = await fetch("../data/interests.json");
+        const interestsResponse = await fetch("data/interests.json");
         const interestsData = await interestsResponse.json();
 
         // Fetch user data
-        const usersResponse = await fetch("../data/users.json");
+        const usersResponse = await fetch("data/users.json");
         const usersData = await usersResponse.json();
 
         // Find current user data
@@ -106,7 +106,7 @@ async function submit(event) {
         // if (!response.ok) { throw new Error("Update rejected"); }
 
         // Switch to feed
-        window.location.href = `../app.html?user=${username}`;
+        window.location.href = `app.html?user=${username}`;
 
     } catch(err) {
         error.textContent = "Failed to save interests";

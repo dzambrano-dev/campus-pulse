@@ -309,46 +309,137 @@ input:focus {
     }
 }
 
-/* Feed */
+/* FEED */
+
 #feed-container{
-    max-width: 700px;
+    max-width: 720px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding-bottom: 80px;
+    gap: 28px;
+    padding-bottom: 90px;
 }
+
+/* Event card */
 
 .feed-card{
     background: white;
-    border-radius: 12px;
-    padding: 18px;
+    border-radius: 16px;
     border: 1px solid var(--border);
 
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .feed-card:hover{
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+}
+
+/* Large feed image */
+
+.event-image{
+    width: 100%;
+    height: 300px;       /* Bigger visual focus */
+    object-fit: cover;
+}
+
+/* Text content area */
+
+.feed-content{
+    padding: 18px 20px 20px 20px;
 }
 
 .feed-card h3{
+    font-size: 20px;
     margin-bottom: 6px;
 }
 
 .feed-card p{
     font-size: 14px;
-    margin-bottom: 4px;
     color: #555;
+    line-height: 1.4;
+    margin-bottom: 10px;
 }
 
-.event-image
-{
+.feed-category{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+/* Action buttons */
+
+.feed-actions{
+    display: flex;
+    gap: 10px;
+}
+
+.feed-actions button{
+    flex: 1;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.club-button{
+    background: var(--primary);
+    color: white;
+}
+
+.map-button{
+    background: #2B2B2B;
+    color: white;
+}
+
+.event-image-wrapper{
+    position: relative;
+}
+
+.event-date{
+    position: absolute;
+    top: 14px;
+    left: 14px;
+
+    background: white;
+    border-radius: 10px;
+    padding: 6px 10px;
+
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.event-date .month{
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.event-date .day{
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.event-meta{
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+/* MAP */
+#map-page {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    height: 100%;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
 }

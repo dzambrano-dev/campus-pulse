@@ -30,9 +30,16 @@ navButtons.forEach(button => {
 
         // Show selected page
         document.getElementById(targetPage).classList.add("active");
-
-        // Mark button as active
         button.classList.add("active");
+
+        //redraw map whne tab opens
+        if (targetPage === "map-page") {
+            setTimeout(() => {
+                if (window.map) {
+                    window.map.invalidateSize();
+                }
+            }, 100);
+        }
     });
 });
 
@@ -45,21 +52,63 @@ async function loadFeed()
 
         const feed = document.getElementById("feed-container");
 
-        // show newest events first
-        data.reverse();
+        // sort events by upcoming date
+        data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
         data.forEach(event =>
         {
             const card = document.createElement("div");
             card.classList.add("feed-card");
 
+            // convert event date
+            const eventDate = new Date(event.date);
+            const month = eventDate.toLocaleString("default", { month: "short" }).toUpperCase();
+            const day = eventDate.getDate();
+
             card.innerHTML = `
-                <img src="${event.image}" 
-                    class="event-image"
-                    onerror="this.src='assets/eventImages/default.png'">
-                <h3>${event.title}</h3>
-                <p>${event.description}</p>
-                <p><strong>${event.category}</strong></p>
+
+                <div class="event-image-wrapper">
+
+                    <img 
+                        src="${event.image}" 
+                        class="event-image"
+                        onerror="this.src='assets/eventImages/default.png'"
+                    >
+
+                    <div class="event-date">
+                        <span class="month">${month}</span>
+                        <span class="day">${day}</span>
+                    </div>
+
+                </div>
+
+                <div class="feed-content">
+
+                    <h3>${event.title}</h3>
+
+                    <div class="event-meta">
+                        ${event.club} • ${event.category}
+                    </div>
+
+                    <div class="event-meta">
+                        ${event.time} • ${event.location}
+                    </div>
+
+                    <p>${event.description}</p>
+
+                    <div class="feed-actions">
+
+                        <button class="club-button">
+                            See Club
+                        </button>
+
+                        <button class="map-button">
+                            Show on Map
+                        </button>
+
+                    </div>
+
+                </div>
             `;
 
             feed.appendChild(card);

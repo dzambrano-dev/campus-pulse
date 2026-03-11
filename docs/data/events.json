@@ -8,7 +8,7 @@
     "time": "10:00 AM",
     "location": "ECS Building",
     "description": "ACM is hosting a 24-hour campus hackathon where students form teams to design, build, and present creative software projects. Participants will work with mentors from industry, explore new technologies, and compete for prizes. Whether you're a beginner or an experienced developer, this event is a great opportunity to collaborate, learn, and showcase your skills.",
-    "image": "eventImages/hackathon.png"
+    "image": "assets/eventImages/hackathon.png"
   },
   {
     "id": 2,
@@ -19,7 +19,7 @@
     "time": "7:00 PM",
     "location": "USU Lawn",
     "description": "Join the CSULB Music Society for an evening of live music featuring student bands and local artists performing a mix of indie, alternative, and acoustic sets. The event will include food trucks, merch booths, and plenty of space to relax with friends while enjoying the performances under the evening lights.",
-    "image": "eventImages/concert.png"
+    "image": "assets/eventImages/concert.png"
   },
   {
     "id": 3,
@@ -30,7 +30,7 @@
     "time": "6:00 PM",
     "location": "Campus Soccer Fields",
     "description": "The intramural soccer season officially begins with a kickoff event open to players and spectators. Teams from across campus will compete in friendly matches while recreation staff provide sign-ups and information for the upcoming season. Come support your friends, meet other students, and enjoy a lively start to the competition.",
-    "image": "eventImages/soccer.png"
+    "image": "assets/eventImages/soccer.png"
   },
   {
     "id": 4,
@@ -41,7 +41,7 @@
     "time": "5:30 PM",
     "location": "COB Hall",
     "description": "The Entrepreneur Society is hosting a networking evening for students interested in startups, business innovation, and venture creation. Local founders and alumni entrepreneurs will be present to share insights about launching companies, building teams, and navigating the startup ecosystem. This is a great opportunity to build connections and explore career paths in entrepreneurship.",
-    "image": "eventImages/startup.png"
+    "image": "assets/eventImages/startup.png"
   },
   {
     "id": 5,
@@ -52,7 +52,7 @@
     "time": "4:00 PM",
     "location": "ECS Lab 201",
     "description": "Test your cybersecurity skills in a Capture-the-Flag competition featuring challenges in cryptography, web security, reverse engineering, and digital forensics. Participants will work through realistic security problems while learning techniques used by professional security analysts. Beginners are encouraged to join and learn alongside experienced competitors.",
-    "image": "eventImages/ctf.png"
+    "image": "assets/eventImages/ctf.png"
   },
   {
     "id": 6,
@@ -63,7 +63,7 @@
     "time": "3:00 PM",
     "location": "Fine Arts Building",
     "description": "The Art Collective invites students of all skill levels to participate in a relaxed sketch meetup. Attendees can bring their own sketchbooks or materials while collaborating and exchanging ideas with other artists on campus. The event provides a creative space for students to explore drawing techniques and connect with fellow creatives.",
-    "image": "eventImages/art.png"
+    "image": "assets/eventImages/art.png"
   },
   {
     "id": 7,
@@ -74,7 +74,7 @@
     "time": "9:00 AM",
     "location": "SRWC Lawn",
     "description": "Start your morning with an outdoor bootcamp session led by certified trainers from the Student Recreation Center. This high-energy workout will include strength exercises, cardio circuits, and group challenges designed to push participants while maintaining a fun and motivating atmosphere.",
-    "image": "eventImages/fitness.png"
+    "image": "assets/eventImages/fitness.png"
   },
   {
     "id": 8,
@@ -85,7 +85,7 @@
     "time": "2:00 PM",
     "location": "ECS Room 105",
     "description": "The Game Development Club is hosting a hands-on workshop introducing students to game design using Unity. Participants will learn basic mechanics such as scene creation, object interaction, and simple scripting while building a small playable prototype. No prior experience is required.",
-    "image": "eventImages/gamedev.png"
+    "image": "assets/eventImages/gamedev.png"
   },
   {
     "id": 9,
@@ -96,7 +96,7 @@
     "time": "7:00 PM",
     "location": "USU Coffeehouse",
     "description": "The Literature Society is hosting an open mic night where students can share original poetry, spoken word pieces, or short readings. Whether performing or listening, this event provides a welcoming environment for creative expression and thoughtful conversation.",
-    "image": "eventImages/poetry.png"
+    "image": "assets/eventImages/poetry.png"
   },
   {
     "id": 10,
@@ -107,7 +107,7 @@
     "time": "1:00 PM",
     "location": "Campus Volleyball Courts",
     "description": "Teams from across campus will compete in a beach volleyball tournament hosted by CSULB Athletics. Students are invited to participate or watch the matches while enjoying a lively atmosphere filled with competition and school spirit.",
-    "image": "eventImages/volleyball.png"
+    "image": "assets/eventImages/volleyball.png"
   },
   {
     "id": 11,
@@ -118,7 +118,7 @@
     "time": "6:00 PM",
     "location": "ECS Auditorium",
     "description": "Faculty members and guest researchers will discuss the ethical implications of artificial intelligence and emerging technologies. Topics include AI decision making, privacy concerns, and the societal impact of intelligent systems.",
-    "image": "eventImages/ai.png"
+    "image": "assets/eventImages/ai.png"
   },
   {
     "id": 12,
@@ -129,6 +129,6 @@
     "time": "12:00 PM",
     "location": "Friendship Walk",
     "description": "Experience a variety of cuisines from around the world as student organizations host food booths representing different cultures. The festival will include music, performances, and cultural displays that celebrate the diverse international community at CSULB.",
-    "image": "eventImages/foodfest.png"
+    "image": "assets/eventImages/foodfest.png"
   }
 ]
