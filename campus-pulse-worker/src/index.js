@@ -10,6 +10,7 @@
 
 import { login } from "./login.js";
 import { signup } from "./signup.js";
+import { user } from "./user.js";
 
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
