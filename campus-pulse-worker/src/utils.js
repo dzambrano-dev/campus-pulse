@@ -12,13 +12,13 @@ export function json(data, status = 200) {
 }
 
 // Create an error response
-function jsonError(message, status = 400) {
+export function jsonError(message, status = 400) {
 	return json({ error: message });
 }
 
 // Hash a password using SHA-256
 // Used when storing or verifying passwords
-async function hashPassword(password) {
+export async function hashPassword(password) {
 	const encoder = new TextEncoder();
 	const data = encoder.encode(password);
 	const hashBuffer = await crypto.subtle.digest("SHA-256", data);
