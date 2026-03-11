@@ -70,7 +70,7 @@ async function login(event) {
 
     try {
         // Load users
-        const response = await fetch("../data/users.json");
+        const response = await fetch("data/users.json");
 
         // Failed to fetch users.json
         if (!response.ok) {
@@ -98,7 +98,7 @@ async function login(event) {
         // window.location.href = `../app.html?user=${username}`;
 
         // Switch to interests for testing
-        window.location.href = `../interests.html?user=${username}`;
+        window.location.href = `interests.html?user=${username}`;
     } catch(err) {
         loginError.textContent = "Failed to login";
         loginButton.disabled = false;
@@ -150,7 +150,7 @@ async function signup(event) {
         }
 
         // Switch to interests
-        window.location.href = `../interests.html?user=${username}`;
+        window.location.href = `interests.html?user=${username}`;
     } catch(err) {
         signupError.textContent = "Failed to create account";
         signupSubmitButton.disabled = false;
