@@ -1,15 +1,21 @@
 // Wait until DOM is loaded
+let username;
+
 document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    username = params.get("user");
+
+    if (!username) {
+        window.location.href = "index.html";
+        return;
+    }
+
     // Generate interest buttons
     loadInterests();
 
     // Add submit button listener
     document.getElementById("interests-form").addEventListener("submit", submit);
 });
-
-// Get username from URL
-const params = new URLSearchParams(window.location.search);
-const username = params.get("user");
 
 // Redirect to log in if username is missing
 if (!username) {
@@ -23,7 +29,7 @@ async function loadInterests() {
 
     try {
         // Fetch list of possible interests
-        const interestsResponse = await fetch("data/interests.json");
+        const interestsResponse = await fetch("/data/interests.json");
         const interestsData = await interestsResponse.json();
 
         // Fetch user interests
