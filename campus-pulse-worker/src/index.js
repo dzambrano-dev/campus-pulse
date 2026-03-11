@@ -1,5 +1,6 @@
 /**
- * Welcome to Cloudflare Workers! This is your first worker.
+ * index.js
+ * API entrypoint for Cloudflare Workers
  *
  * - Run `npm run dev` in your terminal to start a development server
  * - Open a browser tab at http://localhost:8787/ to see your worker in action
@@ -13,6 +14,7 @@ import { signup } from "./signup.js";
 import { user } from "./user.js";
 import { updateInterests } from "./updateInterests.js";
 
+// Headers for CORS so frontend can call this API
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
 	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -21,40 +23,40 @@ const corsHeaders = {
 
 export default {
 	async fetch(request, env) {
-		// Preflight request
+		// Handle browser preflight request (OPTIONS)
 		if (request.method === "OPTIONS") {
 			return new Response(null, { headers: corsHeaders });
 		}
 
+		// Parse the request URL to find the route
 		const url = new URL(request.url);
 
+		// Route each request to the appropriate handler
+		// Unknown routes return 404
 		switch (url.pathname) {
-			case "/api/login":
-				const loginResponse = await login(request, env);
-				return addCors(loginResponse);
-			case "/api/signup":
-				const signupResponse = await signup(request, env);
-				return addCors(signupResponse);
-			case "/api/user":
-				const userResponse = await user(request, env);
-				return addCors(userResponse);
-			case "/api/update-interests":
-				const interestsResponse = await updateInterests(request, env);
-				return addCors(interestsResponse);
-			case "/api/health":
-				const healthResponse = Response.json({ status: "OK" });
-				return addCors(healthResponse);
+			case "/api/login": return addCors(await login(request, env));
+			case "/api/signup": return addCors(await signup(request, env));
+			case "/api/user": return addCors(await user(request, env));
+			case "/api/update-interests": return addCors(await updateInterests(request, env));
+			case "/api/health": return addCors(Response.json({ status: "OK" }));  // Used to check if API is alive
 			default: return new Response("Not Found", { status: 404, headers: corsHeaders });
 		}
 	},
 };
 
+// Add CORS headers to a response
+// Ensures frontend can access the API
 function addCors(response) {
-	const newHeaders = new Headers(response.headers);
-	Object.entries(corsHeaders).forEach(([k, v]) => newHeaders.set(k, v));
+	const headers = new Headers(response.headers);
 
+	// Attach all defined CORS headers
+	for (const [k, v] of Object.entries(corsHeaders)) {
+		headers.set(k, v);
+	}
+
+	// Return a new response with updated headers
 	return new Response(response.body, {
 		status: response.status,
-		headers: newHeaders
+		headers: headers
 	});
 }

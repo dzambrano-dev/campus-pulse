@@ -1,65 +1,40 @@
+/**
+ * updateInterests.js
+ * API call for updating a user's interests
+ */
+
+import { json, jsonError, getSessionUser } from "./utils";
+
 export async function updateInterests(request, env) {
-	if (request.method !== "POST") {
-		return jsonError("Method not allowed", 405);
-	}
+	// Only allow POST requests
+	if (request.method !== "POST") return jsonError("Method not allowed", 405);
 
 	try {
-		// Get auth token
-		const auth = request.headers.get("Authorization");
+		// Authenticate user using session token
+		const username = await getSessionUser(request, env);
+		if (!username) return jsonError("Invalid session", 401);
 
-		if (!auth || !auth.startsWith("Bearer ")) {
-			return jsonError("Unauthorized", 401);
-		}
-
-		const token = auth.replace("Bearer ", "");
-
-		// Resolve username from session
-		const username = await env.SESSIONS.get(token);
-
-		if (!username) {
-			return jsonError("Invalid session", 401);
-		}
-
+		// Parse request
 		const { interests } = await request.json();
 
-		// Validate inputs
-		if (!Array.isArray(interests)) {
-			return jsonError("Invalid request", 400);
-		}
-
-		if (interests.length < 3) {
-			return jsonError("Select at least 3 interests");
-		}
+		// Validate interests
+		if (!Array.isArray(interests)) return jsonError("Invalid request", 400);
+		if (interests.length < 3) return jsonError("Select at least 3 interests");
 
 		// Retrieve user from KV
 		const storedUser = await env.USERS.get(username);
-
-		if (!storedUser) {
-			return jsonError("User not found", 404);
-		}
+		if (!storedUser) return jsonError("User not found", 404);
 
 		const user = JSON.parse(storedUser);
 
-		// Update interests
+		// Update user interests
 		user.interests = interests;
 
-		// Save to KV
+		// Save updated user to KV
 		await env.USERS.put(username, JSON.stringify(user));
-
-		return Response.json({
-			success: true,
-			interests: user.interests,
-		});
+		return json({ success: true, interests });
 	} catch {
-		return jsonError("Invalid request", 400);
+		// Handle unexpected errors
+		return jsonError("Invalid request");
 	}
-}
-
-function jsonError(message, status = 400) {
-	return new Response(JSON.stringify({
-		error: message
-	}), {
-		status,
-		headers: { "Content-Type": "application/json" },
-	});
 }
