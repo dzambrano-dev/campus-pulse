@@ -34,6 +34,9 @@ export default {
 			case "/api/signup":
 				const signupResponse = await signup(request, env);
 				return addCors(signupResponse);
+			case "/api/user":
+				const userResponse = await user(request, env);
+				return addCors(userResponse);
 			case "/api/health": return Response.json({ status: "OK" });
 			default: return new Response("Not Found", { status: 404, headers: corsHeaders });
 		}
