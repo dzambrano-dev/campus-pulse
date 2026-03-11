@@ -116,7 +116,7 @@ async function submit(event) {
         }
 
         // Switch to feed
-        window.location.assign("/app.html");
+        window.location.assign("app.html");
     } catch(err) {
         error.textContent = "Failed to save interests";
         console.error(err);
