@@ -4,10 +4,26 @@ export async function updateInterests(request, env) {
 	}
 
 	try {
-		const { username, interests } = await request.json();
+		// Get auth token
+		const auth = request.headers.get("Authorization");
+
+		if (!auth || !auth.startsWith("Bearer ")) {
+			return jsonError("Unauthorized", 401);
+		}
+
+		const token = auth.replace("Bearer ", "");
+
+		// Resolve username from session
+		const username = await env.SESSIONS.get(token);
+
+		if (!username) {
+			return jsonError("Invalid session", 401);
+		}
+
+		const { interests } = await request.json();
 
 		// Validate inputs
-		if (!username || !Array.isArray(interests)) {
+		if (!Array.isArray(interests)) {
 			return jsonError("Invalid request", 400);
 		}
 
