@@ -106,7 +106,7 @@ async function submit(event) {
         // if (!response.ok) { throw new Error("Update rejected"); }
 
         // Switch to feed
-        window.location.href = `../app.html?user=${username}`;
+        window.location.href = `app.html?user=${username}`;
 
     } catch(err) {
         error.textContent = "Failed to save interests";
