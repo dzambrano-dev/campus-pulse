@@ -1,53 +1,86 @@
 //app.js
-// Get username from URL
-const params = new URLSearchParams(window.location.search);
-const username = params.get("user");
+let token;
+let currentUser;
 
-// Redirect to log in if username is missing
-if (!username) {
-    window.location.href = "index.html";
+const API = "https://campus-pulse-worker.vindictivity.workers.dev/api";
+
+document.addEventListener("DOMContentLoaded", initApp);
+
+async function initApp() {
+    token = localStorage.getItem("sessionToken");
+
+    // Redirect if not logged in
+    if (!token) {
+        window.location.assign("index.html");
+        return;
+    }
+
+    // Validate session and fetch user
+    const user = await loadUser();
+
+    if (!user) {
+        localStorage.removeItem("sessionToken");
+        window.location.assign("index.html");
+        return;
+    }
+
+    currentUser = user.username;
+
+    initNavigation();
+
+    // Load app
+    await loadFeed();
+    await loadEvents();
 }
 
-// Fetch buttons and pages
-const navButtons = document.querySelectorAll(".nav-button");
-const pages = document.querySelectorAll(".app-page");
-
-// Add listeners to each button
-navButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        // Page belonging to current button
-        const targetPage = button.dataset.page;
-
-        // Hide all pages
-        pages.forEach(page => {
-            page.classList.remove("active");
+async function loadUser() {
+    try {
+        const endpoint = `${API}/user`
+        const response = await fetch(endpoint, {
+            headers: { "Authorization": `Bearer ${token}` }
         });
 
-        // Remove active state from all buttons
-        navButtons.forEach(btn => {
-            btn.classList.remove("active");
+        if (!response.ok) return null;
+
+        return await response.json();
+    } catch (err) {
+        console.error("User fetch failed:", err);
+        return null;
+    }
+}
+
+function initNavigation() {
+    const navButtons = document.querySelectorAll(".nav-button");
+    const pages = document.querySelectorAll(".app-page");
+
+    navButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            // Page belonging to current button
+            const targetPage = button.dataset.page;
+
+            // Hide all pages
+            pages.forEach(page => page.classList.remove("active"));
+
+            // Remove active state from all buttons
+            navButtons.forEach(btn => btn.classList.remove("active"));
+
+            // Show selected page
+            document.getElementById(targetPage).classList.add("active");
+            button.classList.add("active");
+
+            //redraw map when tab opens
+            if (targetPage === "map-page") {
+                setTimeout(() => {
+                    if (window.map) window.map.invalidateSize();
+                }, 100);
+            }
         });
-
-        // Show selected page
-        document.getElementById(targetPage).classList.add("active");
-        button.classList.add("active");
-
-        //redraw map whne tab opens
-        if (targetPage === "map-page") {
-            setTimeout(() => {
-                if (window.map) {
-                    window.map.invalidateSize();
-                }
-            }, 100);
-        }
     });
-});
+}
 
 // LOAD FEED
 async function loadFeed() {
-
     try {
-
         // fetch feed data from JSON file
         const response = await fetch("data/feed.json");
         const data = await response.json();
@@ -87,7 +120,6 @@ async function loadFeed() {
 
             // add the feed item to the page
             feedContainer.appendChild(post);
-
         });
 
         // create mini maps for every preview box
@@ -107,9 +139,7 @@ async function loadFeed() {
             }).setView([lat, lng], 14);
 
             // add map tiles
-            L.tileLayer(
-                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            ).addTo(miniMap);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(miniMap);
 
             // place marker at event location
             L.marker([lat, lng]).addTo(miniMap);
@@ -147,9 +177,7 @@ async function loadEvents() {
 
             // convert event date to readable month/day
             const eventDate = new Date(event.date);
-            const month = eventDate
-                .toLocaleString("default", { month: "short" })
-                .toUpperCase();
+            const month = eventDate.toLocaleString("default", { month: "short" }).toUpperCase();
             const day = eventDate.getDate();
 
             // build card HTML
@@ -186,16 +214,13 @@ async function loadEvents() {
                         </button>
                     </div>
                 </div>
-
             `;
             // add card to events container
             eventsContainer.appendChild(card);
         });
-
     } catch (err) {
         // log error if events fail to load
         console.error("Failed to load events:", err);
-
     }
 
 }
@@ -212,14 +237,10 @@ if (addEventButton) {
         // placeholder action for now
         alert("Open Add Event Form");
     });
-
 }
 
-// APP INITIALIZATION
-document.addEventListener("DOMContentLoaded", () => {
-
-    // load events and feed when page is ready
-    loadFeed();
-    loadEvents();
-
-});
+// Log out
+function logout() {
+    localStorage.removeItem("sessionToken");
+    window.location.assign("index.html");
+}
