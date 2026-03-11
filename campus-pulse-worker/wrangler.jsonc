@@ -21,6 +21,10 @@
 		{
 			"binding": "EMAILS",
 			"id": "5c1adbc5f26a43dd982b52aa1801be32"
+		},
+		{
+			"binding": "SESSIONS",
+			"id": "2fd0a51593794f91ba28ddac54507686"
 		}
 	]
 }
