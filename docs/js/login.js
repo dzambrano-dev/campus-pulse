@@ -80,11 +80,12 @@ async function login(event) {
             })
         });
 
-        console.log("test");
-
         // Return response
         let result = {};
         try { result = await response.json(); } catch(err) {}
+
+        // Test
+        console.log(result);
 
         // Failed to fetch users.json
         if (!response.ok) {
