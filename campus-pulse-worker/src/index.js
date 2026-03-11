@@ -11,6 +11,7 @@
 import { login } from "./login.js";
 import { signup } from "./signup.js";
 import { user } from "./user.js";
+import { updateInterests } from "./updateInterests.js";
 
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
@@ -19,7 +20,7 @@ const corsHeaders = {
 }
 
 export default {
-	async fetch(request, env, ctx) {
+	async fetch(request, env) {
 		// Preflight request
 		if (request.method === "OPTIONS") {
 			return new Response(null, { headers: corsHeaders });
@@ -37,6 +38,9 @@ export default {
 			case "/api/user":
 				const userResponse = await user(request, env);
 				return addCors(userResponse);
+			case "/api/update-interests":
+				const interestsResponse = await updateInterests(request, env);
+				return addCors(interestsResponse);
 			case "/api/health": return Response.json({ status: "OK" });
 			default: return new Response("Not Found", { status: 404, headers: corsHeaders });
 		}
