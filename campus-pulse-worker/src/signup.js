@@ -20,8 +20,8 @@ export async function signup(request, env) {
 		if (existingUser) { return jsonError("User already exists"); }
 
 		// Check if email exists
-		const emailKey = `email:${email.toLowerCase()}`;
-		const existingEmail = await env.USERS.get(emailKey);
+		const emailKey = `${email.toLowerCase()}`;
+		const existingEmail = await env.EMAILS.get(emailKey);
 		if (existingEmail) { return jsonError("Email already registered"); }
 
 		// Hash password
@@ -39,7 +39,7 @@ export async function signup(request, env) {
 		await env.USERS.put(username, JSON.stringify(newUser));
 
 		// Save email lookup
-		await env.USERS.put(emailKey, username);
+		await env.EMAILS.put(emailKey, username);
 
 		return new Response(JSON.stringify({
 			success: true
