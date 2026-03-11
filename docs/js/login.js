@@ -69,28 +69,24 @@ async function login(event) {
     }
 
     try {
-        // Load users
-        const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/signup"
-        const response = await fetch(endpoint);
+        // Fetch users
+        const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/login"
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        });
+
+        // Return response
+        let result = {};
+        try { result = await response.json(); } catch(err) {}
 
         // Failed to fetch users.json
         if (!response.ok) {
-            loginError.textContent = "User database unavailable";
-            loginButton.disabled = false;
-            return;
-        }
-
-        const data = await response.json();
-
-        // Check user login
-        const validUser = data.users.find(user =>
-            user.username === username &&
-            user.password === password
-        );
-
-        // Deny invalid logins
-        if (!validUser) {
-            loginError.textContent = "Invalid username or password";
+            loginError.textContent = result.error || "User database unavailable";
             loginButton.disabled = false;
             return;
         }
@@ -131,7 +127,7 @@ async function signup(event) {
     }
 
     try {
-        // Worker endpoint
+        // Cloudflare Worker response
         const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/signup"
         const response = await fetch(endpoint, {
             method: "POST",
@@ -143,9 +139,13 @@ async function signup(event) {
             })
         });
 
+        // Return response
+        let result = {};
+        try { result = await response.json(); } catch(err) {}
+
         // Cloudflare Worker error
         if (!response.ok) {
-            signupError.textContent = "Signup failed";
+            signupError.textContent = result.error || "Signup failed";
             signupSubmitButton.disabled = false;
             return;
         }
