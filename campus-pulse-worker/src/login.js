@@ -1,4 +1,11 @@
 export async function login(request, env) {
+
+	console.log("LOGIN REQUEST");
+	const body = await request.text();
+	console.log("BODY:", body);
+	let { username, password } = JSON.parse(body);
+	console.log("USERNAME:", username);
+
 	if (request.method !== "POST") {
 		return jsonError("Method not allowed", 405);
 	}
