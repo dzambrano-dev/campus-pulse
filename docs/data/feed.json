@@ -1,0 +1,82 @@
+[
+  {
+    "title": "Homeless Man Sleeping Inside Horn Center",
+    "location": "Horn Center",
+    "time": "2 mins ago",
+    "type": "warning",
+    "lat": 33.7837,
+    "lng": -118.1122
+  },
+  {
+    "title": "Car Break-In Reported",
+    "location": "Palo Verde Parking Structure",
+    "time": "5 mins ago",
+    "type": "danger",
+    "lat": 33.7819,
+    "lng": -118.1135
+  },
+  {
+    "title": "Suspicious Person Peeping Into Windows",
+    "location": "Walter Pyramid",
+    "time": "8 mins ago",
+    "type": "warning",
+    "lat": 33.7870,
+    "lng": -118.1147
+  },
+  {
+    "title": "Skateboard Crash",
+    "location": "Library Walkway",
+    "time": "11 mins ago",
+    "type": "info",
+    "lat": 33.7845,
+    "lng": -118.1141
+  },
+  {
+    "title": "Bike Theft Attempt",
+    "location": "Student Recreation Center Bike Racks",
+    "time": "14 mins ago",
+    "type": "danger",
+    "lat": 33.7840,
+    "lng": -118.1107
+  },
+  {
+    "title": "Fire Alarm Triggered",
+    "location": "Engineering Building ECS",
+    "time": "17 mins ago",
+    "type": "warning",
+    "lat": 33.7834,
+    "lng": -118.1130
+  },
+  {
+    "title": "Large Crowd Gathering",
+    "location": "USU Lawn",
+    "time": "22 mins ago",
+    "type": "info",
+    "lat": 33.7829,
+    "lng": -118.1126
+  },
+  {
+    "title": "Aggressive Dog Reported",
+    "location": "Lower Campus Quad",
+    "time": "27 mins ago",
+    "type": "warning",
+    "lat": 33.7842,
+    "lng": -118.1118
+  },
+  {
+    "title": "Police Activity",
+    "location": "Lot G14 Near Pyramid",
+    "time": "32 mins ago",
+    "type": "warning",
+    "lat": 33.7862,
+    "lng": -118.1150
+  },
+  {
+    "title": "Electric Scooter Collision",
+    "location": "Near Brotman Hall",
+    "time": "40 mins ago",
+    "type": "info",
+    "lat": 33.7830,
+    "lng": -118.1144
+  }
+]
