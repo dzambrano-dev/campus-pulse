@@ -48,6 +48,34 @@ backButton.addEventListener("click", () => {
     loginCard.classList.add("active");
 });
 
+// Check session
+document.addEventListener("DOMContentLoaded", checkSession);
+
+async function checkSession() {
+    const token = localStorage.getItem("sessionToken");
+
+    if (!token) return;
+
+    document.body.style.visibility = "visible";
+
+    try {
+        const endpoint = `${API}/user`
+        const response = await fetch(endpoint, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+            localStorage.removeItem("sessionToken");
+            return;
+        }
+
+        // If the token is valid, skip login
+        window.location.assign("app.html");
+    } catch (err) {
+        console.error("Session validation failed:", err);
+    }
+}
+
 // Login
 loginForm.addEventListener("submit", login);
 

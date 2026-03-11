@@ -53,6 +53,7 @@ body {
         Arial,
         sans-serif;
     overflow: hidden;
+    visibility: hidden;  /* Made visible through js */
 }
 
 /* Universal */
