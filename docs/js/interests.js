@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Redirect if not logged in
     if (!token) {
-        window.location.assign("/index.html");
+        window.location.assign("index.html");
         return;
     }
 

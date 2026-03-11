@@ -16,7 +16,7 @@ import { updateInterests } from "./updateInterests.js";
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
 	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-	"Access-Control-Allow-Headers": "Content-Type"
+	"Access-Control-Allow-Headers": "Content-Type, Authorization"
 }
 
 export default {
