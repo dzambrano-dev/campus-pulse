@@ -90,7 +90,7 @@ async function login(event) {
         // Test
         console.log(result);
 
-        // Failed to fetch users.json
+        // Failed to fetch users
         if (!response.ok) {
             loginError.textContent = result.error || "User database unavailable";
             loginButton.disabled = false;
