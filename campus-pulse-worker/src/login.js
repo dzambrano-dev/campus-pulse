@@ -3,8 +3,7 @@
  * API call for logins
  */
 
-import { json, jsonError, hashPassword } from "./utils.js"
-
+import { json, jsonError, verifyPassword } from "./utils.js"
 export async function login(request, env) {
 	// Only allow POST requests
 	if (request.method !== "POST") return jsonError("Method not allowed", 405);
@@ -36,8 +35,8 @@ export async function login(request, env) {
 		const user = JSON.parse(storedUser);
 
 		// Hash password and verify it matches stored hash
-		const passwordHash = await hashPassword(password);
-		if (passwordHash !== user.passwordHash) return jsonError("Invalid username or password", 401);
+		const match = await verifyPassword(password, user.passwordHash);
+		if (!match) return jsonError("Invalid username or password", 401);
 
 		// Generate a session token
 		const token = crypto.randomUUID();
