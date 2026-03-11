@@ -64,7 +64,6 @@ async function checkSession() {
 
         if (!response.ok) {
             localStorage.removeItem("sessionToken");
-            document.body.style.visibility = "visible";
             return;
         }
 
@@ -72,7 +71,6 @@ async function checkSession() {
         window.location.assign("app.html");
     } catch (err) {
         console.error("Session validation failed:", err);
-        document.body.style.visibility = "visible";
     }
 }
 
