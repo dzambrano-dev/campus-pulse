@@ -70,7 +70,8 @@ async function login(event) {
 
     try {
         // Load users
-        const response = await fetch("../data/users.json");
+        const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/signup"
+        const response = await fetch(endpoint);
 
         // Failed to fetch users.json
         if (!response.ok) {
@@ -95,10 +96,10 @@ async function login(event) {
         }
 
         // Switch to feed
-        // window.location.href = `../app.html?user=${username}`;
+        // window.location.href = `/app.html?user=${username}`;
 
         // Switch to interests for testing
-        window.location.href = `../interests.html?user=${username}`;
+        window.location.href = `/interests.html?user=${username}`;
     } catch(err) {
         loginError.textContent = "Failed to login";
         loginButton.disabled = false;
@@ -150,7 +151,7 @@ async function signup(event) {
         }
 
         // Switch to interests
-        window.location.href = `../interests.html?user=${username}`;
+        window.location.href = `/interests.html?user=${username}`;
     } catch(err) {
         signupError.textContent = "Failed to create account";
         signupSubmitButton.disabled = false;

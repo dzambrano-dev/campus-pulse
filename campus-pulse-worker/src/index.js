@@ -8,10 +8,18 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+import { login } from "./login.js";
 import { signup } from "./signup.js";
 
 export default {
 	async fetch(request, env, ctx) {
-		return new Response('Hello World!');
+		const url = new URL(request.url);
+
+		switch (url.pathname) {
+			case "/api/signup": return signup(request, env);
+			case "/api/login": return login(request, env);
+			case "/api/health": return Response.json({ status: "OK" });
+			default: return new Response("Not Found", { status: 404 });
+		}
 	},
 };
