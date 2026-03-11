@@ -80,6 +80,8 @@ async function login(event) {
             })
         });
 
+        console.log("test");
+
         // Return response
         let result = {};
         try { result = await response.json(); } catch(err) {}
