@@ -8,10 +8,51 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+import { login } from "./login.js";
 import { signup } from "./signup.js";
+import { user } from "./user.js";
+import { updateInterests } from "./updateInterests.js";
+
+const corsHeaders = {
+	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
+	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+	"Access-Control-Allow-Headers": "Content-Type"
+}
 
 export default {
-	async fetch(request, env, ctx) {
-		return new Response('Hello World!');
+	async fetch(request, env) {
+		// Preflight request
+		if (request.method === "OPTIONS") {
+			return new Response(null, { headers: corsHeaders });
+		}
+
+		const url = new URL(request.url);
+
+		switch (url.pathname) {
+			case "/api/login":
+				const loginResponse = await login(request, env);
+				return addCors(loginResponse);
+			case "/api/signup":
+				const signupResponse = await signup(request, env);
+				return addCors(signupResponse);
+			case "/api/user":
+				const userResponse = await user(request, env);
+				return addCors(userResponse);
+			case "/api/update-interests":
+				const interestsResponse = await updateInterests(request, env);
+				return addCors(interestsResponse);
+			case "/api/health": return Response.json({ status: "OK" });
+			default: return new Response("Not Found", { status: 404, headers: corsHeaders });
+		}
 	},
 };
+
+function addCors(response) {
+	const newHeaders = new Headers(response.headers);
+	Object.entries(corsHeaders).forEach(([k, v]) => newHeaders.set(k, v));
+
+	return new Response(response.body, {
+		status: response.status,
+		headers: newHeaders
+	});
+}

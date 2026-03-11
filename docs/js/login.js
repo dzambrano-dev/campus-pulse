@@ -23,6 +23,8 @@ const signupUsername = document.getElementById("signup-username");
 const signupEmail = document.getElementById("signup-email");
 const signupPassword = document.getElementById("signup-password");
 
+const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
+
 // Clear errors when the user types
 document.querySelectorAll("input").forEach(input => {
     input.addEventListener("input", () => {
@@ -46,7 +48,7 @@ backButton.addEventListener("click", () => {
     loginCard.classList.add("active");
 });
 
-// Switch to the app
+// Login
 loginForm.addEventListener("submit", login);
 
 async function login(event) {
@@ -54,12 +56,10 @@ async function login(event) {
 
     // Disable login button to prevent spam
     loginButton.disabled = true;
+    loginError.textContent = "";
 
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
-
-    // Empty the error text
-    loginError.textContent = "";
 
     // Prevent empty logins
     if (!username || !password) {
@@ -69,36 +69,34 @@ async function login(event) {
     }
 
     try {
-        // Load users
-        const response = await fetch("data/users.json");
+        // Fetch users
+        const endpoint = `${API}/login`
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        });
 
-        // Failed to fetch users.json
+        // Return response
+        let result = {};
+        try { result = await response.json(); } catch(err) {}
+
+        // Failed to fetch users
         if (!response.ok) {
-            loginError.textContent = "User database unavailable";
+            loginError.textContent = result.error || "Login failed";
             loginButton.disabled = false;
             return;
         }
 
-        const data = await response.json();
-
-        // Check user login
-        const validUser = data.users.find(user =>
-            user.username === username &&
-            user.password === password
-        );
-
-        // Deny invalid logins
-        if (!validUser) {
-            loginError.textContent = "Invalid username or password";
-            loginButton.disabled = false;
-            return;
-        }
+        // Store session token
+        localStorage.setItem("sessionToken", result.token);
+        localStorage.setItem("username", result.username);
 
         // Switch to feed
-        // window.location.href = `app.html?user=${username}`;
-
-        // Switch to interests for testing
-        window.location.href = `interests.html?user=${username}`;
+        window.location.assign("/app.html");
     } catch(err) {
         loginError.textContent = "Failed to login";
         loginButton.disabled = false;
@@ -114,13 +112,11 @@ async function signup(event) {
 
     // Disable signup button to prevent spam
     signupSubmitButton.disabled = true;
+    signupError.textContent = "";
 
     const username = signupUsername.value.trim();
     const email = signupEmail.value.trim();
     const password = signupPassword.value.trim();
-
-    // Empty the error text
-    signupError.textContent = "";
 
     // Prevent empty signups
     if (!username || !email || !password) {
@@ -130,27 +126,31 @@ async function signup(event) {
     }
 
     try {
-        // Worker endpoint
-        const endpoint = "https://campus-pulse-worker.vindictivity.workers.dev/api/signup"
+        // Cloudflare Worker response
+        const endpoint = `${API}/signup`
         const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                username,
-                email,
-                password
-            })
+            body: JSON.stringify({ username, email, password })
         });
+
+        // Return response
+        let result = {};
+        try { result = await response.json(); } catch(err) {}
 
         // Cloudflare Worker error
         if (!response.ok) {
-            signupError.textContent = "Signup failed";
+            signupError.textContent = result.error || "Signup failed";
             signupSubmitButton.disabled = false;
             return;
         }
 
+        // Store session token
+        localStorage.setItem("sessionToken", result.token);
+        localStorage.setItem("username", result.username);
+
         // Switch to interests
-        window.location.href = `interests.html?user=${username}`;
+        window.location.assign("/interests.html");
     } catch(err) {
         signupError.textContent = "Failed to create account";
         signupSubmitButton.disabled = false;
