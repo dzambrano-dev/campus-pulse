@@ -12,7 +12,7 @@ import { login } from "./login.js";
 import { signup } from "./signup.js";
 
 const corsHeaders = {
-	"Access-Control-Allow-Origin": "*",
+	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
 	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 	"Access-Control-Allow-Headers": "Content-Type"
 }
@@ -28,7 +28,7 @@ export default {
 
 		switch (url.pathname) {
 			case "/api/login":
-				const loginResponse = login(request, env);
+				const loginResponse = await login(request, env);
 				return addCors(loginResponse);
 			case "/api/signup":
 				const signupResponse = await signup(request, env);
@@ -43,7 +43,7 @@ function addCors(response) {
 	const newHeaders = new Headers(response.headers);
 	Object.entries(corsHeaders).forEach(([k, v]) => newHeaders.set(k, v));
 
-	return new Reponse(response.body, {
+	return new Response(response.body, {
 		status: response.status,
 		headers: newHeaders
 	});
