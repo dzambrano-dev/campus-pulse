@@ -1,9 +1,9 @@
-import bcrypt from 'bcryptjs'
-
 /**
  * utils.js
  * Shared API helpers
  */
+
+import bcrypt from "bcryptjs"
 
 // Create a JSON response with content-type header
 export function json(data, status = 200) {

@@ -4,6 +4,7 @@
  */
 
 import { json, jsonError, verifyPassword } from "./utils.js"
+
 export async function login(request, env) {
 	// Only allow POST requests
 	if (request.method !== "POST") return jsonError("Method not allowed", 405);
