@@ -3,7 +3,7 @@
  * API call for updating a user's interests
  */
 
-import { json, jsonError, getSessionUser } from "./utils";
+import { json, jsonError, getSessionUser } from "./utils.js";
 
 export async function updateInterests(request, env) {
 	// Only allow POST requests
