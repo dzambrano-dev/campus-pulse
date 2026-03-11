@@ -7,8 +7,8 @@ export async function signup(request, env) {
 		let { username, email, password } = await request.json();
 
 		// Normalize inputs
-		username = username?.trim();
-		email = email?.trim();
+		username = username?.trim().toLowerCase();
+		email = email?.trim().toLowerCase();
 		password = password?.trim();
 
 		// Validate signup

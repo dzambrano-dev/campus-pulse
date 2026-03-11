@@ -7,7 +7,7 @@ export async function login(request, env) {
 		let { username, password } = await request.json();
 
 		// Normalize inputs
-		username = username?.trim();
+		username = username?.trim().toLowerCase();
 		password = password?.trim();
 
 		// Prevent empty logins
@@ -18,7 +18,7 @@ export async function login(request, env) {
 		// Retrieve user from KV
 		const storedUser = await env.USERS.get(username);
 		if (!storedUser) {
-			jsonError("Invalid username or password", 401);
+			return jsonError("Invalid username or password", 401);
 		}
 
 		const user = JSON.parse(storedUser);
