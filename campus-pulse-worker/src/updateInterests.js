@@ -19,7 +19,6 @@ export async function updateInterests(request, env) {
 
 		// Validate interests
 		if (!Array.isArray(interests)) return jsonError("Invalid request", 400);
-		if (interests.length < 3) return jsonError("Select at least 3 interests");
 
 		// Retrieve user from KV
 		const storedUser = await env.USERS.get(username);
