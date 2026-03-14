@@ -106,7 +106,7 @@ async function submit(event) {
             })
         });
 
-        const result = await response.json();
+        const result = await response.json().catch(() => ({}));
 
         // Server error
         if (!response.ok) {
