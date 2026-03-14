@@ -1,6 +1,7 @@
 //app.js
 let token;
 let currentUser;
+let currentRole;
 
 const API = "https://campus-pulse-worker.vindictivity.workers.dev/api";
 
@@ -26,6 +27,7 @@ async function initApp() {
     }
 
     currentUser = user.username;
+    currentRole = user.role;
 
     // Initialize navigation
     initNavigation();
@@ -57,6 +59,7 @@ function initNavigation() {
     const navButtons = document.querySelectorAll(".nav-button");
     const pages = document.querySelectorAll(".app-page");
 
+    // Set up buttons
     navButtons.forEach(button => {
         button.addEventListener("click", () => {
             // Page belonging to current button
@@ -80,6 +83,20 @@ function initNavigation() {
             }
         });
     });
+
+    // Set up event creation button
+    const addEventButton = document.getElementById("add-event-button");
+    if (!addEventButton) return;
+
+    // Only viewable by organizers and admins
+    if (currentRole !== "organizer" && currentRole !== "admin") {
+        addEventButton.remove();
+        return;
+    }
+
+    addEventButton.addEventListener("click", () => {
+        alert("Open Add Event Form");
+    })
 }
 
 // LOAD FEED
@@ -227,21 +244,6 @@ async function loadEvents() {
         // log error if events fail to load
         console.error("Failed to load events:", err);
     }
-
-}
-
-// ADD EVENT BUTTON
-// find add event button
-const addEventButton = document.getElementById("add-event-button");
-
-// only attach listener if button exists
-if (addEventButton) {
-
-    addEventButton.addEventListener("click", () => {
-
-        // placeholder action for now
-        alert("Open Add Event Form");
-    });
 }
 
 // Send user to login
