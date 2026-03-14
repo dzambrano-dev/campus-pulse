@@ -31,6 +31,7 @@ async function initApp() {
 
     // Initialize navigation
     initNavigation();
+    createAddEventButton();
 
     // Load application
     await loadFeed();
@@ -83,20 +84,25 @@ function initNavigation() {
             }
         });
     });
+}
 
-    // Set up event creation button
-    const addEventButton = document.getElementById("add-event-button");
-    if (!addEventButton) return;
+// Generate addEvent button
+function createAddEventButton() {
+    if (currentRole === "organizer" || currentRole === "admin") {
+        const nav = document.querySelector(".bottom-nav");
 
-    // Only viewable by organizers and admins
-    if (currentRole !== "organizer" && currentRole !== "admin") {
-        addEventButton.remove();
-        return;
+        const addEventButton = document.createElement("button");
+        addEventButton.classList.add("floating-nav-button");
+        addEventButton.id = "add-event-button";
+        addEventButton.textContent = "+";
+
+        addEventButton.addEventListener("click", () => {
+            alert("Open Add Event Form");
+        });
+
+        // Insert button in the middle
+        nav.insertBefore(addEventButton, nav.children[2]);
     }
-
-    addEventButton.addEventListener("click", () => {
-        alert("Open Add Event Form");
-    })
 }
 
 // LOAD FEED
