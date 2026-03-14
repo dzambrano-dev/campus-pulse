@@ -11,6 +11,7 @@
 
 import { createEvent } from "./createEvent.js";
 import { login } from "./login.js";
+import { toggleOrganizer } from "./toggleOrganizer.js";
 import { signup } from "./signup.js";
 import { updateInterests } from "./updateInterests.js";
 import { user } from "./user.js";
@@ -38,6 +39,7 @@ export default {
 			case "/api/createEvent": return addCors(await createEvent(request, env));
 			case "/api/login": return addCors(await login(request, env));
 			case "/api/signup": return addCors(await signup(request, env));
+			case "/api/toggle-organizer": return addCors(await toggleOrganizer(request, env));
 			case "/api/user": return addCors(await user(request, env));
 			case "/api/update-interests": return addCors(await updateInterests(request, env));
 			case "/api/health": return addCors(Response.json({ status: "OK" }));  // Used to check if API is alive
