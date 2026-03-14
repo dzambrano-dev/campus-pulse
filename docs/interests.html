@@ -6,17 +6,18 @@
     <title>Beach Pulse</title>
     <link rel="icon" type="image/x-icon" href="">  <!-- Icon -->
     <link rel="stylesheet" href="css/styles.css">
+    <script defer src="js/interests.js"></script>
 </head>
 <body>
   <div class="interests-container">
-    <h2>Select your interests</h2>
-    <form id="interests-form">
+    <h2>Choose your interests</h2>
+    <form id="interests-form" novalidate>
         <!-- Interests will be injected here through javascript -->
         <div id="interests-list" class="interests-grid"></div>
         <button type="submit">Save Interests</button>
+        <button type="button" class="secondary-button" id="skip-interests">Skip</button>
     </form>
     <div class="error" id="interests-error"></div>
   </div>
-  <script src="js/interests.js"></script>
 </body>
 </html>

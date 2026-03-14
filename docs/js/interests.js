@@ -1,5 +1,7 @@
 let token;
 
+const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
+
 // Wait until DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
     token = localStorage.getItem("sessionToken");
@@ -15,9 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add submit button listener
     document.getElementById("interests-form").addEventListener("submit", submit);
-});
 
-const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
+    // Add skip button listener
+    document.getElementById("skip-interests").addEventListener("click", skip);
+});
 
 // Generate interest buttons
 async function loadInterests() {
@@ -29,12 +32,13 @@ async function loadInterests() {
         const interestsResponse = await fetch("data/interests.json");
         const interestsData = await interestsResponse.json();
 
-        // Fetch user interests
+        // Fetch current user
         const endpoint = `${API}/user`
         const userResponse = await fetch(endpoint, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
+        // If no user is found, redirect to login/signup
         if (!userResponse.ok) {
             window.location.assign("index.html");
             return;
@@ -44,14 +48,15 @@ async function loadInterests() {
         const userData = await userResponse.json();
         const userInterests = userData.interests || [];
 
-        // Generate interest checkboxes
+        // Generate container
         const container = document.getElementById("interests-list");
         container.innerHTML = "";
+
+        // Create interest buttons
         interestsData.interests.forEach(interest => {
-            // Create a button
             const button = document.createElement("button");
             button.type = "button";
-            button.textContent = interest;
+            button.textContent = `${interest}`;
             button.classList.add("interest-button");
 
             // Select previously saved interests
@@ -87,12 +92,6 @@ async function submit(event) {
         selectedInterests.push(box.textContent);
     });
 
-    // Require at least 3 interests
-    if (selectedInterests.length < 3) {
-        error.textContent = "Select at least 3 interests";
-        return;
-    }
-
     try {
         // Send interests to worker
         const endpoint = `${API}/update-interests`
@@ -121,4 +120,9 @@ async function submit(event) {
         error.textContent = "Failed to save interests";
         console.error(err);
     }
+}
+
+// Skip interest selection
+function skip() {
+    window.location.assign("app.html");
 }
