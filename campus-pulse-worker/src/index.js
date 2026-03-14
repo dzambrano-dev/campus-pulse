@@ -10,6 +10,7 @@
  */
 
 import { createEvent } from "./createEvent.js";
+import { getInterests } from "./getInterests.js";
 import { login } from "./login.js";
 import { toggleOrganizer } from "./toggleOrganizer.js";
 import { signup } from "./signup.js";
@@ -37,6 +38,7 @@ export default {
 		// Unknown routes return 404
 		switch (url.pathname) {
 			case "/api/createEvent": return addCors(await createEvent(request, env));
+			case "/api/interests": return addCors(await getInterests(request, env));
 			case "/api/login": return addCors(await login(request, env));
 			case "/api/signup": return addCors(await signup(request, env));
 			case "/api/toggle-organizer": return addCors(await toggleOrganizer(request, env));

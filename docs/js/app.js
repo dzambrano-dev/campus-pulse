@@ -6,33 +6,36 @@ const API = "https://campus-pulse-worker.vindictivity.workers.dev/api";
 
 document.addEventListener("DOMContentLoaded", initApp);
 
+// Main application startup
 async function initApp() {
     token = localStorage.getItem("sessionToken");
 
     // Redirect if not logged in
     if (!token) {
-        window.location.assign("index.html");
+        redirectToLogin();
         return;
     }
 
-    // Validate session and fetch user
+    // Validate session and load user
     const user = await loadUser();
 
     if (!user) {
         localStorage.removeItem("sessionToken");
-        window.location.assign("index.html");
+        redirectToLogin();
         return;
     }
 
     currentUser = user.username;
 
+    // Initialize navigation
     initNavigation();
 
-    // Load app
+    // Load application
     await loadFeed();
     await loadEvents();
 }
 
+// Authenticate user
 async function loadUser() {
     try {
         const endpoint = `${API}/user`
@@ -49,6 +52,7 @@ async function loadUser() {
     }
 }
 
+// Initialize navigation bar
 function initNavigation() {
     const navButtons = document.querySelectorAll(".nav-button");
     const pages = document.querySelectorAll(".app-page");
@@ -68,7 +72,7 @@ function initNavigation() {
             document.getElementById(targetPage).classList.add("active");
             button.classList.add("active");
 
-            //redraw map when tab opens
+            // Redraw map if map page is open
             if (targetPage === "map-page") {
                 setTimeout(() => {
                     if (window.map) window.map.invalidateSize();
@@ -237,6 +241,11 @@ if (addEventButton) {
         // placeholder action for now
         alert("Open Add Event Form");
     });
+}
+
+// Send user to login
+function redirectToLogin() {
+    window.location.assign("index.html");
 }
 
 // Log out

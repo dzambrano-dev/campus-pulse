@@ -29,12 +29,14 @@ async function loadInterests() {
 
     try {
         // Fetch list of possible interests
-        const interestsResponse = await fetch("data/interests.json");
+        const interestsEndpoint = `${API}/interests`
+        const interestsResponse = await fetch(interestsEndpoint);
         const interestsData = await interestsResponse.json();
+        const interests = interestsData.interests;
 
         // Fetch current user
-        const endpoint = `${API}/user`
-        const userResponse = await fetch(endpoint, {
+        const userEndpoint = `${API}/user`
+        const userResponse = await fetch(userEndpoint, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -53,7 +55,7 @@ async function loadInterests() {
         container.innerHTML = "";
 
         // Create interest buttons
-        interestsData.interests.forEach(interest => {
+        interests.forEach(interest => {
             const button = document.createElement("button");
             button.type = "button";
             button.textContent = `${interest}`;
