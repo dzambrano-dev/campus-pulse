@@ -158,7 +158,8 @@ async function loadFeed() {
 async function loadEvents() {
     try {
         // fetch events JSON
-        const response = await fetch("data/events.json");
+        const eventsEndpoint = `${API}/events`
+        const response = await fetch(eventsEndpoint);
         const data = await response.json();
 
         // find events container

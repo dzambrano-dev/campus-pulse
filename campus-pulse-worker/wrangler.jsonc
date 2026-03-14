@@ -33,6 +33,10 @@
 		{
 			"binding": "INTERESTS",
 			"id": "2524b166e31f46d1925560b950f8c72b"
+		},
+		{
+			"binding": "EVENTS_INDEX",
+			"id": "7002a1a21a0c43e39b582e256dfd6f41"
 		}
 	]
 }
