@@ -11,10 +11,13 @@ export async function getInterests(request, env) {
 	try {
 		const stored = await env.INTERESTS.get("interests");
 
-		if (!stored) return json([]);
+		if (!stored) return json({ interests: [] });
+
+		const interests = JSON.parse(stored);
 
 		return json({ interests });
 	} catch {
+		console.error("getInterests failed:", err);
 		return jsonError("Failed to load interests");
 	}
 }
