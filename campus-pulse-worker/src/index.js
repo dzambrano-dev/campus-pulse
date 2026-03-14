@@ -9,10 +9,11 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+import { createEvent } from "./createEvent.js";
 import { login } from "./login.js";
 import { signup } from "./signup.js";
-import { user } from "./user.js";
 import { updateInterests } from "./updateInterests.js";
+import { user } from "./user.js";
 
 // Headers for CORS so frontend can call this API
 const corsHeaders = {
@@ -34,6 +35,7 @@ export default {
 		// Route each request to the appropriate handler
 		// Unknown routes return 404
 		switch (url.pathname) {
+			case "/api/createEvent": return addCors(await createEvent(request, env));
 			case "/api/login": return addCors(await login(request, env));
 			case "/api/signup": return addCors(await signup(request, env));
 			case "/api/user": return addCors(await user(request, env));

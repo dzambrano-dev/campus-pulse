@@ -20,5 +20,9 @@ export async function user(request, env) {
 	const user = JSON.parse(storedUser);
 
 	// Return public user info
-	return json({ username: user.username, interests: user.interests });
+	return json({
+		username: user.username,
+		role: user.role,
+		interests: user.interests
+	});
 }

@@ -37,6 +37,7 @@ export async function signup(request, env) {
 		const newUser = {
 			email,
 			passwordHash,
+			role: "user",
 			interests: []
 		};
 
