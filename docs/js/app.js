@@ -272,7 +272,7 @@ async function loadTags() {
     const data = await interestsResponse.json();
 
     const tagContainer = document.getElementById("event-tags");
-    container.innerHTML = "";
+    tagContainer.innerHTML = "";
 
     data.interests.forEach(tag => {
         const btn = document.createElement("div");
