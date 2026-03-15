@@ -62,20 +62,15 @@ button {
     width: 100%;
     padding: 12px;
     margin-top: 6px;
-    border: none;
     border-radius: 8px;
-    background: var(--primary);
-    color: white;
+    border: none;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition:
             background 0.2s,
+            color 0.2s,
             transform 0.05s;
-}
-
-button:hover {
-    background: var(--primary-dark);
 }
 
 button:active {
@@ -87,6 +82,15 @@ button:disabled {
     cursor: not-allowed;
 }
 
+.primary-button {
+    background: var(--primary);
+    color: white;
+}
+
+.primary-button:hover {
+    background: var(--primary-dark);
+}
+
 .secondary-button {
     background: transparent;
     color: var(--primary);
@@ -95,6 +99,15 @@ button:disabled {
 
 .secondary-button:hover {
     background: var(--primary-soft);
+}
+
+.danger-button {
+    background: var(--error);
+    color: white;
+}
+
+.danger-button:hover {
+    filter: brightness(0.8);
 }
 
 .error {
@@ -160,18 +173,6 @@ input {
 input:focus {
     outline: none;
     border: 1px solid var(--primary);
-}
-
-#signup-button,
-#back-button {
-    background: transparent;
-    color: var(--primary);
-    border: 2px solid var(--primary);
-}
-
-#signup-button:hover,
-#back-button:hover {
-    background: var(--primary-soft);
 }
 
 /* Interests */
@@ -580,16 +581,6 @@ input:focus {
     flex: 1;
     margin-top: 0;
     font-size: 15px;
-}
-
-#cancel-event {
-    background: transparent;
-    color: var(--primary);
-    border: 2px solid var(--border);
-}
-
-#cancel-event:hover {
-    background: var(--primary-soft);
 }
 
 /* Animations */
