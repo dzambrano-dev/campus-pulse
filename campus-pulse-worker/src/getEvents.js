@@ -32,12 +32,12 @@ export async function getEvents(request, env) {
 		// If user has interests, use indexes
 		if (interests.length > 0) {
 			for (const interest of interests) {
-				const index = await env.EVENT_INDEX.get(interest, "json");
+				const index = await env.EVENTS_INDEX.get(interest, "json");
 				if (!index) continue;
 				index.forEach(id => eventIds.add(id));
 			}
 		} else {
-			const emergencyIndex = await env.EVENT_INDEX.get("Emergency", "json");
+			const emergencyIndex = await env.EVENTS_INDEX.get("Emergency", "json");
 			if (emergencyIndex) {
 				emergencyIndex.forEach(id => eventIds.add(id));
 			}

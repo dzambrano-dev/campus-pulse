@@ -113,19 +113,19 @@ function createAddEventButton() {
 // LOAD EVENTS
 async function loadEvents() {
     try {
-        // Fetch events JSON
-        // test
+        // Fetch list of events the user is interested in
         const eventsEndpoint = `${API}/events`
-        const response = await fetch(eventsEndpoint, {
+        const eventsResponse = await fetch(eventsEndpoint, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
-        if (!response.ok) {
-            console.error("Failed to load events:", response.status);
+        // If no events are found, return
+        if (!eventsResponse.ok) {
+            console.error("Failed to load events:", eventsResponse.status);
             return;
         }
 
-        const data = await response.json();
+        const eventsData = await eventsResponse.json();
 
         // find events container
         const eventsContainer = document.getElementById("events-container");
@@ -137,10 +137,10 @@ async function loadEvents() {
         eventsContainer.innerHTML = "";
 
         // sort events by date (earliest first)
-        data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        eventsData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
         // create a card for each event
-        data.forEach(event => {
+        eventsData.forEach(event => {
 
             const card = document.createElement("div");
             card.classList.add("feed-card");
@@ -153,11 +153,7 @@ async function loadEvents() {
             // build card HTML
             card.innerHTML = `
                 <div class="event-image-wrapper">
-                    <img 
-                        src="${event.image}" 
-                        class="event-image"
-                        onerror="this.src='assets/eventImages/default.png'"
-                    >
+                    <img class="event-image" src="${event.image}" onerror="this.src='assets/eventImages/default.png'" alt="${event.name}">
                     <!-- date badge -->
                     <div class="event-date">
                         <span class="month">${month}</span>
