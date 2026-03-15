@@ -14,12 +14,18 @@ export async function getEvents(request, env) {
 		const username = await getSessionUser(request, env);
 		if (!username) return jsonError("Invalid session", 401);
 
+		console.log(username);
+
 		// Fetch user
 		const storedUser = await env.USERS.get(username);
 		if (!storedUser) return jsonError("User not found", 404);
 
+		console.log(storedUser);
+
 		const user = JSON.parse(storedUser);
 		const interests = user.interests || [];
+
+		console.log(interests);
 
 		let eventIds = new Set();
 
@@ -36,6 +42,8 @@ export async function getEvents(request, env) {
 				emergencyIndex.forEach(id => eventIds.add(id));
 			}
 		}
+
+		console.log(eventIds);
 
 		// Fetch events from EVENTS KV
 		const events = await Promise.all([...eventIds].map(id => env.EVENTS.get(id, "json")));

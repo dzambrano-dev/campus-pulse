@@ -34,8 +34,8 @@ async function initApp() {
     createAddEventButton();
 
     // Load application
-    await loadFeed();
     await loadEvents();
+    await loadFeed();
 }
 
 // Authenticate user
