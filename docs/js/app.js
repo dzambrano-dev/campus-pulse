@@ -101,79 +101,12 @@ function createAddEventButton() {
         });
 
         // Insert button in the middle
-        nav.insertBefore(addEventButton, nav.children[2]);
-    }
-}
-
-// LOAD FEED
-async function loadFeed() {
-    try {
-        // fetch feed data from JSON file
-        const response = await fetch("data/feed.json");
-        const data = await response.json();
-
-        // find the container where feed items will be placed
-        const feedContainer = document.getElementById("feed-container");
-
-        // stop if the container doesn't exist
-        if (!feedContainer) return;
-
-        // clear existing feed content to prevent duplicates
-        feedContainer.innerHTML = "";
-
-        // loop through each feed item
-        data.forEach(item => {
-
-            // create a container for the feed item
-            const post = document.createElement("div");
-            post.classList.add("feed-item");
-
-            // inject feed content into the element
-            post.innerHTML = `
-                <div class="feed-text">
-                    <div class="feed-title feed-${item.type}">
-                        ${item.title}
-                    </div>
-                    <div class="feed-meta">
-                        ${item.location} • ${item.time}
-                    </div>
-                </div>
-                <!-- container where a mini Leaflet map will render -->
-                <div class="feed-map-preview"
-                    data-lat="${item.lat}"
-                    data-lng="${item.lng}">
-                </div>
-            `;
-
-            // add the feed item to the page
-            feedContainer.appendChild(post);
-        });
-
-        // create mini maps for every preview box
-        document.querySelectorAll(".feed-map-preview").forEach(box => {
-
-            // get coordinates from dataset attributes
-            const lat = parseFloat(box.dataset.lat);
-            const lng = parseFloat(box.dataset.lng);
-
-            // create a non-interactive Leaflet map preview
-            const miniMap = L.map(box, {
-                zoomControl: false,
-                attributionControl: false,
-                dragging: false,
-                scrollWheelZoom: false,
-                doubleClickZoom: false
-            }).setView([lat, lng], 14);
-
-            // add map tiles
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(miniMap);
-
-            // place marker at event location
-            L.marker([lat, lng]).addTo(miniMap);
-        });
-    } catch (err) {
-        // log error if feed fails to load
-        console.error("Failed to load feed:", err);
+        const index = Math.floor(nav.children.length / 2);
+        if (nav.children[index]) {
+            nav.insertBefore(addEventButton, nav.children[index]);
+        } else {
+            nav.appendChild(addEventButton);
+        }
     }
 }
 
@@ -261,13 +194,85 @@ async function loadEvents() {
     }
 }
 
-// Send user to login
-function redirectToLogin() {
-    window.location.assign("index.html");
+// LOAD FEED
+async function loadFeed() {
+    try {
+        // fetch feed data from JSON file
+        const response = await fetch("data/feed.json");
+        const data = await response.json();
+
+        // find the container where feed items will be placed
+        const feedContainer = document.getElementById("feed-container");
+
+        // stop if the container doesn't exist
+        if (!feedContainer) return;
+
+        // clear existing feed content to prevent duplicates
+        feedContainer.innerHTML = "";
+
+        // loop through each feed item
+        data.forEach(item => {
+
+            // create a container for the feed item
+            const post = document.createElement("div");
+            post.classList.add("feed-item");
+
+            // inject feed content into the element
+            post.innerHTML = `
+                <div class="feed-text">
+                    <div class="feed-title feed-${item.type}">
+                        ${item.title}
+                    </div>
+                    <div class="feed-meta">
+                        ${item.location} • ${item.time}
+                    </div>
+                </div>
+                <!-- container where a mini Leaflet map will render -->
+                <div class="feed-map-preview"
+                    data-lat="${item.lat}"
+                    data-lng="${item.lng}">
+                </div>
+            `;
+
+            // add the feed item to the page
+            feedContainer.appendChild(post);
+        });
+
+        // create mini maps for every preview box
+        document.querySelectorAll(".feed-map-preview").forEach(box => {
+
+            // get coordinates from dataset attributes
+            const lat = parseFloat(box.dataset.lat);
+            const lng = parseFloat(box.dataset.lng);
+
+            // create a non-interactive Leaflet map preview
+            const miniMap = L.map(box, {
+                zoomControl: false,
+                attributionControl: false,
+                dragging: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false
+            }).setView([lat, lng], 14);
+
+            // add map tiles
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(miniMap);
+
+            // place marker at event location
+            L.marker([lat, lng]).addTo(miniMap);
+        });
+    } catch (err) {
+        // log error if feed fails to load
+        console.error("Failed to load feed:", err);
+    }
 }
 
 // Log out
 function logout() {
     localStorage.removeItem("sessionToken");
+    redirectToLogin();
+}
+
+// Send user to login
+function redirectToLogin() {
     window.location.assign("index.html");
 }
