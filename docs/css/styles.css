@@ -468,10 +468,9 @@ input:focus {
 .event-sheet {
     width: max(520px, 90vw);
     max-height: 90vh;
-    overflow: hidden;
     background: white;
     border-radius: 20px 20px 0 0;
-    padding: 24px;
+    padding: 0 24px;
     box-shadow:
             0 -6px 20px rgba(0, 0, 0, 0.18),
             0 -2px 8px rgba(0, 0, 0, 0.08);
