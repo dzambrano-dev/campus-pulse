@@ -285,24 +285,38 @@ async function loadTags() {
 
 // Open create event modal
 function openCreateEvent() {
+    const eventModal = document.getElementById("event-modal");
+    eventModal.classList.remove("hidden");
     loadTags();
-    initEventMap();
-    document.getElementById("event-modal").classList.remove("hidden");
+    setTimeout(() => { initEventMap(); }, 50);
 }
 
 // Close create event modal
 function closeCreateEvent() {
+    document.getElementById("event-form").reset();
+    document.querySelectorAll(".tag.active").forEach(tag => tag.classList.remove("active"));
+
+    eventMarker = null;
+
+    if (eventMap) {
+        eventMap.remove();
+        eventMap = null;
+    }
+
     document.getElementById("event-modal").classList.add("hidden");
 }
 
 // Initialize the create event map
 function initEventMap() {
+    if (eventMap) eventMap.remove();
     eventMap = L.map("event-map").setView([33.7838, -118.1141], 15);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(eventMap);
 
-    eventMap.on("click", e => {
-        const { lat, lng } = e.latlng;
+    eventMarker = null;
+
+    eventMap.on("click", event => {
+        const { lat, lng } = event.latlng;
         if (eventMarker) {
             eventMarker.setLatLng([lat, lng]);
         } else {
@@ -319,15 +333,39 @@ function toUTC(date, time) {
 document.getElementById("event-form").onsubmit = async event => {
     event.preventDefault();
 
+    const title = document.getElementById("event-title").value;
+    const description = document.getElementById("event-description").value;
+
+    if (description.length < 500) {
+        alert("Description must be at least 50 characters.");
+        return;
+    }
+
     const tags = [...document.querySelectorAll(".tag.active")].map(t => t.textContent);
+
+    if (tags.length === 0) {
+        alert("Please select at least one tag.");
+        return;
+    }
+
+    if (tags.length > 3) {
+        alert("You can select at most 3 tags.");
+        return;
+    }
+
     const date = document.getElementById("event-date").value;
     const time = document.getElementById("event-time").value;
     const utcTime = toUTC(date, time);
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
 
+    if (!latlng) {
+        alert("Please place a pin on the map.");
+        return;
+    }
+
     const eventObject = {
-        title: document.getElementById("event-title").value,
-        description: document.getElementById("event-description").value,
+        title: title,
+        description: description,
         tags,
         date: utcTime,
         location: document.getElementById("event-location").value,

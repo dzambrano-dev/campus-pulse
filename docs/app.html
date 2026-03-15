@@ -37,25 +37,18 @@
                 <form id="event-form">
                     <input id="event-title" placeholder="Event Title" required>
                     <textarea id="event-description" placeholder="Description" maxlength="500"></textarea>
-
                     <label>Tags</label>
                     <!-- Tags are injected through the API -->
                     <div id="event-tags" class="tag-container"></div>
-
                     <label>Date</label>
                     <input type="date" id="event-date" required>
-
                     <label>Time</label>
                     <input type="time" id="event-time" required>
-
                     <input id="event-location" placeholder="Location" required>
-
                     <label>Click map to place a pin</label>
                     <div id="event-map" class="event-map"></div>
-
                     <label>Event Image</label>
                     <input type="file" id="event-image" accept="image/*">
-
                     <div class="event-actions">
                         <button type="submit" class="primary-button">Create</button>
                         <button type="button" class="secondary-button" id="cancel-event">Cancel</button>
