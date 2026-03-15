@@ -180,7 +180,8 @@ async function loadFeed() {
 // LOAD EVENTS
 async function loadEvents() {
     try {
-        // fetch events JSON
+        // Fetch events JSON
+        // test
         const eventsEndpoint = `${API}/events`
         const response = await fetch(eventsEndpoint, {
             headers: { "Authorization": `Bearer ${token}` }
