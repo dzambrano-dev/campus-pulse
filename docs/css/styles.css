@@ -470,7 +470,7 @@ input:focus {
     max-height: 90vh;
     background: white;
     border-radius: 20px 20px 0 0;
-    padding: 0 24px;
+    padding: 24px;
     box-shadow:
             0 -6px 20px rgba(0, 0, 0, 0.18),
             0 -2px 8px rgba(0, 0, 0, 0.08);
@@ -479,7 +479,7 @@ input:focus {
 
 .event-header {
     text-align: center;
-    padding: 20px 24px 16px;
+    padding: 0 24px;
     border-bottom: 1px solid var(--border);
     font-weight: 600;
 }
