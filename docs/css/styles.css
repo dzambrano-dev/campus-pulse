@@ -578,15 +578,18 @@ input:focus {
 
 .event-actions button {
     flex: 1;
+    margin-top: 0;
+    font-size: 15px;
 }
 
 #cancel-event {
     background: transparent;
+    color: var(--primary);
     border: 2px solid var(--border);
 }
 
 #cancel-event:hover {
-    background: #f4f4f4;
+    background: var(--primary-soft);
 }
 
 /* Animations */
