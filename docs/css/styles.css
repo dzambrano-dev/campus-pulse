@@ -3,6 +3,7 @@
 :root {
     --primary: #FDB515;         /* CSULB Gold */
     --primary-dark: #E5A100;    /* Dark Gold */
+    --primary-soft: #FDB51526;  /* CSULB Gold transparent */
     --background: #f4f4f4;      /* Light Gray */
     --card: #ffffff;
     --text: #2B2B2B;            /* CSULB Dark Gray */
@@ -93,7 +94,7 @@ button:disabled {
 }
 
 .secondary-button:hover {
-    background: rgba(253, 181, 21, 0.12);
+    background: var(--primary-soft);
 }
 
 .error {
@@ -170,7 +171,7 @@ input:focus {
 
 #signup-button:hover,
 #back-button:hover {
-    background: rgba(253, 181, 21, 0.12);
+    background: var(--primary-soft);
 }
 
 /* Interests */
@@ -233,7 +234,7 @@ input:focus {
 
 .interest-button.selected {
     border-color: var(--primary);
-    background: rgba(253, 181, 21, 0.15);
+    background: var(--primary-soft);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     color: var(--text);
 }
@@ -322,7 +323,7 @@ input:focus {
 
     text-align: center;
 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .event-date .month {
@@ -397,7 +398,7 @@ input:focus {
     background: white;
     position: fixed;
     bottom: 0;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
     z-index: 1;
 }
 
@@ -438,7 +439,7 @@ input:focus {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
     z-index: 2;
     transition: transform 0.15s ease, background 0.2s;
 }
@@ -467,7 +468,7 @@ input:focus {
 .event-sheet {
     width: max(520px, 90vw);
     max-height: 90vh;
-    overflow-y: auto;
+    overflow: hidden;
     background: white;
     border-radius: 20px 20px 0 0;
     padding: 24px;
@@ -477,16 +478,26 @@ input:focus {
     animation: sheetSlideUp 0.35s ease;
 }
 
-@keyframes sheetSlideUp {
-    from { transform: translateY(100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
 .event-header {
     text-align: center;
-    margin-bottom: 18px;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
     font-weight: 600;
-    padding-bottom: 16px;
+}
+
+.event-header::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    margin: 0 auto 10px;
+    border-radius: 2px;
+    background: #ccc;
+}
+
+.event-body {
+    overflow: hidden;
+    padding: 20px 24px 24px;
 }
 
 #event-form {
@@ -497,7 +508,7 @@ input:focus {
 
 #event-form label {
     font-size: 14px;
-    color: #666;
+    color: dimgray;
 }
 
 #event-form input,
@@ -507,7 +518,6 @@ input:focus {
     border-radius: 10px;
     border: 1px solid var(--border);
     font-size: 14px;
-    background: white;
     transition:
             border 0.2s ease,
             box-shadow 0.2s ease;
@@ -517,7 +527,7 @@ input:focus {
 #event-form textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(253, 181, 21, 0.15);
+    box-shadow: 0 0 0 2px var(--primary-soft);
 }
 
 #event-description {
@@ -553,7 +563,7 @@ input:focus {
 
 .event-map {
     height: 260px;
-    border-radius: 12px;
+    border-radius: 14px;
     border: 1px solid var(--border);
     overflow: hidden;
 }
@@ -575,6 +585,13 @@ input:focus {
 
 #cancel-event:hover {
     background: #f4f4f4;
+}
+
+/* Animations */
+
+@keyframes sheetSlideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 /* Media Queries */
