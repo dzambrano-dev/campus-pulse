@@ -38,7 +38,7 @@ export async function getEvents(request, env) {
 		}
 
 		// Fetch events from EVENTS KV
-		const events = await Promise.all([...eventsIds].map(id => env.EVENTS.get(id, "json")));
+		const events = await Promise.all([...eventIds].map(id => env.EVENTS.get(id, "json")));
 
 		// Remove null entries (events that were deleted)
 		const validEvents = events.filter(Boolean);

@@ -182,7 +182,15 @@ async function loadEvents() {
     try {
         // fetch events JSON
         const eventsEndpoint = `${API}/events`
-        const response = await fetch(eventsEndpoint);
+        const response = await fetch(eventsEndpoint, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+            console.error("Failed to load events:", response.status);
+            return;
+        }
+
         const data = await response.json();
 
         // find events container
