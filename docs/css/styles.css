@@ -448,6 +448,55 @@ input:focus {
     transform: translateX(-50%) scale(1.10);
 }
 
+/* Event Creation */
+.event-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: flex-end;
+    z-index: 100;
+}
+
+.event-modal.hidden {
+    display: none;
+}
+
+.event-sheet {
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+}
+
+.event-map {
+    height: 250px;
+    margin: 10px 0;
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    padding: 6px 10px;
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+}
+
+.tag.active {
+    background: var(--primary);
+    color: white;
+}
+
 /* Media Queries */
 
 @media (max-width: 500px) {

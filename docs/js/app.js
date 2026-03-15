@@ -3,6 +3,9 @@ let token;
 let currentUser;
 let currentRole;
 
+let eventMap;
+let eventMarker;
+
 const API = "https://campus-pulse-worker.vindictivity.workers.dev/api";
 
 document.addEventListener("DOMContentLoaded", initApp);
@@ -31,7 +34,7 @@ async function initApp() {
 
     // Initialize navigation
     initNavigation();
-    createAddEventButton();
+    addCreateEventButton();
 
     // Load application
     await loadEvents();
@@ -87,7 +90,7 @@ function initNavigation() {
 }
 
 // Generate addEvent button
-function createAddEventButton() {
+function addCreateEventButton() {
     if (currentRole === "organizer" || currentRole === "admin") {
         const nav = document.querySelector(".bottom-nav");
 
@@ -96,9 +99,10 @@ function createAddEventButton() {
         addEventButton.id = "add-event-button";
         addEventButton.textContent = "+";
 
-        addEventButton.addEventListener("click", () => {
-            alert("Open Add Event Form");
-        });
+        addEventButton.addEventListener("click", openCreateEvent);
+
+        const closeEventButton = document.getElementById("cancel-event");
+        closeEventButton.addEventListener("click", closeCreateEvent);
 
         // Insert button in the middle
         const index = Math.floor(nav.children.length / 2);
@@ -259,6 +263,92 @@ async function loadFeed() {
     } catch (err) {
         // log error if feed fails to load
         console.error("Failed to load feed:", err);
+    }
+}
+
+async function loadTags() {
+    const interestsEndpoint = `${API}/interests`;
+    const interestsResponse = await fetch(interestsEndpoint);
+    const data = await interestsResponse.json();
+
+    const tagContainer = document.getElementById("event-tags");
+    container.innerHTML = "";
+
+    data.interests.forEach(tag => {
+        const btn = document.createElement("div");
+        btn.classList.add("tag");
+        btn.textContent = `${tag}`;
+        btn.onclick = () => btn.classList.toggle("active");
+        tagContainer.appendChild(btn);
+    })
+}
+
+// Open create event modal
+function openCreateEvent() {
+    loadTags();
+    initEventMap();
+    document.getElementById("event-modal").classList.remove("hidden");
+}
+
+// Close create event modal
+function closeCreateEvent() {
+    document.getElementById("event-modal").classList.add("hidden");
+}
+
+// Initialize the create event map
+function initEventMap() {
+    eventMap = L.map("event-map").setView([33.7838, -118.1141], 15);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(eventMap);
+
+    eventMap.on("click", e => {
+        const { lat, lng } = e.latlng;
+        if (eventMarker) {
+            eventMarker.setLatLng([lat, lng]);
+        } else {
+            eventMarker = L.marker([lat, lng]).addTo(eventMap);
+        }
+    });
+}
+
+function toUTC(date, time) {
+    const local = new Date(`${date}T${time}`);
+    return local.toISOString();
+}
+
+document.getElementById("event-form").onsubmit = async event => {
+    event.preventDefault();
+
+    const tags = [...document.querySelectorAll(".tag.active")].map(t => t.textContent);
+    const date = document.getElementById("event-date").value;
+    const time = document.getElementById("event-time").value;
+    const utcTime = toUTC(date, time);
+    const latlng = eventMarker ? eventMarker.getLatLng() : null;
+
+    const eventObject = {
+        title: document.getElementById("event-title").value,
+        description: document.getElementById("event-description").value,
+        tags,
+        date: utcTime,
+        location: document.getElementById("event-location").value,
+        lat: latlng?.lat,
+        lng: latlng?.lng,
+        image: null
+    };
+
+    const createEventEndpoint = `${API}/createEvent`
+    const res = await fetch(createEventEndpoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(eventObject)
+    });
+
+    if (res.ok) {
+        document.getElementById("event-modal").classList.add("hidden");
+        await loadEvents();
     }
 }
 
