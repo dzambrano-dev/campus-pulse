@@ -452,8 +452,8 @@ input:focus {
 .event-modal {
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: 5vw;
+    right: 5vw;
     top: 0;
     background: rgba(0, 0, 0, 0.4);
     display: flex;
