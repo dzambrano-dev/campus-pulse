@@ -39,9 +39,9 @@ export default {
 		// Route each request to the appropriate handler
 		// Unknown routes return 404
 		switch (url.pathname) {
-			case "/api/createEvent": return addCors(await createEvent(request, env));
-			case "/api/getEvents": return addCors(await getEvents(request, env));
-			case "/api/getInterests": return addCors(await getInterests(request, env));
+			case "/api/create-event": return addCors(await createEvent(request, env));
+			case "/api/get-events": return addCors(await getEvents(request, env));
+			case "/api/get-interests": return addCors(await getInterests(request, env));
 			case "/api/login": return addCors(await login(request, env));
 			case "/api/signup": return addCors(await signup(request, env));
 			case "/api/toggle-organizer": return addCors(await toggleOrganizer(request, env));
