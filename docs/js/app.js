@@ -287,7 +287,7 @@ function closeCreateEvent() {
 
 // Load a list of tags
 async function loadTags() {
-    const interestsEndpoint = `${API}/interests`;
+    const interestsEndpoint = `${API}/getInterests`;
     const interestsResponse = await fetch(interestsEndpoint);
     const data = await interestsResponse.json();
 

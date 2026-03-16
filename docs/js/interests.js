@@ -40,7 +40,7 @@ async function loadInterests() {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
-        // If no user is found, redirect to login/signup
+        // If no user is found, redirect to log in/signup
         if (!userResponse.ok) {
             window.location.assign("index.html");
             return;
