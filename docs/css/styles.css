@@ -269,6 +269,7 @@ input:focus {
 .app-content {
     flex: 1;
     overflow-y: auto;
+    height: calc(100vh - 65px);
     background: var(--background);
 }
 
@@ -298,7 +299,7 @@ input:focus {
     display: flex;
     flex-direction: column;
     gap: 26px;
-    padding: 20px 16px 100px 16px;
+    padding: 20px 16px;
 }
 
 .event-card {
@@ -416,7 +417,7 @@ input:focus {
     position: fixed;
     bottom: 0;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
-    z-index: 1;
+    z-index: 1000;
 }
 
 .nav-button {
@@ -441,7 +442,7 @@ input:focus {
 
 .floating-nav-button {
     position: fixed;
-    bottom: 20px;
+    bottom: 32px;
     left: 50%;
     transform: translateX(-50%);
     width: 64px;
@@ -457,7 +458,7 @@ input:focus {
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
-    z-index: 2;
+    z-index: 1100;
     transition: transform 0.15s ease, background 0.2s;
 }
 
@@ -630,17 +631,13 @@ input:focus {
 /* MAP */
 
 #map-page {
-    display: flex;
-    flex-direction: column;
     width: 100%;
     height: 100%;
 }
 
 #map {
-    flex: 1;
     width: 100%;
     height: 100%;
-    min-height: 500px;
 }
 
 /* FEED CONTAINER */
@@ -648,8 +645,6 @@ input:focus {
 #feed-container {
     max-width: 720px;
     margin: 0 auto;
-    padding-bottom: 90px;
-
     display: flex;
     flex-direction: column;
     gap: 6px; /* small spacing between alerts */
