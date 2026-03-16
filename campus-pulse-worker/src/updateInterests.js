@@ -21,13 +21,15 @@ export async function updateInterests(request, env) {
 		if (!Array.isArray(interests)) return jsonError("Invalid request", 400);
 
 		// Sanitize interests
-		const cleanedInterests = interests.filter(i => typeof i === "string").map(i => i.trim()).filter(i => i.length > 0);
+		const stringInterests = interests.filter(i => typeof i === "string");
+		const trimmedInterests = stringInterests.map(i => i.trim()).filter(i => i.length > 0);
+		const cleanedInterests = trimmedInterests.map(i => i.toLowerCase());
 
 		// Retrieve user from KV
-		const storedUser = await env.USERS.get(username);
-		if (!storedUser) return jsonError("User not found", 404);
+		const userData = await env.USERS.get(username);
+		if (!userData) return jsonError("User not found", 404);
 
-		const user = JSON.parse(storedUser);
+		const user = JSON.parse(userData);
 
 		// Update user interests
 		user.interests = cleanedInterests;
