@@ -640,15 +640,6 @@ input:focus {
     height: 100%;
 }
 
-.user-dot {
-    width: 14px;
-    height: 14px;
-    background: #3b82f6;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
-}
-
 /* FEED CONTAINER */
 
 #feed-container {

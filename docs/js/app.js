@@ -7,12 +7,6 @@ let token;
 let currentUser;
 let currentRole;
 
-const userIcon = L.divIcon({
-    className: "user-location-marker",
-    html: `<div class="user-dot"></div>`,
-    iconSize: [16,16]
-});
-
 let map;
 let mapMarkers = [];
 let userMarker;
@@ -387,7 +381,13 @@ function locateUser() {
             }
 
             // Create a blue circle marker
-            userMarker = L.circleMarker([lat, lng], { icon: userIcon }).addTo(map);
+            userMarker = L.circleMarker([lat, lng], {
+                radius: 8,
+                color: "#2563eb",
+                fillColor: "#3b82f6",
+                fillOpacity: 1,
+                weight: 2
+            }).addTo(map);
 
             userMarker.bindPopup("You're here");
 
