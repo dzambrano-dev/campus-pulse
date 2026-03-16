@@ -19,7 +19,7 @@ export async function createEvent(request, env) {
 		const { title, description, tags, datetime, location, lat, lng, image } = body;
 
 		// Basic validation
-		if (!title || !description || !date || !time || !location || !lat || !lng) {
+		if (!title || !description || !tags || !datetime || !location || !lat || !lng) {
 			return jsonError("Missing required fields", 400);
 		}
 

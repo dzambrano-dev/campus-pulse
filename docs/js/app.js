@@ -143,7 +143,7 @@ async function loadEvents() {
         eventsContainer.innerHTML = "";
 
         // sort events by date (earliest first)
-        eventsData.sort((a, b) => a.date - b.date);
+        eventsData.sort((a, b) => a.datetime - b.datetime);
 
         // create a card for each event
         eventsData.forEach(event => {
@@ -151,10 +151,10 @@ async function loadEvents() {
             const card = document.createElement("div");
             card.classList.add("feed-card");
 
-            // convert event date to readable month/day
-            const eventDate = new Date(event.date * 1000);
-            const month = eventDate.toLocaleString("default", { month: "short" }).toUpperCase();
-            const day = eventDate.getDate();
+            // convert event datetime format
+            const eventTime = new Date(event.datetime * 1000);
+            const month = eventTime.toLocaleString("default", { month: "short" }).toUpperCase();
+            const day = eventTime.getDate();
 
             // build card HTML
             card.innerHTML = `
@@ -291,6 +291,7 @@ function closeCreateEvent() {
         eventMap = null;
     }
 
+    submitEvent.disabled = false;
     document.getElementById("event-modal").classList.add("hidden");
 }
 
@@ -358,7 +359,7 @@ async function submitEvent(event) {
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
 
     // Validate data
-    if (!title) { eventError.textContent = "Login failed"; submitButton.disabled = false; return; }
+    if (!title) { eventError.textContent = "Event title is required"; submitButton.disabled = false; return; }
     if (description.length < 50) { eventError.textContent = "Description must be at least 50 characters"; submitButton.disabled = false; return; }
     if (tags.length === 0) { eventError.textContent = "Please select at least one tag"; submitButton.disabled = false; return; }
     if (tags.length > 3) { eventError.textContent = "You can select at most 3 tags"; submitButton.disabled = false; return; }
