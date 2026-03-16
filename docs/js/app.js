@@ -139,14 +139,11 @@ async function loadEvents() {
 
         console.log(eventsData);
 
-        // find events container
+        // Clear events container
         const eventsContainer = document.getElementById("events-container");
-        if (!eventsContainer) return;
-
-        // clear container to prevent duplicate cards
         eventsContainer.innerHTML = "";
 
-        // create a card for each event
+        // Create a card for each event
         eventsData.forEach(event => {
             const card = document.createElement("div");
             card.classList.add("feed-card");
@@ -168,22 +165,14 @@ async function loadEvents() {
                 </div>
                 <div class="feed-content">
                     <h3>${event.title}</h3>
-                    <div class="event-meta">
-                        ${event.club} • ${event.category}
-                    </div>
-                    <div class="event-meta">
-                        ${event.time} • ${event.location}
-                    </div>
+                    <div class="event-meta">${event.club} • ${event.category}</div>
+                    <div class="event-meta">${event.time} • ${event.location}</div>
                     <p>${event.description}</p>
                     <div class="feed-actions">
                         <!-- button placeholder for club page -->
-                        <button class="club-button">
-                            See Club
-                        </button>
+                        <button class="club-button">See Club</button>
                         <!-- button placeholder for map navigation -->
-                        <button class="map-button">
-                            Show on Map
-                        </button>
+                        <button class="map-button">Show on Map</button>
                     </div>
                 </div>
             `;
