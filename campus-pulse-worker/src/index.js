@@ -21,7 +21,7 @@ import { user } from "./user.js";
 
 // Headers for CORS so frontend can call this API
 const corsHeaders = {
-	"Access-Control-Allow-Origin": "*",
+	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
 	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 	"Access-Control-Allow-Headers": "Content-Type, Authorization"
 }
@@ -40,8 +40,8 @@ export default {
 		// Unknown routes return 404
 		switch (url.pathname) {
 			case "/api/createEvent": return addCors(await createEvent(request, env));
-			case "/api/events": return addCors(await getEvents(request, env));
-			case "/api/interests": return addCors(await getInterests(request, env));
+			case "/api/getEvents": return addCors(await getEvents(request, env));
+			case "/api/getInterests": return addCors(await getInterests(request, env));
 			case "/api/login": return addCors(await login(request, env));
 			case "/api/signup": return addCors(await signup(request, env));
 			case "/api/toggle-organizer": return addCors(await toggleOrganizer(request, env));

@@ -29,7 +29,7 @@ async function loadInterests() {
 
     try {
         // Fetch list of possible interests
-        const interestsEndpoint = `${API}/interests`
+        const interestsEndpoint = `${API}/getInterests`
         const interestsResponse = await fetch(interestsEndpoint);
         const interestsData = await interestsResponse.json();
         const interests = interestsData.interests;
