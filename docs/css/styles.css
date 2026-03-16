@@ -348,6 +348,7 @@ input:focus {
 .event-meta {
     font-size: 14px;
     color: #777;
+    margin-bottom: 6px;
 }
 
 .event-card p {
@@ -361,10 +362,10 @@ input:focus {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin: 8px 0 10px 0;
+    margin: 8px 0;
 }
 
-.event-tag {
+.tag-bubble {
     background: rgba(59, 130, 246, 0.12);
     color: #777;
     border: 1px solid rgba(59, 130, 246, 0.35);
