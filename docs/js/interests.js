@@ -58,7 +58,7 @@ async function loadInterests() {
         interests.forEach(interest => {
             const button = document.createElement("button");
             button.type = "button";
-            button.textContent = `${interest.toUpperCase()}`;
+            button.textContent = `${toTitleCase(interest)}`;
             button.classList.add("interest-button");
 
             // Select previously saved interests
@@ -127,4 +127,9 @@ async function submit(event) {
 // Skip interest selection
 function skip() {
     window.location.assign("app.html");
+}
+
+// Uppercase the first letter of each word
+function toTitleCase(str) {
+    return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 }
