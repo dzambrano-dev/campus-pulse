@@ -40,7 +40,7 @@ export async function createEvent(request, env) {
 			lng: lng,
 			image: image || null,
 			createdBy: user.username,
-			createdAt: new Date().toISOString()
+			createdAt: Math.floor(Date.now() / 1000)
 		};
 
 		// Store event in EVENTS KV
