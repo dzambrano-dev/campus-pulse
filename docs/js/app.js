@@ -166,7 +166,8 @@ async function loadEvents() {
                 </div>
                 <div class="feed-content">
                     <h3>${event.title}</h3>
-                    <div class="event-meta">${normalTime} • ${event.location}</div>
+                    <div class="event-meta">${event.location}</div>
+                    <div class="event-meta">${normalTime}</div>
                     <div class="event-meta">${renderTags(event.tags)}</div>
                     <span class="author-link" data-user="${event.createdBy}">@${event.createdBy}</span>
                     <p>${event.description}</p>
@@ -416,7 +417,12 @@ function formatEventTime(timestamp) {
 
 // Generate tag HTML
 function renderTags(tags) {
-    return tags.map(tag => `<span class="tag-bubble">${tag}</span>`).join("");
+    return tags.map(tag => `<span class="tag-bubble">${toTitleCase(tag)}</span>`).join("");
+}
+
+// Uppercase the first letter of each word
+function toTitleCase(str) {
+    return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 }
 
 // Log out
