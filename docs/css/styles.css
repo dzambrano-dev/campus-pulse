@@ -276,12 +276,14 @@ input:focus {
     height: 100%;
     display: none;
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.2s ease;
 }
 
 .app-page.active {
     display: block;
     opacity: 1;
+    pointer-events: auto;
 }
 
 /* Events page */
