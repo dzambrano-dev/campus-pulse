@@ -360,10 +360,6 @@ input:focus {
     margin-bottom: 6px;
 }
 
-.event-meta:last-of-type {
-    margin-bottom: 12px;
-}
-
 .author-link {
     color: var(--primary);
     font-weight: 600;
@@ -382,7 +378,7 @@ input:focus {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin: 8px 0;
+    padding: 8px 0;
 }
 
 .tag-bubble {
