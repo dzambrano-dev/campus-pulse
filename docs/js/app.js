@@ -124,7 +124,7 @@ function addCreateEventButton() {
 async function loadEvents() {
     try {
         // Fetch list of events the user is interested in
-        const eventsEndpoint = `${API}/getEvents`
+        const eventsEndpoint = `${API}/get-events`
         const eventsResponse = await fetch(eventsEndpoint, {
             headers: { "Authorization": `Bearer ${token}` }
         });
@@ -287,7 +287,7 @@ function closeCreateEvent() {
 
 // Load a list of tags
 async function loadTags() {
-    const interestsEndpoint = `${API}/getInterests`;
+    const interestsEndpoint = `${API}/get-interests`;
     const interestsResponse = await fetch(interestsEndpoint);
     const data = await interestsResponse.json();
 
