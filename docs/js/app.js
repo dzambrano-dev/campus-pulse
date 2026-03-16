@@ -166,8 +166,8 @@ async function loadEvents() {
                     <h3>${event.title}</h3>
                     <div class="event-meta">${event.location}</div>
                     <div class="event-meta">${normalTime}</div>
-                    <div class="event-tags">${renderTags(event.tags)}</div>
                     <div class="event-meta">Posted by <span class="author-link" data-user="${event.createdBy}">@${event.createdBy}</span></div>
+                    <div class="event-tags">${renderTags(event.tags)}</div>
                     <p>${event.description}</p>
                     <div class="event-actions">
                         <!-- button placeholder for club page -->
