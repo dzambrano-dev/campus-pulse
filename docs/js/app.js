@@ -120,7 +120,7 @@ function addCreateEventButton() {
     }
 }
 
-// LOAD EVENTS
+// Load events from API
 async function loadEvents() {
     try {
         // Fetch list of events the user is interested in
@@ -143,47 +143,101 @@ async function loadEvents() {
 
         // Create a card for each event
         eventsData.forEach(event => {
-            const card = document.createElement("div");
-            card.classList.add("event-card");
-
-            // convert event datetime format
-            const eventTime = new Date(event.datetime * 1000);
-            const month = eventTime.toLocaleString("default", { month: "short" }).toUpperCase();
-            const day = eventTime.getDate();
-            const normalTime = formatEventTime(event.datetime)
-
-            // build card HTML
-            card.innerHTML = `
-                <div class="event-image-wrapper">
-                    <img class="event-image" src="${event.image}" onerror="this.src='assets/eventImages/default.png'" alt="${event.title}">
-                    <!-- date badge -->
-                    <div class="event-date">
-                        <span class="month">${month}</span>
-                        <span class="day">${day}</span>
-                    </div>
-                </div>
-                <div class="event-content">
-                    <h3 class="event-title">${event.title}</h3>
-                    <div class="event-meta">${event.location}</div>
-                    <div class="event-meta">${normalTime}</div>
-                    <div class="event-meta">Posted by <span class="author-link" data-user="${event.createdBy}">@${event.createdBy}</span></div>
-                    <p class="event-description">${event.description}</p>
-                    <div class="event-tags">${renderTags(event.tags)}</div>
-                    <div class="event-actions">
-                        <!-- button placeholder for club page -->
-                        <button class="primary-button">See Club</button>
-                        <!-- button placeholder for map navigation -->
-                        <button class="tertiary-button">Show on Map</button>
-                    </div>
-                </div>
-            `;
-            // add card to events container
+            const card = createEventCard(event);
             eventsContainer.appendChild(card);
         });
     } catch (err) {
         // log error if events fail to load
         console.error("Failed to load events:", err);
     }
+}
+
+// Create an event card
+function createEventCard(event) {
+    const card = document.createElement("div");
+    card.className = "event-card";
+
+    const imageWrapper = document.createElement("div");
+    imageWrapper.className = "event-image-wrapper";
+
+    const img = document.createElement("img");
+    img.className = "event-image";
+    img.src = event.image || "assets/eventImages/default.png";
+    img.alt = event.title;
+
+    const dateBadge = document.createElement("div");
+    dateBadge.className = "event-date";
+
+    const eventTime = new Date(event.datetime * 1000)
+    const month = document.createElement("span");
+    month.className = "month";
+    month.textContent = eventTime.toLocaleString("default", { month: "short" }).toUpperCase();
+
+    const day = document.createElement("span");
+    day.className = "day";
+    day.textContent = `${eventTime.getDate()}`;
+
+    dateBadge.append(month, day);
+    imageWrapper.append(img, dateBadge);
+
+    const content = document.createElement("div");
+    content.className = "event-content";
+
+    const title = document.createElement("h3");
+    title.className = "event-title";
+    title.textContent = event.title;
+
+    const location = document.createElement("div");
+    location.className = "event-meta";
+    location.textContent = event.location;
+
+    const time = document.createElement("div");
+    time.className = "event-meta";
+    time.textContent = formatEventTime(event.datetime);
+
+    const author = document.createElement("div");
+    author.className = "event-meta";
+
+    const authorLink = document.createElement("span");
+    authorLink.className = "author-link";
+    authorLink.dataset.user = event.createdBy;
+    authorLink.textContent = `@${event.createdBy}`;
+
+    author.textContent = "Posted by ";
+    author.appendChild(authorLink);
+
+    const description = document.createElement("p");
+    description.className = "event-description";
+    description.textContent = event.description;
+
+    const tags = document.createElement("div");
+    tags.className = "event-tags";
+
+    event.tags.forEach(tag => {
+        const bubble = document.createElement("span");
+        bubble.className = "tag-bubble";
+        bubble.textContent = toTitleCase(tag);
+        tags.appendChild(bubble);
+    });
+
+    const actions = document.createElement("div");
+    actions.className = "event-actions";
+
+    const clubBtn = document.createElement("button");
+    clubBtn.className = "primary-button";
+    clubBtn.textContent = "See Club";
+
+    const mapBtn = document.createElement("button");
+    mapBtn.className = "tertiary-button";
+    mapBtn.textContent = "Show on Map";
+
+    actions.append(clubBtn, mapBtn);
+
+    content.append(title, location, time, author, description, tags, actions);
+
+    card.append(imageWrapper, content);
+
+    return card;
 }
 
 // LOAD FEED
