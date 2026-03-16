@@ -143,7 +143,7 @@ async function loadEvents() {
         eventsContainer.innerHTML = "";
 
         // sort events by date (earliest first)
-        eventsData.sort((a, b) => new Date(a.date) - new Date(b.date));
+        eventsData.sort((a, b) => a.date - b.date);
 
         // create a card for each event
         eventsData.forEach(event => {
@@ -152,14 +152,14 @@ async function loadEvents() {
             card.classList.add("feed-card");
 
             // convert event date to readable month/day
-            const eventDate = new Date(event.date);
+            const eventDate = new Date(event.date * 1000);
             const month = eventDate.toLocaleString("default", { month: "short" }).toUpperCase();
             const day = eventDate.getDate();
 
             // build card HTML
             card.innerHTML = `
                 <div class="event-image-wrapper">
-                    <img class="event-image" src="${event.image}" onerror="this.src='assets/eventImages/default.png'" alt="${event.name}">
+                    <img class="event-image" src="${event.image}" onerror="this.src='assets/eventImages/default.png'" alt="${event.title}">
                     <!-- date badge -->
                     <div class="event-date">
                         <span class="month">${month}</span>
@@ -278,7 +278,7 @@ function openCreateEvent() {
 
 // Close create event modal
 function closeCreateEvent() {
-    const eventError = document.getElementById("login-error");
+    const eventError = document.getElementById("event-error");
     eventError.textContent = "";
 
     document.getElementById("event-form").reset();
@@ -341,24 +341,25 @@ function toUTCTimestamp(date, time) {
 async function submitEvent(event) {
     event.preventDefault();
 
-    const eventError = document.getElementById("login-error");
+    const eventError = document.getElementById("event-error");
     eventError.textContent = "";
 
     const title = document.getElementById("event-title").value;
     const description = document.getElementById("event-description").value;
-    const location = document.getElementById("event-location").value
+    const tags = [...document.querySelectorAll(".tag.active")].map(t => t.textContent);
     const date = document.getElementById("event-date").value;
     const time = document.getElementById("event-time").value;
-    const tags = [...document.querySelectorAll(".tag.active")].map(t => t.textContent);
+    const location = document.getElementById("event-location").value;
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
 
     // Validate data
     if (!title) { eventError.textContent = "Login failed"; return; }
-    if (description.length < 500) { eventError.textContent = "Description must be at least 50 characters."; return; }
-    if (tags.length === 0) { eventError.textContent = "Please select at least one tag."; return; }
-    if (tags.length > 3) { eventError.textContent = "You can select at most 3 tags."; return; }
-    if (!date || !time) { eventError.textContent = "Date and time are required."; return; }
-    if (!latlng) { eventError.textContent = "Please place a pin on the map."; return; }
+    if (description.length < 50) { eventError.textContent = "Description must be at least 50 characters"; return; }
+    if (tags.length === 0) { eventError.textContent = "Please select at least one tag"; return; }
+    if (tags.length > 3) { eventError.textContent = "You can select at most 3 tags"; return; }
+    if (!location) { eventError.textContent = "Please provide a location"; return; }
+    if (!date || !time) { eventError.textContent = "Date and time are required"; return; }
+    if (!latlng) { eventError.textContent = "Please place a pin on the map"; return; }
 
     // Convert datetime
     const timestamp = toUTCTimestamp(date, time);
@@ -368,7 +369,7 @@ async function submitEvent(event) {
         title: title,
         description: description,
         tags: tags,
-        date: timestamp,
+        datetime: timestamp,
         location: location,
         lat: latlng.lat,
         lng: latlng.lng,

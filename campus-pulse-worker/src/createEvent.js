@@ -16,7 +16,7 @@ export async function createEvent(request, env) {
 	// User is now authorized
 	try {
 		const body = await request.json();
-		const { title, description, tags, date, time, location, lat, lng, image } = body;
+		const { title, description, tags, datetime, location, lat, lng, image } = body;
 
 		// Basic validation
 		if (!title || !description || !date || !time || !location || !lat || !lng) {
@@ -31,14 +31,13 @@ export async function createEvent(request, env) {
 		// Generate event ID
 		const eventId = crypto.randomUUID();
 		const event = {
-			id: eventId,
-			title,
-			description,
-			tags,
-			datetime,
-			location,
-			lat,
-			lng,
+			title: title,
+			description: description,
+			tags: tags,
+			datetime: datetime,
+			location: location,
+			lat: lat,
+			lng: lng,
 			image: image || null,
 			createdBy: user.username,
 			createdAt: new Date().toISOString()
