@@ -7,6 +7,9 @@ let token;
 let currentUser;
 let currentRole;
 
+let map;
+let mapMarkers = [];
+
 let eventMap;
 let eventMarker;
 
@@ -39,6 +42,7 @@ async function initApp() {
     // Initialize navigation
     initNavigation();
     addCreateEventButton();
+    initMap();
 
     // Load application
     await loadEvents();
@@ -86,7 +90,7 @@ function initNavigation() {
             // Redraw map if map page is open
             if (targetPage === "map-page") {
                 setTimeout(() => {
-                    if (window.map) window.map.invalidateSize();
+                    if (map) map.invalidateSize();
                 }, 100);
             }
         });
@@ -310,6 +314,30 @@ async function loadFeed() {
         // log error if feed fails to load
         console.error("Failed to load feed:", err);
     }
+}
+
+// Initialize map
+function initMap() {
+    map = L.map("map").setView([33.7838, -118.1141], 16);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+}
+
+// Render map markers
+function renderMapMarkers(events) {
+    if (!map) return;
+
+    // Remove existing markers
+    mapMarkers.forEach(marker => map.removeLayer(marker));
+    mapMarkers = [];
+
+    events.forEach(event => {
+        if (!event.lat || !event.lng) return;
+        const marker = L.marker([event.lat, event.lng]).addTo(map);
+        marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetimte)}`);
+        mapMarkers.push(marker);
+    });
 }
 
 // Open create event modal
