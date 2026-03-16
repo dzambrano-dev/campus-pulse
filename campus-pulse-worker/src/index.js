@@ -20,7 +20,7 @@ import { user } from "./user.js";
 
 // Headers for CORS so frontend can call this API
 const corsHeaders = {
-	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
+	"Access-Control-Allow-Origin": "*",
 	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 	"Access-Control-Allow-Headers": "Content-Type, Authorization"
 }
