@@ -345,10 +345,10 @@ input:focus {
 }
 
 .event-content {
-    padding: 18px 20px 20px;
+    padding: 18px 20px;
 }
 
-.event-card h3 {
+.event-title {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 6px;
@@ -360,10 +360,7 @@ input:focus {
     margin-bottom: 6px;
 }
 
-.event-card p {
-    font-size: 14px;
-    color: #555;
-    line-height: 1.5;
+.event-meta:last-of-type {
     margin-bottom: 12px;
 }
 
@@ -372,6 +369,13 @@ input:focus {
     font-weight: 600;
     cursor: pointer;
     margin-bottom: 14px;
+}
+
+.event-description {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 12px;
 }
 
 .event-tags {
@@ -395,16 +399,6 @@ input:focus {
     display: flex;
     gap: 10px;
     margin-top: 10px;
-}
-
-.event-actions button {
-    flex: 1;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
 }
 
 /* Bottom Navigation Bar (within the app) */
