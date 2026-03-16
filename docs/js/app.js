@@ -7,8 +7,15 @@ let token;
 let currentUser;
 let currentRole;
 
+const userIcon = L.divIcon({
+    className: "user-location-marker",
+    html: `<div class="user-dot"></div>`,
+    iconSize: [16,16]
+});
+
 let map;
 let mapMarkers = [];
+let userMarker;
 
 let eventMap;
 let eventMarker;
@@ -91,6 +98,8 @@ function initNavigation() {
             if (targetPage === "map-page") {
                 setTimeout(() => {
                     if (map) map.invalidateSize();
+                    locateUser();
+                    loadMapEvents();
                 }, 100);
             }
         });
@@ -324,12 +333,32 @@ function initMap() {
     }).addTo(map);
 }
 
+// Fetch events to create pins for
+async function loadMapEvents() {
+    try {
+        const endpoint = `${API}/get-events`;
+        const response = await fetch(endpoint, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+            console.error("Failed to load map events:", response.status);
+            return;
+        }
+
+        const events = await response.json();
+        renderMapMarkers(events);
+    } catch (err) {
+        console.error("Map event load failed:", err);
+    }
+}
+
 // Render map markers
 function renderMapMarkers(events) {
     if (!map) return;
 
     // Remove existing markers
-    mapMarkers.forEach(marker => map.removeLayer(marker));
+    mapMarkers.forEach(marker => marker.remove());
     mapMarkers = [];
 
     events.forEach(event => {
@@ -338,6 +367,40 @@ function renderMapMarkers(events) {
         marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`);
         mapMarkers.push(marker);
     });
+}
+
+// Find the users location
+function locateUser() {
+    if (!navigator.geolocation) {
+        console.warn("Geolocation is not supported");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        position => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            // Remove previous marker if it exists
+            if (userMarker) {
+                map.removeLayer(userMarker);
+            }
+
+            // Create a blue circle marker
+            userMarker = L.circleMarker([lat, lng], { icon: userIcon }).addTo(map);
+
+            userMarker.bindPopup("You're here");
+
+            // Center map on user
+            map.setView([lat, lng], 16);
+        },
+        err => {
+            console.warn("Location permission denied");
+        },
+        {
+            enableHighAccuracy: true
+        }
+    );
 }
 
 // Open create event modal
