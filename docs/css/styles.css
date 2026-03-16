@@ -313,25 +313,25 @@ input:focus {
 
 .event-date {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 14px;
+    left: 14px;
     background: white;
-    border-radius: 14px;
-    padding: 6px 10px;
+    border-radius: 12px;
+    padding: 8px 14px;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .event-date .month {
     display: block;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--primary);
 }
 
 .event-date .day {
     display: block;
-    font-size: 18px;
+    font-size: 21px;
     font-weight: 900;
 }
 
