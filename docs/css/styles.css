@@ -375,14 +375,13 @@ input:focus {
     font-size: 14px;
     color: #555;
     line-height: 1.5;
-    margin-bottom: 12px;
 }
 
 .event-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin: 8px 0;
+    margin: 20px 0;
 }
 
 .tag-bubble {
