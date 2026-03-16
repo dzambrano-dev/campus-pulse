@@ -367,6 +367,13 @@ input:focus {
     margin-bottom: 12px;
 }
 
+.author-link {
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 14px;
+}
+
 .event-tags {
     display: flex;
     flex-wrap: wrap;
@@ -382,13 +389,6 @@ input:focus {
     border-radius: 16px;
     font-size: 12px;
     font-weight: 500;
-}
-
-.author-link {
-    color: var(--primary);
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 14px;
 }
 
 .event-actions {
