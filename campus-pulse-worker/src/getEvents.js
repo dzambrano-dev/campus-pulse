@@ -44,8 +44,9 @@ export async function getEvents(request, env) {
 		const validEvents = events.filter(Boolean);
 
 		// Sort events by date
-		validEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+		validEvents.sort((a, b) => a.datetime - b.datetime);
 
+		// Return events list
 		return json(validEvents.slice(0, 50));
 	} catch (err) {
 		console.error("getEvents error:", err);

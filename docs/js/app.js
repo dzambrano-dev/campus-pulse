@@ -111,6 +111,8 @@ function addCreateEventButton() {
         } else {
             nav.appendChild(addEventButton);
         }
+
+        document.getElementById("event-form").addEventListener("submit", submitEvent);
     }
 }
 
@@ -266,6 +268,33 @@ async function loadFeed() {
     }
 }
 
+// Open create event modal
+function openCreateEvent() {
+    const eventModal = document.getElementById("event-modal");
+    eventModal.classList.remove("hidden");
+    loadTags();
+    setTimeout(() => { initEventMap(); }, 50);
+}
+
+// Close create event modal
+function closeCreateEvent() {
+    const eventError = document.getElementById("login-error");
+    eventError.textContent = "";
+
+    document.getElementById("event-form").reset();
+    document.querySelectorAll(".tag.active").forEach(tag => tag.classList.remove("active"));
+
+    eventMarker = null;
+
+    if (eventMap) {
+        eventMap.remove();
+        eventMap = null;
+    }
+
+    document.getElementById("event-modal").classList.add("hidden");
+}
+
+// Load a list of tags
 async function loadTags() {
     const interestsEndpoint = `${API}/interests`;
     const interestsResponse = await fetch(interestsEndpoint);
@@ -281,29 +310,6 @@ async function loadTags() {
         btn.onclick = () => btn.classList.toggle("active");
         tagContainer.appendChild(btn);
     })
-}
-
-// Open create event modal
-function openCreateEvent() {
-    const eventModal = document.getElementById("event-modal");
-    eventModal.classList.remove("hidden");
-    loadTags();
-    setTimeout(() => { initEventMap(); }, 50);
-}
-
-// Close create event modal
-function closeCreateEvent() {
-    document.getElementById("event-form").reset();
-    document.querySelectorAll(".tag.active").forEach(tag => tag.classList.remove("active"));
-
-    eventMarker = null;
-
-    if (eventMap) {
-        eventMap.remove();
-        eventMap = null;
-    }
-
-    document.getElementById("event-modal").classList.add("hidden");
 }
 
 // Initialize the create event map
@@ -325,68 +331,74 @@ function initEventMap() {
     });
 }
 
-function toUTC(date, time) {
+// Convert a datetime to a Unix timestamp
+function toUTCTimestamp(date, time) {
     const local = new Date(`${date}T${time}`);
-    return local.toISOString();
+    return Math.floor(local.getTime() / 1000);
 }
 
-document.getElementById("event-form").onsubmit = async event => {
+// Submit the event
+async function submitEvent(event) {
     event.preventDefault();
+
+    const eventError = document.getElementById("login-error");
+    eventError.textContent = "";
 
     const title = document.getElementById("event-title").value;
     const description = document.getElementById("event-description").value;
-
-    if (description.length < 500) {
-        alert("Description must be at least 50 characters.");
-        return;
-    }
-
-    const tags = [...document.querySelectorAll(".tag.active")].map(t => t.textContent);
-
-    if (tags.length === 0) {
-        alert("Please select at least one tag.");
-        return;
-    }
-
-    if (tags.length > 3) {
-        alert("You can select at most 3 tags.");
-        return;
-    }
-
+    const location = document.getElementById("event-location").value
     const date = document.getElementById("event-date").value;
     const time = document.getElementById("event-time").value;
-    const utcTime = toUTC(date, time);
+    const tags = [...document.querySelectorAll(".tag.active")].map(t => t.textContent);
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
 
-    if (!latlng) {
-        alert("Please place a pin on the map.");
-        return;
-    }
+    // Validate data
+    if (!title) { eventError.textContent = "Login failed"; return; }
+    if (description.length < 500) { eventError.textContent = "Description must be at least 50 characters."; return; }
+    if (tags.length === 0) { eventError.textContent = "Please select at least one tag."; return; }
+    if (tags.length > 3) { eventError.textContent = "You can select at most 3 tags."; return; }
+    if (!date || !time) { eventError.textContent = "Date and time are required."; return; }
+    if (!latlng) { eventError.textContent = "Please place a pin on the map."; return; }
 
+    // Convert datetime
+    const timestamp = toUTCTimestamp(date, time);
+
+    // Build event object
     const eventObject = {
         title: title,
         description: description,
-        tags,
-        date: utcTime,
-        location: document.getElementById("event-location").value,
-        lat: latlng?.lat,
-        lng: latlng?.lng,
+        tags: tags,
+        date: timestamp,
+        location: location,
+        lat: latlng.lat,
+        lng: latlng.lng,
         image: null
     };
 
-    const createEventEndpoint = `${API}/createEvent`
-    const res = await fetch(createEventEndpoint, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(eventObject)
-    });
+    // Send to API
+    try {
+        const createEventEndpoint = `${API}/createEvent`;
+        const response = await fetch(createEventEndpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(eventObject)
+        });
 
-    if (res.ok) {
-        document.getElementById("event-modal").classList.add("hidden");
+        const data = await response.json();
+
+        if (!response.ok) {
+            eventError.textContent = data.error || "Failed to create event";
+            return;
+        }
+
+        closeCreateEvent();
         await loadEvents();
+    } catch (err) {
+        console.error("Event creation failed:", err);
+        eventError.textContent = "Network error, please try again";
     }
 }
 
