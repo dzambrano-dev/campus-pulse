@@ -52,7 +52,7 @@ export async function createEvent(request, env) {
 
 		// Update tag indexes
 		for (const tag of tags) {
-			const storedIndex = await env.EVENTS_INDEX.get(tag, "json") || [];
+			const storedIndex = await env.EVENTS_INDEX.get(tag.toLowerCase(), "json") || [];
 
 			// Avoid duplicate IDs
 			if (!storedIndex.includes(eventId)) {

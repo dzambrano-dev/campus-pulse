@@ -6,6 +6,7 @@
 import { json, jsonError } from "./utils.js"
 
 export async function getInterests(request, env) {
+	// Only allow GET requests
 	if (request.method !== "GET") return jsonError("Method not allowed", 405);
 
 	try {
