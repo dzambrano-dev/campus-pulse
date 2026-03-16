@@ -374,7 +374,7 @@ async function submitEvent(event) {
 
     // Send to API
     try {
-        const createEventEndpoint = `${API}/createEvent`;
+        const createEventEndpoint = `${API}/create-event`;
         const response = await fetch(createEventEndpoint, {
             method: "POST",
             headers: {
