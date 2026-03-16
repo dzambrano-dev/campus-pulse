@@ -1,4 +1,8 @@
-//app.js
+/**
+ * app.js
+ * Application script
+ */
+
 let token;
 let currentUser;
 let currentRole;
@@ -135,19 +139,13 @@ async function loadEvents() {
 
         // find events container
         const eventsContainer = document.getElementById("events-container");
-
-        // stop if container doesn't exist
         if (!eventsContainer) return;
 
         // clear container to prevent duplicate cards
         eventsContainer.innerHTML = "";
 
-        // sort events by date (earliest first)
-        eventsData.sort((a, b) => a.datetime - b.datetime);
-
         // create a card for each event
         eventsData.forEach(event => {
-
             const card = document.createElement("div");
             card.classList.add("feed-card");
 
@@ -291,7 +289,8 @@ function closeCreateEvent() {
         eventMap = null;
     }
 
-    submitEvent.disabled = false;
+    const submitButton = document.getElementById("submit-event-button");
+    submitButton.disabled = false;
     document.getElementById("event-modal").classList.add("hidden");
 }
 

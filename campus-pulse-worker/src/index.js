@@ -7,6 +7,7 @@
  * - Run `npm run deploy` to publish your worker
  *
  * Learn more at https://developers.cloudflare.com/workers/
+ * API URL: https://campus-pulse-worker.vindictivity.workers.dev/api
  */
 
 import { createEvent } from "./createEvent.js";
