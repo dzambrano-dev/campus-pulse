@@ -146,7 +146,7 @@ async function loadEvents() {
         // Create a card for each event
         eventsData.forEach(event => {
             const card = document.createElement("div");
-            card.classList.add("feed-card");
+            card.classList.add("event-card");
 
             // convert event datetime format
             const eventTime = new Date(event.datetime * 1000);
@@ -164,14 +164,14 @@ async function loadEvents() {
                         <span class="day">${day}</span>
                     </div>
                 </div>
-                <div class="feed-content">
+                <div class="event-content">
                     <h3>${event.title}</h3>
                     <div class="event-meta">${event.location}</div>
                     <div class="event-meta">${normalTime}</div>
-                    <div class="event-meta">${renderTags(event.tags)}</div>
-                    <span class="author-link" data-user="${event.createdBy}">@${event.createdBy}</span>
+                    <div class="event-tags">${renderTags(event.tags)}</div>
+                    <div class="event-meta">Posted by <span class="author-link" data-user="${event.createdBy}">@${event.createdBy}</span></div>
                     <p>${event.description}</p>
-                    <div class="feed-actions">
+                    <div class="event-actions">
                         <!-- button placeholder for club page -->
                         <button class="club-button">See Club</button>
                         <!-- button placeholder for map navigation -->

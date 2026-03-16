@@ -276,7 +276,6 @@ input:focus {
     opacity: 1;
 }
 
-
 /* Events page */
 
 #events-container {
@@ -284,33 +283,27 @@ input:focus {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 28px;
-    padding-bottom: 90px;  /* space for nav bar */
+    gap: 26px;
+    padding: 20px 16px 100px 16px;
 }
 
-.feed-card {
+.event-card {
     background: white;
-    border-radius: 16px;
+    border-radius: 18px;
     border: 1px solid var(--border);
-
     overflow: hidden;
-
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.feed-card:hover {
+.event-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 26px rgba(0,0,0,0.12);
-}
-
-.event-image-wrapper {
-    position: relative;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 .event-image {
     width: 100%;
-    height: 300px;
+    height: 200px;
     object-fit: cover;
 }
 
@@ -318,63 +311,81 @@ input:focus {
     position: absolute;
     top: 14px;
     left: 14px;
-
     background: white;
-    border-radius: 15px;
+    border-radius: 14px;
     padding: 6px 10px;
-
     text-align: center;
-
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .event-date .month {
-    display: block;
-    font-size: 19px;
-    font-weight: 900;
+    font-size: 12px;
+    font-weight: 700;
     color: var(--primary);
 }
 
 .event-date .day {
-    display: block;
-    font-size: 21px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 900;
 }
 
-.feed-content {
+.event-content {
     padding: 18px 20px 20px;
 }
 
-.feed-card h3 {
+.event-card h3 {
     font-size: 20px;
     margin-bottom: 6px;
 }
 
-.feed-card p {
-    font-size: 14px;
-    color: #555;
-    line-height: 1.4;
-    margin-bottom: 10px;
-}
-
 .event-meta {
-    font-size: 13px;
+    font-size: 14px;
     color: #777;
     margin-bottom: 6px;
 }
 
-.feed-actions {
-    display: flex;
-    gap: 10px;
+.event-card p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 12px;
 }
 
-.feed-actions button {
+.event-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.event-tag {
+    background: #f0f0f0;
+    color: var(--text);
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.author-link {
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.event-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.event-actions button {
     flex: 1;
     border-radius: 10px;
     padding: 10px;
     font-size: 14px;
     border: none;
     cursor: pointer;
+    font-weight: 600;
 }
 
 .club-button {
