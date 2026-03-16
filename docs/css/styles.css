@@ -442,7 +442,7 @@ input:focus {
 
 .floating-nav-button {
     position: fixed;
-    bottom: 32px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     width: 64px;

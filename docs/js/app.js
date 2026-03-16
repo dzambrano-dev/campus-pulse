@@ -229,7 +229,7 @@ function createEventCard(event) {
 
     const clubBtn = document.createElement("button");
     clubBtn.className = "primary-button";
-    clubBtn.textContent = "See Club";
+    clubBtn.textContent = "See Details";
 
     const mapBtn = document.createElement("button");
     mapBtn.className = "tertiary-button";
