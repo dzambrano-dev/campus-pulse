@@ -137,8 +137,6 @@ async function loadEvents() {
 
         const eventsData = await eventsResponse.json();
 
-        console.log(eventsData);
-
         // Clear events container
         const eventsContainer = document.getElementById("events-container");
         eventsContainer.innerHTML = "";
