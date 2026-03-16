@@ -3,7 +3,7 @@
  * API call to generate a new event
  */
 
-import { requireRole, json, jsonError } from "./utils.js";
+import {requireRole, json, jsonError, getSessionUser} from "./utils.js";
 
 export async function createEvent(request, env) {
 	// Require organizer or admin role
@@ -28,6 +28,10 @@ export async function createEvent(request, env) {
 			return jsonError("Event must include at least one tag", 400);
 		}
 
+		// Fetch username
+		const username = await getSessionUser(request, env);
+		if (!username) return { error: "Unauthorized", status: 401 };
+
 		// Generate event ID
 		const eventId = crypto.randomUUID();
 		const event = {
@@ -39,7 +43,7 @@ export async function createEvent(request, env) {
 			lat: lat,
 			lng: lng,
 			image: image || null,
-			createdBy: user.username,
+			createdBy: username,
 			createdAt: Math.floor(Date.now() / 1000)
 		};
 
