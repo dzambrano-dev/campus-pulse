@@ -269,7 +269,6 @@ input:focus {
 .app-content {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
     background: var(--background);
 }
 
@@ -286,6 +285,10 @@ input:focus {
 }
 
 /* Events page */
+
+#events-page {
+    padding: 20px;
+}
 
 #events-container {
     max-width: 720px;
