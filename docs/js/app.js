@@ -101,7 +101,7 @@ function addCreateEventButton() {
 
         addEventButton.addEventListener("click", openCreateEvent);
 
-        const closeEventButton = document.getElementById("cancel-event");
+        const closeEventButton = document.getElementById("cancel-event-button");
         closeEventButton.addEventListener("click", closeCreateEvent);
 
         // Insert button in the middle
@@ -344,6 +344,11 @@ async function submitEvent(event) {
     const eventError = document.getElementById("event-error");
     eventError.textContent = "";
 
+    // Disable button
+    const submitButton = document.getElementById("submit-event-button");
+    submitButton.disabled = true;
+
+    // Organize data
     const title = document.getElementById("event-title").value;
     const description = document.getElementById("event-description").value;
     const tags = [...document.querySelectorAll(".tag.active")].map(t => t.textContent);
@@ -353,13 +358,13 @@ async function submitEvent(event) {
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
 
     // Validate data
-    if (!title) { eventError.textContent = "Login failed"; return; }
-    if (description.length < 50) { eventError.textContent = "Description must be at least 50 characters"; return; }
-    if (tags.length === 0) { eventError.textContent = "Please select at least one tag"; return; }
-    if (tags.length > 3) { eventError.textContent = "You can select at most 3 tags"; return; }
-    if (!location) { eventError.textContent = "Please provide a location"; return; }
-    if (!date || !time) { eventError.textContent = "Date and time are required"; return; }
-    if (!latlng) { eventError.textContent = "Please place a pin on the map"; return; }
+    if (!title) { eventError.textContent = "Login failed"; submitButton.disabled = false; return; }
+    if (description.length < 50) { eventError.textContent = "Description must be at least 50 characters"; submitButton.disabled = false; return; }
+    if (tags.length === 0) { eventError.textContent = "Please select at least one tag"; submitButton.disabled = false; return; }
+    if (tags.length > 3) { eventError.textContent = "You can select at most 3 tags"; submitButton.disabled = false; return; }
+    if (!location) { eventError.textContent = "Please provide a location"; submitButton.disabled = false; return; }
+    if (!date || !time) { eventError.textContent = "Date and time are required"; submitButton.disabled = false; return; }
+    if (!latlng) { eventError.textContent = "Please place a pin on the map"; submitButton.disabled = false; return; }
 
     // Convert datetime
     const timestamp = toUTCTimestamp(date, time);
@@ -392,6 +397,7 @@ async function submitEvent(event) {
 
         if (!response.ok) {
             eventError.textContent = data.error || "Failed to create event";
+            submitButton.disabled = false;
             return;
         }
 
@@ -399,6 +405,7 @@ async function submitEvent(event) {
         await loadEvents();
     } catch (err) {
         console.error("Event creation failed:", err);
+        submitButton.disabled = false;
         eventError.textContent = "Network error, please try again";
     }
 }
