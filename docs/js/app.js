@@ -152,6 +152,7 @@ async function loadEvents() {
             const eventTime = new Date(event.datetime * 1000);
             const month = eventTime.toLocaleString("default", { month: "short" }).toUpperCase();
             const day = eventTime.getDate();
+            const normalTime = formatEventTime(event.datetime)
 
             // build card HTML
             card.innerHTML = `
@@ -165,8 +166,9 @@ async function loadEvents() {
                 </div>
                 <div class="feed-content">
                     <h3>${event.title}</h3>
-                    <div class="event-meta">${event.club} • ${event.category}</div>
-                    <div class="event-meta">${event.time} • ${event.location}</div>
+                    <div class="event-meta">${normalTime} • ${event.location}</div>
+                    <div class="event-meta">${renderTags(event.tags)}</div>
+                    <span class="author-link" data-user="${event.createdBy}">@${event.createdBy}</span>
                     <p>${event.description}</p>
                     <div class="feed-actions">
                         <!-- button placeholder for club page -->
@@ -399,6 +401,22 @@ async function submitEvent(event) {
         submitButton.disabled = false;
         eventError.textContent = "Network error, please try again";
     }
+}
+
+// Format event datetime
+function formatEventTime(timestamp) {
+    const date = new Date(timestamp * 1000);
+    const month = date.toLocaleString("default", { month: "long" });
+    const day = date.getDate();
+
+    const time = date.toLocaleString("default", { hour: "numeric", minute: "2-digit", hour12: true });
+
+    return `${month} ${day}, ${time}`;
+}
+
+// Generate tag HTML
+function renderTags(tags) {
+    return tags.map(tag => `<span class="tag-bubble">${tag}</span>`).join("");
 }
 
 // Log out
