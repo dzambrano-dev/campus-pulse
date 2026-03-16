@@ -14,15 +14,16 @@ export async function getEvents(request, env) {
 		const username = await getSessionUser(request, env);
 		if (!username) return jsonError("Invalid session", 401);
 
-		console.log("username:", username);
-
 		// Fetch user
-		const storedUser = await env.USERS.get(username);
-		if (!storedUser) return jsonError("User not found", 404);
+		const userData = await env.USERS.get(username);
+		if (!userData) return jsonError("User not found", 404);
 
-		console.log("user data:", storedUser);
+		console.log("user data:", userData);
 
-		const user = JSON.parse(storedUser);
+		const user = JSON.parse(userData);
+
+		console.log("user:", user);
+
 		const interests = user.interests || [];
 
 		console.log("user interests:", interests);
@@ -43,7 +44,7 @@ export async function getEvents(request, env) {
 			}
 		}
 
-		console.log("event ids:", eventIds);
+		for (const id of eventIds) console.log("event id:", id);
 
 		// Fetch events from EVENTS KV
 		const events = await Promise.all([...eventIds].map(id => env.EVENTS.get(id, "json")));
