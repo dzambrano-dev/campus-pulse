@@ -335,7 +335,7 @@ function renderMapMarkers(events) {
     events.forEach(event => {
         if (!event.lat || !event.lng) return;
         const marker = L.marker([event.lat, event.lng]).addTo(map);
-        marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetimte)}`);
+        marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`);
         mapMarkers.push(marker);
     });
 }
