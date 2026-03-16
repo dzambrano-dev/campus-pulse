@@ -58,7 +58,7 @@ async function loadInterests() {
         interests.forEach(interest => {
             const button = document.createElement("button");
             button.type = "button";
-            button.textContent = `${interest}`;
+            button.textContent = `${interest.toUpperCase()}`;
             button.classList.add("interest-button");
 
             // Select previously saved interests
