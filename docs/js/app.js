@@ -171,9 +171,9 @@ async function loadEvents() {
                     <p>${event.description}</p>
                     <div class="event-actions">
                         <!-- button placeholder for club page -->
-                        <button class="club-button">See Club</button>
+                        <button class="primary-button">See Club</button>
                         <!-- button placeholder for map navigation -->
-                        <button class="map-button">Show on Map</button>
+                        <button class="tertiary-button">Show on Map</button>
                     </div>
                 </div>
             `;

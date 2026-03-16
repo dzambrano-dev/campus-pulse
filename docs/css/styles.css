@@ -101,6 +101,15 @@ button:disabled {
     background: var(--primary-soft);
 }
 
+.tertiary-button {
+    background: #2B2B2B;
+    color: white;
+}
+
+.tertiary-button:hover {
+    background: #3B3B3B;
+}
+
 .danger-button {
     background: var(--error);
     color: white;
@@ -396,16 +405,6 @@ input:focus {
     border: none;
     cursor: pointer;
     font-weight: 600;
-}
-
-.club-button {
-    background: var(--primary);
-    color: white;
-}
-
-.map-button {
-    background: #2B2B2B;
-    color: white;
 }
 
 /* Bottom Navigation Bar (within the app) */
