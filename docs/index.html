@@ -15,12 +15,12 @@
         <form id="login-form">
             <input id="username" type="text" placeholder="Username or Email" autocomplete="username" autofocus>
             <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+            <div class="error" id="login-error"></div>
             <div class="button-row">
                 <button type="submit" class="primary-button" id="login-button">Login</button>
                 <button type="button" class="secondary-button" id="signup-button">Sign Up</button>
             </div>
         </form>
-        <div class="error" id="login-error"></div>
     </div>
     <div class="login-container" id="signup-card">
         <h2>Beach Pulse Signup</h2>
@@ -29,12 +29,12 @@
             <input id="signup-username" type="text" placeholder="Username" autocomplete="username">
             <input id="signup-email" type="email" placeholder="Email" autocomplete="email">
             <input id="signup-password" type="password" placeholder="Password" autocomplete="new-password">
+            <div class="error" id="signup-error"></div>
             <div class="button-row">
                 <button type="submit" class="primary-button" id="signup-submit-button">Create Account</button>
                 <button type="button" class="secondary-button" id="back-button">Back</button>
             </div>
         </form>
-        <div class="error" id="signup-error"></div>
     </div>
 </body>
 </html>
