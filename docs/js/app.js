@@ -253,11 +253,8 @@ function createEventCard(event) {
     });
 
     actions.append(clubBtn, mapBtn);
-
     content.append(title, location, time, author, description, tags, actions);
-
     card.append(imageWrapper, content);
-
     return card;
 }
 
