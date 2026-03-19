@@ -455,6 +455,7 @@ input:focus {
     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
     z-index: 0;
     transition: transform 0.15s ease, background 0.2s;
+    backdrop-filter: blur(6px);
 }
 
 .floating-nav-button:hover {
