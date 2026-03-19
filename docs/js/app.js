@@ -419,6 +419,8 @@ function locateUser() {
 function openCreateEvent() {
     const eventModal = document.getElementById("event-modal");
     eventModal.classList.remove("hidden");
+    document.body.classList.add("no-scroll");
+
     loadTags();
     setTimeout(() => { initEventMap(); }, 50);
 }
@@ -440,7 +442,9 @@ function closeCreateEvent() {
 
     const submitButton = document.getElementById("submit-event-button");
     submitButton.disabled = false;
+
     document.getElementById("event-modal").classList.add("hidden");
+    document.body.classList.remove("no-scroll");
 }
 
 // Load a list of tags

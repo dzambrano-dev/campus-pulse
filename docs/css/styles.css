@@ -59,6 +59,10 @@ body {
             sans-serif;
 }
 
+body.no-scroll {
+    overflow: hidden;
+}
+
 /* Universal */
 
 button {
