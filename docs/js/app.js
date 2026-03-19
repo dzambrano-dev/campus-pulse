@@ -246,7 +246,7 @@ function createEventCard(event) {
         setTimeout(() => {
             map.setView([event.lat, event.lng], 17);
             const marker = L.marker([event.lat, event.lng]).addTo(map);
-            marker.bindPopup(`<strong>${event.title}</strong>`).openPopup();
+            marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`).openPopup();
         }, 150);
     });
 
