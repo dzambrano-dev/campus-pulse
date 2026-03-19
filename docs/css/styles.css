@@ -9,6 +9,7 @@
     --text: #2B2B2B;            /* CSULB Dark Gray */
     --border: #d6d6d6;
     --error: #dc2626;
+    --nav-height: 65px;
 }
 
 /* Basics */
@@ -47,7 +48,6 @@ html {
 }
 
 body {
-    min-height: 100dvh;
     margin: 0;
     background: var(--background);
     overscroll-behavior: contain;
@@ -255,7 +255,7 @@ input:focus {
 /* App Layout */
 
 .app-body {
-    padding-bottom: 65px;
+    padding-bottom: var(--nav-height);
 }
 
 .app-container {
@@ -263,7 +263,7 @@ input:focus {
 }
 
 .app-page {
-    min-height: calc(100dvh - 80px);
+    min-height: calc(100dvh - var(--nav-height));
     display: none;
     opacity: 0;
     pointer-events: none;
@@ -395,7 +395,7 @@ input:focus {
 /* Bottom Navigation Bar (within the app) */
 
 .bottom-nav {
-    height: 65px;
+    height: var(--nav-height);
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -621,7 +621,8 @@ input:focus {
 /* MAP */
 
 #map-page {
-    height: calc(100dvh - 80px);
+    height: calc(100dvh - var(--nav-height));
+    z-index: 105;
 }
 
 #map {
