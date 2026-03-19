@@ -255,7 +255,7 @@ input:focus {
 .app-body {
     display: flex;
     overflow-y: auto;
-    height: calc(100dvh - 65px);
+    height: 100vh;
     margin: 0;
 }
 
@@ -263,7 +263,7 @@ input:focus {
     display: flex;
     flex-direction: column;
     width: 100vw;
-    height: 100vh;
+    height: calc(100% - 80px);
     background: var(--card);
 }
 
