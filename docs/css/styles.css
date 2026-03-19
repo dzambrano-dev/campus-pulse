@@ -255,7 +255,7 @@ input:focus {
 .app-body {
     display: block;
     overflow-y: auto;
-    height: 100vh;
+    height: calc(100dvh - 65px);
     margin: 0;
 }
 
@@ -271,7 +271,7 @@ input:focus {
     overflow: visible;
     height: auto;
     min-height: 100dvh;
-    padding-bottom: 85px;
+    padding-bottom: 65px;
     background: var(--background);
 }
 
