@@ -260,18 +260,10 @@ input:focus {
 }
 
 .app-container {
-    display: flex;
+    display: block;
     flex-direction: column;
     width: 100vw;
     height: calc(100% - 80px);
-    background: var(--card);
-}
-
-.app-content {
-    overflow: visible;
-    height: auto;
-    min-height: 100dvh;
-    padding-bottom: 65px;
     background: var(--background);
 }
 
