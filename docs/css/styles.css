@@ -49,6 +49,10 @@ html {
 }
 
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
     margin: 0;
     background: var(--background);
     overscroll-behavior: contain;
