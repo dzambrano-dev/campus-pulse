@@ -42,19 +42,20 @@
     background: var(--primary-dark);
 }
 
+html {
+    height: 100%;
+}
+
 body {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
+    min-height: 100dvh;
     margin: 0;
-    justify-content: center;
     background: var(--background);
+    overscroll-behavior: none;
     font-family:
-        -apple-system,
-        Roboto,
-        Arial,
-        sans-serif;
-    overflow: hidden;
+            -apple-system,
+            Roboto,
+            Arial,
+            sans-serif;
 }
 
 /* Universal */
@@ -258,13 +259,12 @@ input:focus {
 }
 
 .app-container {
-    height: 100%;
     width: 100%;
     padding-bottom: 80px;
 }
 
 .app-page {
-    min-height: 100%;
+    min-height: calc(100dvh - 80px);
     display: none;
     opacity: 0;
     pointer-events: none;
