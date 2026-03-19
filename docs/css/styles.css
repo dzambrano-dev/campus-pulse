@@ -45,7 +45,7 @@
 body {
     min-height: 100vh;
     display: flex;
-    justify-content: center;
+    margin: 0;
     align-items: center;
     background: var(--background);
     font-family:
@@ -253,18 +253,14 @@ input:focus {
 /* App Layout */
 
 .app-body {
-    display: flex;
-    overflow-y: auto;
-    height: 100vh;
     margin: 0;
+    min-height: 100dvh;
+    background: var(--background);
 }
 
 .app-container {
-    display: block;
-    flex-direction: column;
-    width: 100vw;
-    height: calc(100% - 80px);
-    background: var(--background);
+    width: 100%;
+    padding-bottom: 80px;
 }
 
 .app-page {
