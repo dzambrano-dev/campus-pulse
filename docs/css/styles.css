@@ -253,7 +253,7 @@ input:focus {
 /* App Layout */
 
 .app-body {
-    display: block;
+    display: flex;
     overflow-y: auto;
     height: calc(100dvh - 65px);
     margin: 0;
