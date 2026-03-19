@@ -93,6 +93,17 @@ button:disabled {
     cursor: not-allowed;
 }
 
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.button-row button {
+    flex: 1;
+    margin-top: 0;
+}
+
 .primary-button {
     background: var(--primary);
     color: white;
