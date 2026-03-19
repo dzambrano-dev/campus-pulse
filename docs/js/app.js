@@ -247,7 +247,7 @@ function createEventCard(event) {
             map.invalidateSize();
             const latlng = [event.lat, event.lng];
             const marker = L.marker(latlng).addTo(map);
-            map.flyTo(latlng, 17);
+            map.setView(latlng, 17);
             marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`).openPopup();
         }, 150);
     });
