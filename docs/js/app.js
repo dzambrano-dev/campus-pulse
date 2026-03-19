@@ -220,7 +220,7 @@ function createEventCard(event) {
     const tags = document.createElement("div");
     tags.className = "event-tags";
 
-    event.tags.forEach(tag => {
+    (event.tags || []).forEach(tag => {
         const bubble = document.createElement("span");
         bubble.className = "tag-bubble";
         bubble.textContent = toTitleCase(tag);
@@ -237,6 +237,18 @@ function createEventCard(event) {
     const mapBtn = document.createElement("button");
     mapBtn.className = "tertiary-button";
     mapBtn.textContent = "Show on Map";
+
+    // Add map button listeners
+    mapBtn.addEventListener("click", () => {
+        // Switch to map
+        document.querySelector('[data-page="map-page"]').click();
+
+        setTimeout(() => {
+            map.setView([event.lat, event.lng], 17);
+            const marker = L.marker([event.lat, event.lng]).addTo(map);
+            marker.bindPopup(`<strong>${event.title}</strong>`).openPopup();
+        }, 150);
+    });
 
     actions.append(clubBtn, mapBtn);
 
