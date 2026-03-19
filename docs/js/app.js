@@ -244,8 +244,10 @@ function createEventCard(event) {
         document.querySelector('[data-page="map-page"]').click();
 
         setTimeout(() => {
-            map.setView([event.lat, event.lng], 17);
-            const marker = L.marker([event.lat, event.lng]).addTo(map);
+            map.invalidateSize();
+            const latlng = [event.lat, event.lng];
+            const marker = L.marker(latlng).addTo(map);
+            map.setView(latlng, 17);
             marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`).openPopup();
         }, 150);
     });
