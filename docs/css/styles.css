@@ -17,7 +17,7 @@
 
 * {
     scrollbar-width: thin;
-    scrollbar-color: var(--primary-transparent) transparent;
+    scrollbar-color: var(--primary) transparent;
     scroll-behavior: smooth;
     box-sizing: border-box;
     margin: 0;
