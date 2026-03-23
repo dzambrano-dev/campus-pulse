@@ -85,9 +85,7 @@ async function checkSession() {
 // Handles login form submission
 async function handleLogin(event) {
     event.preventDefault();
-
-    // Disable login button to prevent spam
-    loginButton.disabled = true;
+    setLoading(loginButton, true);
     loginError.textContent = "";
 
     const username = usernameInput.value.trim();
@@ -96,7 +94,7 @@ async function handleLogin(event) {
     // Prevent empty logins
     if (!username || !password) {
         showError(loginError, "Please enter a username and password");
-        loginButton.disabled = false;
+        setLoading(loginButton, false);
         return;
     }
 
@@ -114,16 +112,14 @@ async function handleLogin(event) {
         // Failed to fetch users
         if (!response.ok || !result.token) {
             showError(loginError, result.error || "Login failed");
-            loginButton.disabled = false;
+            setLoading(loginButton, false);
             return;
         }
 
-        // Store session token and redirect to app
-        localStorage.setItem("sessionToken", result.token);
         redirect("app.html");
     } catch(err) {
         showError(loginError, "Failed to login");
-        loginButton.disabled = false;
+        setLoading(loginButton, false);
         console.error(err);
     }
 }
@@ -131,9 +127,7 @@ async function handleLogin(event) {
 // Handles signup form submission
 async function handleSignup(event) {
     event.preventDefault();
-
-    // Disable signup button to prevent spam
-    signupSubmitButton.disabled = true;
+    setLoading(signupSubmitButton, true);
     signupError.textContent = "";
 
     const username = signupUsername.value.trim();
@@ -143,7 +137,7 @@ async function handleSignup(event) {
     // Prevent empty signups
     if (!username || !email || !password) {
         showError(signupError, "Please fill out all fields");
-        signupSubmitButton.disabled = false;
+        setLoading(signupSubmitButton, false);
         return;
     }
 
@@ -151,6 +145,7 @@ async function handleSignup(event) {
         const endpoint = `${API}/signup`
         const response = await fetch(endpoint, {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, email, password })
         });
@@ -160,16 +155,14 @@ async function handleSignup(event) {
         // Signup failed
         if (!response.ok || !result.token) {
             showError(signupError, result.error || "Signup failed");
-            signupSubmitButton.disabled = false;
+            setLoading(signupSubmitButton, false);
             return;
         }
 
-        // Store session token
-        localStorage.setItem("sessionToken", result.token);
         redirect("interests.html");
     } catch(err) {
         showError(signupError, "Failed to create account");
-        signupSubmitButton.disabled = false;
+        setLoading(signupSubmitButton, false);
         console.error(err);
     }
 }
@@ -202,6 +195,19 @@ function showError(element, message) {
 // Redirect user to a given page
 function redirect(path) {
     window.location.assign(path);
+}
+
+// Toggles loading spinner on a button
+function setLoading(button, isLoading) {
+    if (isLoading) {
+        button.disabled = true;
+        button.dataset.originalText = button.innerHTML;
+
+        button.innerHTML = `<span class="spinner"></span>`;
+    } else {
+        button.disabled = false;
+        button.innerHTML = button.dataset.originalText;
+    }
 }
 
 // Safely parses JSON response
