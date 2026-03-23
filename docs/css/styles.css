@@ -457,10 +457,6 @@ input:focus {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    transform: translateX(-50%);
-    left: 50%;
-    text-align: center;
-    white-space: nowrap;
 }
 
 /* Bottom Navigation Bar */
@@ -618,6 +614,24 @@ input:focus {
 #event-description {
     resize: none;
     height: 120px;
+}
+
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--card);
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-soft);
 }
 
 .tag-container {

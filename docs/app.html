@@ -39,6 +39,16 @@
             <form id="event-form">
                 <input id="event-title" placeholder="Event Title" required>
                 <textarea id="event-description" placeholder="Description" maxlength="500" required></textarea>
+                <label>Event Type</label>
+                <select id="event-type" required>
+                    <option value="" disabled selected>Select event type</option>
+                    <option value="alert">Alert</option>
+                    <option value="academic">Academic</option>
+                    <option value="athletic">Athletic</option>
+                    <option value="career">Career</option>
+                    <option value="organization">Organization</option>
+                    <option value="social">Social</option>
+                </select>
                 <label>Tags</label>
                 <!-- Tags are injected through the API -->
                 <div id="event-tags" class="tag-container"></div>

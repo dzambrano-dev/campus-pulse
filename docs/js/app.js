@@ -346,9 +346,10 @@ function openCreateEvent() {
 // Close create event modal
 function closeCreateEvent() {
     const eventError = document.getElementById("event-error");
-    eventError.textContent = "";
+    clearErrors(eventError);
 
     document.getElementById("event-form").reset();
+    document.getElementById("event-type").value = "";
     document.querySelectorAll(".tag.active").forEach(tag => tag.classList.remove("active"));
 
     eventMarker = null;
@@ -415,6 +416,7 @@ async function submitEvent(event) {
     // Organize data
     const title = document.getElementById("event-title").value;
     const description = document.getElementById("event-description").value;
+    const eventType = document.getElementById("event-type").value;
     const tags = [...document.querySelectorAll(".tag.active")].map(t => t.textContent);
     const date = document.getElementById("event-date").value;
     const time = document.getElementById("event-time").value;
@@ -424,6 +426,7 @@ async function submitEvent(event) {
     // Validate data
     if (!title) { showError(eventError, "Event title is required"); setLoading(submitButton, false); return; }
     if (description.length < 50) { showError(eventError, "Description must be at least 50 characters"); setLoading(submitButton, false); return; }
+    if (!eventType) { showError(eventError, "Please select an event type"); setLoading(submitButton, false); return; }
     if (tags.length === 0) { showError(eventError, "Please select at least one tag"); setLoading(submitButton, false); return; }
     if (tags.length > 3) { showError(eventError, "You can select at most 3 tags"); setLoading(submitButton, false); return; }
     if (!location) { showError(eventError, "Please provide a location"); setLoading(submitButton, false); return; }
@@ -437,6 +440,7 @@ async function submitEvent(event) {
     const eventObject = {
         title: title,
         description: description,
+        type: eventType,
         tags: tags,
         datetime: timestamp,
         location: location,
