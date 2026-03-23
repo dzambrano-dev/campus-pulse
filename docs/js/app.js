@@ -3,52 +3,49 @@
  * Handles application frontend and KV database fetching
  */
 
-let token;
+
+import { API, checkSession, safeJson, showError, redirect, setLoading, clearErrors } from "./utils.js";
+
+
+// Data members
 let currentUser;
 let currentRole;
-
 let map;
 let mapMarkers = [];
 let userMarker;
-
 let eventMap;
 let eventMarker;
 
-const API = "https://campus-pulse-worker.vindictivity.workers.dev/api";
 
 document.addEventListener("DOMContentLoaded", initApp);
 
+
 // Main application startup
 async function initApp() {
-    token = localStorage.getItem("sessionToken");
+    const isLoggedIn = await checkSession();
 
-    // Redirect if not logged in
-    if (!token) {
-        redirectToLogin();
+    if (!isLoggedIn) {
+        redirect("index.html");
         return;
     }
 
     // Validate session and load user
     const user = await loadUser();
-
     if (!user) {
-        localStorage.removeItem("sessionToken");
-        redirectToLogin();
+        redirect("index.html")
         return;
     }
 
     currentUser = user.username;
     currentRole = user.role;
 
-    // Initialize navigation
+    // Initialize application
     initProfileMenu();
     initNavigation();
     initCreateEventButton();
     initMap();
 
-    // Load application
     await loadEvents();
-    await loadFeed();
 }
 
 // Authenticate user
@@ -56,12 +53,11 @@ async function loadUser() {
     try {
         const endpoint = `${API}/user`
         const response = await fetch(endpoint, {
-            headers: { "Authorization": `Bearer ${token}` }
+            credentials: "include"
         });
 
         if (!response.ok) return null;
-
-        return await response.json();
+        return await safeJson(response);
     } catch (err) {
         console.error("User fetch failed:", err);
         return null;
@@ -101,61 +97,30 @@ function initNavigation() {
     });
 }
 
-// Generate addEvent button
-function initCreateEventButton() {
-    if (currentRole === "organizer" || currentRole === "admin") {
-        const nav = document.querySelector(".bottom-nav");
-
-        const addEventButton = document.createElement("button");
-        addEventButton.classList.add("floating-nav-button");
-        addEventButton.id = "add-event-button";
-        addEventButton.textContent = "+";
-
-        addEventButton.addEventListener("click", openCreateEvent);
-
-        const closeEventButton = document.getElementById("cancel-event-button");
-        closeEventButton.addEventListener("click", closeCreateEvent);
-
-        // Insert button in the middle
-        const index = Math.floor(nav.children.length / 2);
-        if (nav.children[index]) {
-            nav.insertBefore(addEventButton, nav.children[index]);
-        } else {
-            nav.appendChild(addEventButton);
-        }
-
-        document.getElementById("event-form").addEventListener("submit", submitEvent);
-    }
-}
-
 // Load events from API
 async function loadEvents() {
     try {
         // Fetch list of events the user is interested in
         const eventsEndpoint = `${API}/get-events`
         const eventsResponse = await fetch(eventsEndpoint, {
-            headers: { "Authorization": `Bearer ${token}` }
+            credentials: "include"
         });
 
         // If no events are found, return
-        if (!eventsResponse.ok) {
-            console.error("Failed to load events:", eventsResponse.status);
-            return;
-        }
+        if (!eventsResponse.ok) return;
 
-        const eventsData = await eventsResponse.json();
+        const events = await safeJson(eventsResponse);
 
         // Clear events container
         const eventsContainer = document.getElementById("events-container");
         eventsContainer.innerHTML = "";
 
         // Create a card for each event
-        eventsData.forEach(event => {
+        events.forEach(event => {
             const card = createEventCard(event);
             eventsContainer.appendChild(card);
         });
     } catch (err) {
-        // log error if events fail to load
         console.error("Failed to load events:", err);
     }
 }
@@ -259,78 +224,6 @@ function createEventCard(event) {
     return card;
 }
 
-// LOAD FEED
-async function loadFeed() {
-    try {
-        // fetch feed data from JSON file
-        const response = await fetch("data/feed.json");
-        const data = await response.json();
-
-        // find the container where feed items will be placed
-        const feedContainer = document.getElementById("feed-container");
-
-        // stop if the container doesn't exist
-        if (!feedContainer) return;
-
-        // clear existing feed content to prevent duplicates
-        feedContainer.innerHTML = "";
-
-        // loop through each feed item
-        data.forEach(item => {
-
-            // create a container for the feed item
-            const post = document.createElement("div");
-            post.classList.add("feed-item");
-
-            // inject feed content into the element
-            post.innerHTML = `
-                <div class="feed-text">
-                    <div class="feed-title feed-${item.type}">
-                        ${item.title}
-                    </div>
-                    <div class="feed-meta">
-                        ${item.location} • ${item.time}
-                    </div>
-                </div>
-                <!-- container where a mini Leaflet map will render -->
-                <div class="feed-map-preview"
-                    data-lat="${item.lat}"
-                    data-lng="${item.lng}">
-                </div>
-            `;
-
-            // add the feed item to the page
-            feedContainer.appendChild(post);
-        });
-
-        // create mini maps for every preview box
-        document.querySelectorAll(".feed-map-preview").forEach(box => {
-
-            // get coordinates from dataset attributes
-            const lat = parseFloat(box.dataset.lat);
-            const lng = parseFloat(box.dataset.lng);
-
-            // create a non-interactive Leaflet map preview
-            const miniMap = L.map(box, {
-                zoomControl: false,
-                attributionControl: false,
-                dragging: false,
-                scrollWheelZoom: false,
-                doubleClickZoom: false
-            }).setView([lat, lng], 14);
-
-            // add map tiles
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(miniMap);
-
-            // place marker at event location
-            L.marker([lat, lng]).addTo(miniMap);
-        });
-    } catch (err) {
-        // log error if feed fails to load
-        console.error("Failed to load feed:", err);
-    }
-}
-
 // Initialize map
 function initMap() {
     map = L.map("map").setView([33.7838, -118.1141], 16);
@@ -344,15 +237,12 @@ async function loadMapEvents() {
     try {
         const endpoint = `${API}/get-events`;
         const response = await fetch(endpoint, {
-            headers: { "Authorization": `Bearer ${token}` }
+            credentials: "include"
         });
 
-        if (!response.ok) {
-            console.error("Failed to load map events:", response.status);
-            return;
-        }
+        if (!response.ok) return;
 
-        const events = await response.json();
+        const events = await safeJson(response);
         renderMapMarkers(events);
     } catch (err) {
         console.error("Map event load failed:", err);
@@ -361,9 +251,6 @@ async function loadMapEvents() {
 
 // Render map markers
 function renderMapMarkers(events) {
-    if (!map) return;
-
-    // Remove existing markers
     mapMarkers.forEach(marker => marker.remove());
     mapMarkers = [];
 
@@ -377,42 +264,47 @@ function renderMapMarkers(events) {
 
 // Find the users location
 function locateUser() {
-    if (!navigator.geolocation) {
-        console.warn("Geolocation is not supported");
-        return;
-    }
+    navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
 
-    navigator.geolocation.getCurrentPosition(
-        position => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
+        // Remove previous marker if it exists
+        if (userMarker) map.removeLayer(userMarker);
 
-            // Remove previous marker if it exists
-            if (userMarker) {
-                map.removeLayer(userMarker);
-            }
-
-            // Create a blue circle marker
-            userMarker = L.circleMarker([lat, lng], {
-                radius: 8,
-                color: "#2563eb",
-                fillColor: "#3b82f6",
-                fillOpacity: 1,
-                weight: 2
-            }).addTo(map);
-
-            userMarker.bindPopup("You're here");
-
-            // Center map on user
-            map.setView([lat, lng], 16);
-        },
-        err => {
-            console.warn("Location permission denied");
-        },
-        {
-            enableHighAccuracy: true
+        // Create a blue circle marker
+        const userStyle = {
+            radius: 8,
+            color: "#2563eb",
+            fillColor: "#3b82f6",
+            fillOpacity: 1,
+            weight: 2
         }
+        userMarker = L.circleMarker([latitude, longitude], userStyle).addTo(map);
+        map.setView([latitude, longitude], 16);  // Center map on user
+        },
+        err => { console.warn("Location permission denied", err) },
+        { enableHighAccuracy: true }
     );
+}
+
+// Generate addEvent button
+function initCreateEventButton() {
+    // Only show button to admins and organizers
+    if (!["organizer", "admin"].includes(currentRole)) return;
+
+    const nav = document.querySelector(".bottom-nav");
+
+    const addEventButton = document.createElement("button");
+    addEventButton.textContent = "+";
+    addEventButton.classList.add("floating-nav-button");
+    addEventButton.id = "add-event-button";
+
+    addEventButton.addEventListener("click", openCreateEvent);
+    nav.appendChild(addEventButton);
+
+    const closeEventButton = document.getElementById("cancel-event-button");
+    closeEventButton.addEventListener("click", closeCreateEvent);
+
+    document.getElementById("event-form").addEventListener("submit", submitEvent);
 }
 
 // Open create event modal
@@ -422,7 +314,7 @@ function openCreateEvent() {
     document.body.classList.add("no-scroll");
 
     loadTags();
-    setTimeout(() => { initEventMap(); }, 50);
+    setTimeout(initEventMap, 50);
 }
 
 // Close create event modal
@@ -441,7 +333,7 @@ function closeCreateEvent() {
     }
 
     const submitButton = document.getElementById("submit-event-button");
-    submitButton.disabled = false;
+    setLoading(submitButton, false);
 
     document.getElementById("event-modal").classList.add("hidden");
     document.body.classList.remove("no-scroll");
@@ -484,22 +376,15 @@ function initEventMap() {
     });
 }
 
-// Convert a datetime to a Unix timestamp
-function toUTCTimestamp(date, time) {
-    const local = new Date(`${date}T${time}`);
-    return Math.floor(local.getTime() / 1000);
-}
-
 // Submit the event
 async function submitEvent(event) {
     event.preventDefault();
-
     const eventError = document.getElementById("event-error");
-    eventError.textContent = "";
+    clearErrors(eventError);
 
     // Disable button
     const submitButton = document.getElementById("submit-event-button");
-    submitButton.disabled = true;
+    setLoading(submitButton, true);
 
     // Organize data
     const title = document.getElementById("event-title").value;
@@ -511,13 +396,13 @@ async function submitEvent(event) {
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
 
     // Validate data
-    if (!title) { eventError.textContent = "Event title is required"; submitButton.disabled = false; return; }
-    if (description.length < 50) { eventError.textContent = "Description must be at least 50 characters"; submitButton.disabled = false; return; }
-    if (tags.length === 0) { eventError.textContent = "Please select at least one tag"; submitButton.disabled = false; return; }
-    if (tags.length > 3) { eventError.textContent = "You can select at most 3 tags"; submitButton.disabled = false; return; }
-    if (!location) { eventError.textContent = "Please provide a location"; submitButton.disabled = false; return; }
-    if (!date || !time) { eventError.textContent = "Date and time are required"; submitButton.disabled = false; return; }
-    if (!latlng) { eventError.textContent = "Please place a pin on the map"; submitButton.disabled = false; return; }
+    if (!title) { showError(eventError, "Event title is required"); setLoading(submitButton, false); return; }
+    if (description.length < 50) { showError(eventError, "Description must be at least 50 characters"); setLoading(submitButton, false); return; }
+    if (tags.length === 0) { showError(eventError, "Please select at least one tag"); setLoading(submitButton, false); return; }
+    if (tags.length > 3) { showError(eventError, "You can select at most 3 tags"); setLoading(submitButton, false); return; }
+    if (!location) { showError(eventError, "Please provide a location"); setLoading(submitButton, false); return; }
+    if (!date || !time) { showError(eventError, "Date and time are required"); setLoading(submitButton, false); return; }
+    if (!latlng) { showError(eventError, "Please place a pin on the map"); setLoading(submitButton, false); return; }
 
     // Convert datetime
     const timestamp = toUTCTimestamp(date, time);
@@ -534,23 +419,20 @@ async function submitEvent(event) {
         image: null
     };
 
-    // Send to API
     try {
         const createEventEndpoint = `${API}/create-event`;
         const response = await fetch(createEventEndpoint, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(eventObject)
         });
 
-        const data = await response.json();
+        const result = await safeJson(response);
 
         if (!response.ok) {
-            eventError.textContent = data.error || "Failed to create event";
-            submitButton.disabled = false;
+            showError(eventError, result.error || "Failed to create event");
+            setLoading(submitButton, false);
             return;
         }
 
@@ -558,9 +440,40 @@ async function submitEvent(event) {
         await loadEvents();
     } catch (err) {
         console.error("Event creation failed:", err);
-        submitButton.disabled = false;
-        eventError.textContent = "Network error, please try again";
+        showError(eventError, "Network error, please try again");
+        setLoading(submitButton, false);
     }
+}
+
+// Initialize profile menu
+function initProfileMenu () {
+    const menu = document.getElementById("profile-menu");
+    const button = document.getElementById("profile-button");
+
+    button.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", (event) => {
+        menu.classList.add("hidden");
+    });
+
+    document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
+    document.getElementById("toggle-ui").addEventListener("click", toggleUI);
+    document.getElementById("logout-button").addEventListener("click", logout);
+}
+
+// Log out
+async function logout() {
+    try {
+        const endpoint = `${API}/logout`;
+        await fetch(endpoint, {
+            method: "POST",
+            credentials: "include"
+        });
+    } catch {}
+
+    redirect("index.html");
 }
 
 // Format event datetime
@@ -568,63 +481,19 @@ function formatEventTime(timestamp) {
     const date = new Date(timestamp * 1000);
     const month = date.toLocaleString("default", { month: "long" });
     const day = date.getDate();
-
     const time = date.toLocaleString("default", { hour: "numeric", minute: "2-digit", hour12: true });
-
     return `${month} ${day}, ${time}`;
 }
 
-// Generate tag HTML
-function renderTags(tags) {
-    return tags.map(tag => `<span class="tag-bubble">${toTitleCase(tag)}</span>`).join("");
+// Convert a datetime to a Unix timestamp
+function toUTCTimestamp(date, time) {
+    const local = new Date(`${date}T${time}`);
+    return Math.floor(local.getTime() / 1000);
 }
 
 // Uppercase the first letter of each word
 function toTitleCase(str) {
     return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
-}
-
-// Log out
-function logout() {
-    redirectToLogin();
-    return new Response(JSON.stringify({ success: true }), {
-        headers: {
-            "Content-Type": "application/json",
-            "Set-Cookie": [
-                "sessionToken=",
-                "HttpOnly",
-                "Secure",
-                "SameSite=None",
-                "Path=/",
-                "Max-Age=0"
-            ].join("; ")
-        }
-    });
-}
-
-// Send user to login
-function redirectToLogin() {
-    window.location.assign("index.html");
-}
-
-
-function initProfileMenu () {
-    const button = document.getElementById("profile-button");
-    const menu = document.getElementById("profile-menu");
-
-    button.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-    });
-
-    document.addEventListener("click", (event) => {
-        if (!button.contains(event.target) && !menu.contains(event.target)) {
-            menu.classList.add("hidden");
-        }
-    });
-
-    document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
-    document.getElementById("toggle-ui").addEventListener("click", toggleUI);
-    document.getElementById("logout-button").addEventListener("click", logout);
 }
 
 function toggleTheme() {
