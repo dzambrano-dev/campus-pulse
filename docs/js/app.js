@@ -257,13 +257,33 @@ function renderMapMarkers(events, showAllPopups = false) {
     events.forEach(event => {
         if (!event.lat || !event.lng) return;
         const marker = L.marker([event.lat, event.lng]).addTo(map);
-        const popup = L.popup({ closeButton: false, autoClose: false, closeOnClick: false, className: "map-label-popup" });
-        popup.setContent(event.title);
-        marker.bindPopup(popup);
-        if (showAllPopups) {
-            setTimeout(() => marker.openPopup(), 50);
-        }
-            // `<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`);
+
+        // Create a tooltip
+        marker.bindTooltip(event.title, {
+            permanent: true,
+            direction: "top",
+            offset: [0, -10],
+            className: "map-label-tooltip"
+        });
+
+        // Create popups for each pin
+        marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`);
+
+        // Hide label when popup opens
+        marker.on("popupopen", () => {
+            marker.unbindTooltip();
+        });
+
+        // Restore label when popup closes
+        marker.on("popupclose", () => {
+            marker.bindTooltip(event.title, {
+                permanent: true,
+                direction: "top",
+                offset: [0, -10],
+                className: "map-label-tooltip"
+            });
+        });
+
         mapMarkers.push(marker);
     });
 }
