@@ -20,6 +20,14 @@ import { updateInterests } from "./updateInterests.js";
 import { user } from "./user.js";
 
 
+const corsHeaders = {
+	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
+	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+	"Access-Control-Allow-Headers": "Content-Type",
+	"Access-Control-Allow-Credentials": "true"
+}
+
+
 export default {
 	async fetch(request, env) {
 		// Handle browser preflight request (OPTIONS)
@@ -47,26 +55,13 @@ export default {
 	},
 };
 
-// Fetch CORS headers
-function getCorsHeaders(request) {
-	const origin = request.headers.get("Origin");
-	return {
-		"Access-Control-Allow-Origin": origin,
-		"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-		"Access-Control-Allow-Headers": "Content-Type",
-		"Access-Control-Allow-Credentials": "true"
-	}
-
-}
-
 // Add CORS headers to a response
 function addCors(response) {
 	const headers = new Headers(response.headers);
-	const cors = getCorsHeaders(request);
 
 	// Attach all defined CORS headers
-	for (const [k, v] of Object.entries(cors)) {
-		if (!headers.has(k)) { headers.set(k, v); }
+	for (const [k, v] of Object.entries(corsHeaders)) {
+		headers.set(k, v);
 	}
 
 	// Return a new response with updated headers
