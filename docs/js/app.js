@@ -41,8 +41,9 @@ async function initApp() {
     currentRole = user.role;
 
     // Initialize navigation
+    initProfileMenu();
     initNavigation();
-    addCreateEventButton();
+    initCreateEventButton();
     initMap();
 
     // Load application
@@ -101,7 +102,7 @@ function initNavigation() {
 }
 
 // Generate addEvent button
-function addCreateEventButton() {
+function initCreateEventButton() {
     if (currentRole === "organizer" || currentRole === "admin") {
         const nav = document.querySelector(".bottom-nav");
 
@@ -203,7 +204,7 @@ function createEventCard(event) {
     time.textContent = formatEventTime(event.datetime);
 
     const author = document.createElement("div");
-    author.className = "event-meta";
+    author.className = "event-meta author-meta";
 
     const authorLink = document.createElement("span");
     authorLink.className = "author-link";
@@ -592,4 +593,50 @@ function logout() {
 // Send user to login
 function redirectToLogin() {
     window.location.assign("index.html");
+}
+
+
+function initProfileMenu () {
+    const button = document.getElementById("profile-button");
+    const menu = document.getElementById("profile-menu");
+
+    button.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!button.contains(event.target) && !menu.contains(event.target)) {
+            menu.classList.add("hidden");
+        }
+    });
+
+    document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
+    document.getElementById("toggle-ui").addEventListener("click", toggleUI);
+    document.getElementById("logout-button").addEventListener("click", logout);
+}
+
+function toggleTheme() {
+    document.body.classList.toggle("dark-mode");
+
+    if (map) {
+        map.eachLayer(layer => {
+            if (layer instanceof L.TileLayer) {
+                map.removeLayer(layer);
+            }
+        });
+
+        const isDark = document.body.classList.contains("dark-mode");
+
+        const tile = isDark
+            ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+        L.tileLayer(tile, {
+            attribution: "&copy; OpenStreetMap contributors"
+        }).addTo(map);
+    }
+}
+
+function toggleUI() {
+    document.body.classList.toggle("compact-ui");
 }
