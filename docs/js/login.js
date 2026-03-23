@@ -1,4 +1,14 @@
-// Card elements
+/**
+ * login.js
+ * Handles:
+ * - Session validation
+ * - Login flow
+ * - Signup flow
+ * - UI transitions
+ */
+
+
+// Cards
 const loginCard = document.getElementById("login-card");
 const signupCard = document.getElementById("signup-card");
 
@@ -23,37 +33,32 @@ const signupUsername = document.getElementById("signup-username");
 const signupEmail = document.getElementById("signup-email");
 const signupPassword = document.getElementById("signup-password");
 
+// API
 const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 
-// Clear errors when the user types
+
+// Clear errors on input
 document.querySelectorAll("input").forEach(input => {
-    input.addEventListener("input", () => {
-        loginError.textContent = "";
-        signupError.textContent = "";
-    });
+    input.addEventListener("input", clearErrors);
 });
 
-// Card switching
-signupButton.addEventListener("click", () => {
-    loginError.textContent = "";
-    signupError.textContent = "";
-    loginCard.classList.remove("active");
-    signupCard.classList.add("active");
-});
+// UI navigation
+signupButton.addEventListener("click", showSignup);
+backButton.addEventListener("click", showLogin);
 
-backButton.addEventListener("click", () => {
-    loginError.textContent = "";
-    signupError.textContent = "";
-    signupCard.classList.remove("active");
-    loginCard.classList.add("active");
-});
+// Form handlers
+loginForm.addEventListener("submit", handleLogin);
+signupForm.addEventListener("submit", handleSignup);
 
-// Check session
+// Session check on page load
 document.addEventListener("DOMContentLoaded", checkSession);
 
+
+// Validates stored session token and allows app access
 async function checkSession() {
     const token = localStorage.getItem("sessionToken");
 
+    // Invalid token cleanup
     if (!token || token === "undefined" || token === "null") {
         localStorage.removeItem("sessionToken");
         return;
@@ -71,16 +76,14 @@ async function checkSession() {
         }
 
         // If the token is valid, skip login
-        window.location.assign("app.html");
+        redirect("app.html")
     } catch (err) {
         console.error("Session validation failed:", err);
     }
 }
 
-// Login
-loginForm.addEventListener("submit", login);
-
-async function login(event) {
+// Handles login form submission
+async function handleLogin(event) {
     event.preventDefault();
 
     // Disable login button to prevent spam
@@ -92,7 +95,7 @@ async function login(event) {
 
     // Prevent empty logins
     if (!username || !password) {
-        loginError.textContent = "Please enter a username and password";
+        showError(loginError, "Please enter a username and password");
         loginButton.disabled = false;
         return;
     }
@@ -103,39 +106,30 @@ async function login(event) {
         const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                username,
-                password
-            })
+            body: JSON.stringify({ username, password })
         });
 
-        // Return response
-        let result = {};
-        try { result = await response.json(); } catch(err) {}
+        const result = await safeJson(response);
 
         // Failed to fetch users
         if (!response.ok || !result.token) {
-            loginError.textContent = result.error || "Login failed";
+            showError(loginError, result.error || "Login failed");
             loginButton.disabled = false;
             return;
         }
 
-        // Store session token
+        // Store session token and redirect to app
         localStorage.setItem("sessionToken", result.token);
-
-        // Switch to feed
-        window.location.assign("app.html");
+        redirect("app.html");
     } catch(err) {
-        loginError.textContent = "Failed to login";
+        showError(loginError, "Failed to login");
         loginButton.disabled = false;
         console.error(err);
     }
 }
 
-// Switch to signup
-signupForm.addEventListener("submit", signup);
-
-async function signup(event) {
+// Handles signup form submission
+async function handleSignup(event) {
     event.preventDefault();
 
     // Disable signup button to prevent spam
@@ -148,13 +142,12 @@ async function signup(event) {
 
     // Prevent empty signups
     if (!username || !email || !password) {
-        signupError.textContent = "Please fill out all fields";
+        showError(signupError, "Please fill out all fields");
         signupSubmitButton.disabled = false;
         return;
     }
 
     try {
-        // Cloudflare Worker response
         const endpoint = `${API}/signup`
         const response = await fetch(endpoint, {
             method: "POST",
@@ -162,32 +155,60 @@ async function signup(event) {
             body: JSON.stringify({ username, email, password })
         });
 
-        // Return response
-        let result = {};
-        try { result = await response.json(); } catch(err) {}
+        const result = await safeJson(response);
 
-        // Cloudflare Worker error
-        if (!response.ok) {
-            signupError.textContent = result.error || "Signup failed";
-            signupSubmitButton.disabled = false;
-            return;
-        }
-
-        // Failed to sign up
-        if (!result.token) {
-            signupError.textContent = result.error || "Signup failed";
+        // Signup failed
+        if (!response.ok || !result.token) {
+            showError(signupError, result.error || "Signup failed");
             signupSubmitButton.disabled = false;
             return;
         }
 
         // Store session token
         localStorage.setItem("sessionToken", result.token);
-
-        // Switch to interests
-        window.location.assign("interests.html");
+        redirect("interests.html");
     } catch(err) {
-        signupError.textContent = "Failed to create account";
+        showError(signupError, "Failed to create account");
         signupSubmitButton.disabled = false;
         console.error(err);
+    }
+}
+
+// Switch UI to signup card
+function showSignup() {
+    clearErrors();
+    loginCard.classList.remove("active");
+    signupCard.classList.add("active");
+}
+
+// Switch UI to login card
+function showLogin() {
+    clearErrors();
+    signupCard.classList.remove("active");
+    loginCard.classList.add("active");
+}
+
+// Clear all visible error messages
+function clearErrors() {
+    loginError.textContent = "";
+    signupError.textContent = "";
+}
+
+// Display an error message using a given element
+function showError(element, message) {
+    element.textContent = message;
+}
+
+// Redirect user to a given page
+function redirect(path) {
+    window.location.assign(path);
+}
+
+// Safely parses JSON response
+async function safeJson(response) {
+    try {
+        return await response.json();
+    } catch {
+        return {};
     }
 }

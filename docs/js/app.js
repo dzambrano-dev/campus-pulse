@@ -1,6 +1,6 @@
 /**
  * app.js
- * Application script
+ * Handles application frontend and KV database fetching
  */
 
 let token;

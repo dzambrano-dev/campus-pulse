@@ -1,3 +1,8 @@
+/**
+ * interests.js
+ * Handles loading and saving user interests to KV database
+ */
+
 let token;
 
 const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
