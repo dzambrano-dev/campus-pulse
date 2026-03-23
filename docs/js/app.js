@@ -450,14 +450,17 @@ function initProfileMenu () {
     const menu = document.getElementById("profile-menu");
     const button = document.getElementById("profile-button");
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
+        event.stopImmediatePropagation();
         menu.classList.toggle("hidden");
     });
 
+    menu.addEventListener("click", (event) => {
+        event.stopPropagation();
+    });
+
     document.addEventListener("click", (event) => {
-        if (!button.contains(event.target) && !menu.contains(event.target)) {
-            menu.classList.add("hidden");
-        }
+        menu.classList.add("hidden");
     });
 
     document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
