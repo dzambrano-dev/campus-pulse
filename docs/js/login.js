@@ -8,7 +8,7 @@
  */
 
 
-import { checkSession, clearErrors, showError, redirect, safeJson, setLoading } from "./utils.js";
+import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoading } from "./utils.js";
 
 
 // Cards
@@ -35,9 +35,6 @@ const passwordInput = document.getElementById("password");
 const signupUsername = document.getElementById("signup-username");
 const signupEmail = document.getElementById("signup-email");
 const signupPassword = document.getElementById("signup-password");
-
-// API
-const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 
 
 // DOM ready

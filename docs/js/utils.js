@@ -7,6 +7,7 @@
 // API
 const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 
+
 // Clear all visible error messages
 export function clearErrors(...elements) {
     elements.forEach(el => { if (el) el.textContent = "" });

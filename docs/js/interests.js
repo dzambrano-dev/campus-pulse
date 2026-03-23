@@ -4,20 +4,13 @@
  */
 
 
-import { checkSession, clearErrors, showError, redirect, safeJson, setLoading } from "./utils.js";
+import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoading } from "./utils.js";
 
 
-// Errors
+// Data members
 const interestsError = document.getElementById("interests-error");
-
-// Forms
 const form = document.getElementById("interests-form");
-
-// Buttons
 const skipBtn = document.getElementById("skip-interests");
-
-// API
-const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 
 
 // DOM ready
