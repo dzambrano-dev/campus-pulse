@@ -452,6 +452,13 @@ input:focus {
     color: #fff;
 }
 
+.leaflet-tooltip.map-label-tooltip {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
 /* Bottom Navigation Bar */
 
 .bottom-nav {
