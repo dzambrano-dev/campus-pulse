@@ -17,7 +17,7 @@ export async function getInterests(request, env) {
 		const interests = JSON.parse(stored);
 
 		return json({ interests });
-	} catch {
+	} catch (err) {
 		console.error("getInterests failed:", err);
 		return jsonError("Failed to load interests");
 	}

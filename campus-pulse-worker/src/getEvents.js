@@ -18,16 +18,8 @@ export async function getEvents(request, env) {
 		const userData = await env.USERS.get(username);
 		if (!userData) return jsonError("User not found", 404);
 
-		console.log("user data:", userData);
-
 		const user = JSON.parse(userData);
-
-		console.log("user:", user);
-
 		const interests = user.interests || [];
-
-		console.log("user interests:", interests);
-
 		let eventIds = new Set();
 
 		// If user has interests, use indexes
@@ -53,7 +45,7 @@ export async function getEvents(request, env) {
 		const validEvents = events.filter(Boolean);
 
 		// Sort events by date
-		validEvents.sort((a, b) => a.datetime - b.datetime);
+		validEvents.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
 
 		// Return events list
 		return json(validEvents.slice(0, 50));
