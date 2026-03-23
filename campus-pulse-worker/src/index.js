@@ -14,6 +14,7 @@ import { createEvent } from "./createEvent.js";
 import { getEvents } from "./getEvents.js";
 import { getInterests } from "./getInterests.js";
 import { login } from "./login.js";
+import { logout } from "./logout.js";
 import { toggleOrganizer } from "./toggleOrganizer.js";
 import { signup } from "./signup.js";
 import { updateInterests } from "./updateInterests.js";
@@ -45,6 +46,7 @@ export default {
 			case "/api/get-events": return addCors(await getEvents(request, env));
 			case "/api/get-interests": return addCors(await getInterests(request, env));
 			case "/api/login": return addCors(await login(request, env));
+			case "/api/logout": return addCors(await logout(request, env));
 			case "/api/signup": return addCors(await signup(request, env));
 			case "/api/toggle-organizer": return addCors(await toggleOrganizer(request, env));
 			case "/api/user": return addCors(await user(request, env));
