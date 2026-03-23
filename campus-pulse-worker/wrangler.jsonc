@@ -37,6 +37,11 @@
 		{
 			"binding": "EVENTS_INDEX",
 			"id": "7002a1a21a0c43e39b582e256dfd6f41"
+		},
+		{
+			"binding": "RATE_LIMIT_KV",
+			"id": "17801504f9c44b5f9541458178d36482",
+			"preview_id": "a30c638b634a4671ad51534de0dd2a63"
 		}
 	]
 }
