@@ -3,7 +3,7 @@
  * API call for creating accounts
  */
 
-import { json, jsonError, hashPassword } from "./utils.js"
+import { jsonError, hashPassword, withSessionCookie } from "./utils.js"
 
 export async function signup(request, env) {
 	// Only allow POST requests
@@ -45,13 +45,11 @@ export async function signup(request, env) {
 		await env.USERS.put(username, JSON.stringify(newUser));
 		await env.EMAILS.put(email, username);
 
-		// Generate a session token
+		// Generate and store a session token through cookies
 		const token = crypto.randomUUID();
-		const week = 60 * 60 * 24 * 7
-
-		// Store the token and return it to the client
-		await env.SESSIONS.put(token, username, { expirationTtl: week });
-		return json({ success: true, token });
+		const maxAge = 60 * 60 * 24 * 7;
+		await env.SESSIONS.put(token, username, { expirationTtl: maxAge });
+		return withSessionCookie({ success: true }, token, maxAge);
 	} catch (err) {
 		// Handle unexpected errors
 		return jsonError("Invalid request");

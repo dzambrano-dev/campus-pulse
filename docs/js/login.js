@@ -8,6 +8,9 @@
  */
 
 
+import { checkSession, clearErrors, showError, redirect, safeJson, setLoading } from "./utils.js";
+
+
 // Cards
 const loginCard = document.getElementById("login-card");
 const signupCard = document.getElementById("signup-card");
@@ -37,56 +40,40 @@ const signupPassword = document.getElementById("signup-password");
 const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 
 
-// Clear errors on input
-document.querySelectorAll("input").forEach(input => {
-    input.addEventListener("input", clearErrors);
-});
+// DOM ready
+document.addEventListener("DOMContentLoaded", async () => {
+    const isLoggedIn = await checkSession();
 
-// UI navigation
-signupButton.addEventListener("click", showSignup);
-backButton.addEventListener("click", showLogin);
-
-// Form handlers
-loginForm.addEventListener("submit", handleLogin);
-signupForm.addEventListener("submit", handleSignup);
-
-// Session check on page load
-document.addEventListener("DOMContentLoaded", checkSession);
-
-
-// Validates stored session token and allows app access
-async function checkSession() {
-    const token = localStorage.getItem("sessionToken");
-
-    // Invalid token cleanup
-    if (!token || token === "undefined" || token === "null") {
-        localStorage.removeItem("sessionToken");
+    if (isLoggedIn) {
+        redirect("app.html");
         return;
     }
 
-    try {
-        const endpoint = `${API}/user`
-        const response = await fetch(endpoint, {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
+    // Attach listeners
+    init();
+});
 
-        if (!response.ok) {
-            localStorage.removeItem("sessionToken");
-            return;
-        }
+// Initialize UI
+function init() {
+    // Clear errors on input
+    document.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", () => { clearErrors(loginError, signupError) });
+    });
 
-        // If the token is valid, skip login
-        redirect("app.html")
-    } catch (err) {
-        console.error("Session validation failed:", err);
-    }
+    // UI navigation
+    signupButton.addEventListener("click", showSignup);
+    backButton.addEventListener("click", showLogin);
+
+    // Form handlers
+    loginForm.addEventListener("submit", handleLogin);
+    signupForm.addEventListener("submit", handleSignup);
 }
 
 // Handles login form submission
 async function handleLogin(event) {
     event.preventDefault();
     setLoading(loginButton, true);
-    loginError.textContent = "";
+    clearErrors(loginButton);
 
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
@@ -103,6 +90,7 @@ async function handleLogin(event) {
         const endpoint = `${API}/login`
         const response = await fetch(endpoint, {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password })
         });
@@ -110,7 +98,7 @@ async function handleLogin(event) {
         const result = await safeJson(response);
 
         // Failed to fetch users
-        if (!response.ok || !result.token) {
+        if (!response.ok) {
             showError(loginError, result.error || "Login failed");
             setLoading(loginButton, false);
             return;
@@ -128,7 +116,7 @@ async function handleLogin(event) {
 async function handleSignup(event) {
     event.preventDefault();
     setLoading(signupSubmitButton, true);
-    signupError.textContent = "";
+    clearErrors(signupError);
 
     const username = signupUsername.value.trim();
     const email = signupEmail.value.trim();
@@ -153,7 +141,7 @@ async function handleSignup(event) {
         const result = await safeJson(response);
 
         // Signup failed
-        if (!response.ok || !result.token) {
+        if (!response.ok) {
             showError(signupError, result.error || "Signup failed");
             setLoading(signupSubmitButton, false);
             return;
@@ -169,52 +157,14 @@ async function handleSignup(event) {
 
 // Switch UI to signup card
 function showSignup() {
-    clearErrors();
+    clearErrors(loginError, signupError);
     loginCard.classList.remove("active");
     signupCard.classList.add("active");
 }
 
 // Switch UI to login card
 function showLogin() {
-    clearErrors();
+    clearErrors(loginError, signupError);
     signupCard.classList.remove("active");
     loginCard.classList.add("active");
-}
-
-// Clear all visible error messages
-function clearErrors() {
-    loginError.textContent = "";
-    signupError.textContent = "";
-}
-
-// Display an error message using a given element
-function showError(element, message) {
-    element.textContent = message;
-}
-
-// Redirect user to a given page
-function redirect(path) {
-    window.location.assign(path);
-}
-
-// Toggles loading spinner on a button
-function setLoading(button, isLoading) {
-    if (isLoading) {
-        button.disabled = true;
-        button.dataset.originalText = button.innerHTML;
-
-        button.innerHTML = `<span class="spinner"></span>`;
-    } else {
-        button.disabled = false;
-        button.innerHTML = button.dataset.originalText;
-    }
-}
-
-// Safely parses JSON response
-async function safeJson(response) {
-    try {
-        return await response.json();
-    } catch {
-        return {};
-    }
 }

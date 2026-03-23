@@ -3,56 +3,71 @@
  * Handles loading and saving user interests to KV database
  */
 
-let token;
 
+import { checkSession, clearErrors, showError, redirect, safeJson, setLoading } from "./utils.js";
+
+
+// Errors
+const interestsError = document.getElementById("interests-error");
+
+// Forms
+const form = document.getElementById("interests-form");
+
+// Buttons
+const skipBtn = document.getElementById("skip-interests");
+
+// API
 const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 
-// Wait until DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-    token = localStorage.getItem("sessionToken");
 
-    // Redirect if not logged in
-    if (!token) {
-        window.location.assign("index.html");
+// DOM ready
+document.addEventListener("DOMContentLoaded", async () => {
+    const isLoggedIn = await checkSession();
+
+    if (!isLoggedIn) {
+        redirect("index.html");
         return;
     }
 
-    // Generate interest buttons
-    loadInterests();
-
-    // Add submit button listener
-    document.getElementById("interests-form").addEventListener("submit", submit);
-
-    // Add skip button listener
-    document.getElementById("skip-interests").addEventListener("click", skip);
+    init();
+    await loadInterests();
 });
+
+
+// Initialize UI
+function init() {
+    form.addEventListener("submit", submit);
+    skipBtn.addEventListener("click", skip);
+}
 
 // Generate interest buttons
 async function loadInterests() {
-    const error = document.getElementById("interests-error");
-    error.textContent = "";
+    clearErrors(interestsError);
 
     try {
         // Fetch list of possible interests
         const interestsEndpoint = `${API}/get-interests`
-        const interestsResponse = await fetch(interestsEndpoint);
-        const interestsData = await interestsResponse.json();
-        const interests = interestsData.interests;
+        const interestsResponse = await fetch(interestsEndpoint, {
+            credentials: "include"
+        });
+
+        const interestsData = await safeJson(interestsResponse);
+        const interests = interestsData.interests || [];
 
         // Fetch current user
         const userEndpoint = `${API}/user`
         const userResponse = await fetch(userEndpoint, {
-            headers: { "Authorization": `Bearer ${token}` }
+            credentials: "include"
         });
 
-        // If no user is found, redirect to log in/signup
+        // If no user is found, redirect to log in
         if (!userResponse.ok) {
-            window.location.assign("index.html");
+            redirect("index.html");
             return;
         }
 
         // Find current user data
-        const userData = await userResponse.json();
+        const userData = await safeJson(userResponse);
         const userInterests = userData.interests || [];
 
         // Generate container
@@ -79,59 +94,53 @@ async function loadInterests() {
             // Append each button to the container
             container.appendChild(button);
         });
-
     } catch(err) {
-        error.textContent = "Failed to load interests";
+        showError(interestsError, "Failed to load interests");
         console.log(err);
     }
 }
 
-// Form submission
+// Interests form submission
 async function submit(event) {
     event.preventDefault();
-
-    const error = document.getElementById("interests-error");
-    error.textContent = "";
+    clearErrors(interestsError);
+    setLoading(form, true);
 
     // Collect pre-selected interests
     const selectedInterests = [];
     document.querySelectorAll("#interests-list .interest-button.selected").forEach(box => {
-        selectedInterests.push(box.textContent);
+        selectedInterests.push(box.textContent.toLowerCase());
     });
 
     try {
-        // Send interests to worker
         const endpoint = `${API}/update-interests`
         const response = await fetch(endpoint, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                interests: selectedInterests
-            })
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ interests: selectedInterests })
         });
 
-        const result = await response.json().catch(() => ({}));
+        const result = await safeJson(response);
 
         // Server error
         if (!response.ok) {
-            error.textContent = result.error || "Failed to update interests";
+            showError(interestsError, result.error || "Failed to update interests");
+            setLoading(form, false);
             return;
         }
 
-        // Switch to feed
-        window.location.assign("app.html");
+        redirect("app.html");
     } catch(err) {
-        error.textContent = "Failed to save interests";
+        showError(interestsError, "Failed to save interests");
+        setLoading(form, false);
         console.error(err);
     }
 }
 
 // Skip interest selection
 function skip() {
-    window.location.assign("app.html");
+    redirect("app.html");
 }
 
 // Uppercase the first letter of each word

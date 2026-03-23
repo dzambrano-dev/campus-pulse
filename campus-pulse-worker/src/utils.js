@@ -15,7 +15,7 @@ export function json(data, status = 200) {
 
 // Create an error response
 export function jsonError(message, status = 400) {
-    return json({ error: message });
+    return json({ error: message }, status);
 }
 
 // Hash a password using bcrypt
@@ -25,15 +25,38 @@ export async function hashPassword(password) {
 
 // Verify a password against a bcrypt hash
 export async function verifyPassword(password, hash) {
-    return await bcrypt.compare(password, hash)
+    return bcrypt.compare(password, hash);
+}
+
+// Retrieve cookies
+export function parseCookies(cookieHeader) {
+	if (!cookieHeader) return {};
+	return Object.fromEntries(cookieHeader.split("; ").map(c => c.split("=")));
 }
 
 // Resolve user from auth token
 export async function getSessionUser(request, env) {
-    const auth = request.headers.get("Authorization");
-    if (!auth || !auth.startsWith("Bearer ")) { return null; }
-    const token = auth.replace("Bearer ", "");
-    return await env.SESSIONS.get(token);
+	const cookies = parseCookies(request.headers.get("Cookie"));
+	const token = cookies.sessionToken;
+	if (!token) return null;
+	return await env.SESSIONS.get(token);
+}
+
+// Resolve session cookie
+export function withSessionCookie(responseBody, token, maxAge) {
+	return new Response(JSON.stringify(responseBody), {
+		headers: {
+			"Content-Type": "application/json",
+			"Set-Cookie": [
+				`sessionToken=${token}`,
+				"HttpOnly",
+				"Secure",
+				"SameSite=None",
+				"Path=/",
+				`Max-Age=${maxAge}`
+			].join("; ")
+		}
+	});
 }
 
 // Validate user role

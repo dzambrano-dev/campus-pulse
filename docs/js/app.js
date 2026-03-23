@@ -586,8 +586,20 @@ function toTitleCase(str) {
 
 // Log out
 function logout() {
-    localStorage.removeItem("sessionToken");
     redirectToLogin();
+    return new Response(JSON.stringify({ success: true }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Set-Cookie": [
+                "sessionToken=",
+                "HttpOnly",
+                "Secure",
+                "SameSite=None",
+                "Path=/",
+                "Max-Age=0"
+            ].join("; ")
+        }
+    });
 }
 
 // Send user to login

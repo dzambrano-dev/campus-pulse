@@ -23,14 +23,15 @@ import { user } from "./user.js";
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
 	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-	"Access-Control-Allow-Headers": "Content-Type, Authorization"
+	"Access-Control-Allow-Headers": "Content-Type",
+	"Access-Control-Allow-Credentials": "true"
 }
 
 export default {
 	async fetch(request, env) {
 		// Handle browser preflight request (OPTIONS)
 		if (request.method === "OPTIONS") {
-			return new Response(null, { headers: corsHeaders });
+			return new Response(null, { status: 204, headers: corsHeaders });
 		}
 
 		// Parse the request URL to find the route
@@ -54,13 +55,12 @@ export default {
 };
 
 // Add CORS headers to a response
-// Ensures frontend can access the API
 function addCors(response) {
 	const headers = new Headers(response.headers);
 
 	// Attach all defined CORS headers
 	for (const [k, v] of Object.entries(corsHeaders)) {
-		headers.set(k, v);
+		if (!headers.has(k)) { headers.set(k, v); }
 	}
 
 	// Return a new response with updated headers
