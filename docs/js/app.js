@@ -455,7 +455,9 @@ function initProfileMenu () {
     });
 
     document.addEventListener("click", (event) => {
-        menu.classList.add("hidden");
+        if (!button.contains(event.target) && !menu.contains(event.target)) {
+            menu.classList.add("hidden");
+        }
     });
 
     document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
