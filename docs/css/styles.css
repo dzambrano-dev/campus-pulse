@@ -312,7 +312,8 @@ input:focus {
 }
 
 .event-card {
-    background: white;
+    background: var(--card);
+    color: var(--text);
     border-radius: 18px;
     border: 1px solid var(--border);
     overflow: hidden;
@@ -339,7 +340,8 @@ input:focus {
     position: absolute;
     top: 14px;
     left: 14px;
-    background: white;
+    background: var(--card);
+    color: var(--text);
     border-radius: 12px;
     padding: 6px 14px;
     text-align: center;
@@ -422,7 +424,7 @@ input:focus {
     justify-content: space-around;
     align-items: center;
     border-top: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--card);
     backdrop-filter: blur(12px);
     position: fixed;
     bottom: 0;
@@ -434,7 +436,7 @@ input:focus {
     flex: 1;
     padding: 14px;
     border: none;
-    background: white;
+    background: var(--card);
     font-size: 14px;
     color: var(--text);
     cursor: pointer;
@@ -499,7 +501,8 @@ input:focus {
     max-height: 90vh;
     display: flex;
     flex-direction: column;
-    background: white;
+    background: var(--card);
+    color: var(--text);
     border-radius: 20px;
     margin-bottom: 85px;
     padding: 24px;
@@ -765,4 +768,148 @@ input:focus {
 
 #profile-page {
     padding: 20px;
+}
+
+/* Profile Button */
+
+.profile-button {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: var(--card);
+    color: var(--text);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    z-index: 500;
+}
+
+.profile-menu {
+    position: fixed;
+    top: 64px;
+    right: 16px;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+    background: var(--card);
+    color: var(--text);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 500;
+}
+
+.profile-menu.hidden {
+    display: none;
+}
+
+.menu-item {
+    padding: 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.menu-item:hover {
+    background: #f2f2f2;
+}
+
+/* Dark Mode */
+
+body.dark-mode {
+    --background: #1a1a1a;
+    --card: #2a2a2a;
+    --text: #ffffff;
+    --border: #444;
+}
+
+body.dark-mode .event-date {
+    background: #1f1f1f;
+    border: 1px solid var(--border);
+}
+
+body.dark-mode .menu-item:hover {
+    background: #333;
+}
+
+body.dark-mode .secondary-button {
+    background: rgba(253, 181, 21, 0.15);
+    color: var(--primary-dark);
+    border: 2px solid var(--primary-dark)
+}
+
+body.dark-mode .secondary-button:hover {
+    background: rgba(253, 181, 21, 0.25);
+}
+
+body.dark-mode .event-description {
+    color: #777;
+}
+
+body.dark-mode .event-meta {
+    color: #aaa;
+}
+
+body.dark-mode .tag-bubble {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ccc;
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+    background: #1f1f1f;
+    color: white;
+    border: 1px solid var(--border);
+}
+
+body.dark-mode .tag {
+    background: #2a2a2a;
+    color: #ddd;
+}
+
+body.dark-mode .event-card {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+}
+
+/* Compact UI */
+
+body.compact-ui .event-card {
+    padding: 8px;
+    gap: 8px;
+}
+
+body.compact-ui .event-image-wrapper {
+    display: none;
+}
+
+body.compact-ui .event-date {
+    display: none;
+}
+
+body.compact-ui .event-tags {
+    display: none;
+}
+
+body.compact-ui #events-container {
+    gap: 10px;
+}
+
+body.compact-ui .event-content {
+    padding: 10px;
+}
+
+body.compact-ui .event-title {
+    font-size: 16px;
+}
+
+body.compact-ui .author-meta {
+    display: none;
 }
