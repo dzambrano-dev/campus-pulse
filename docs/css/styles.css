@@ -457,6 +457,10 @@ input:focus {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
+    transform: translateX(-50%);
+    left: 50%;
+    text-align: center;
+    white-space: nowrap;
 }
 
 /* Bottom Navigation Bar */
