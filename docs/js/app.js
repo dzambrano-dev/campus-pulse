@@ -90,7 +90,7 @@ function initNavigation() {
                 setTimeout(() => {
                     if (map) map.invalidateSize();
                     locateUser();
-                    loadMapEvents(true);
+                    loadMapEvents();
                 }, 100);
             }
         });
@@ -233,7 +233,7 @@ function initMap() {
 }
 
 // Fetch events to create pins for
-async function loadMapEvents(showAllPopups = false) {
+async function loadMapEvents() {
     try {
         const endpoint = `${API}/get-events`;
         const response = await fetch(endpoint, {
@@ -243,14 +243,14 @@ async function loadMapEvents(showAllPopups = false) {
         if (!response.ok) return;
 
         const events = await safeJson(response);
-        renderMapMarkers(events, showAllPopups);
+        renderMapMarkers(events);
     } catch (err) {
         console.error("Map event load failed:", err);
     }
 }
 
 // Render map markers
-function renderMapMarkers(events, showAllPopups = false) {
+function renderMapMarkers(events) {
     mapMarkers.forEach(marker => marker.remove());
     mapMarkers = [];
 

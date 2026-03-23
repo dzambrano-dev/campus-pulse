@@ -435,29 +435,20 @@ input:focus {
     height: 100%;
 }
 
-.map-label-popup {
-    animation: fadeIn 0.3s ease;
-}
-
-.map-label-popup .leaflet-popup-content-wrapper {
+.map-label-tooltip {
     background: transparent;
-    box-shadow: none;
     border: none;
-}
-
-.map-label-popup .leaflet-popup-content {
-    margin: 0;
-    font-weight: 600;
-    font-size: 0.9rem;
+    box-shadow: none;
     color: #111;
-    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
 }
 
-.map-label-popup .leaflet-popup-tip {
+.map-label-tooltip::before {
     display: none;
 }
 
-.dark-mode .map-label-popup .leaflet-popup-content {
+.dark-mode .map-label-tooltip {
     color: #fff;
 }
 
