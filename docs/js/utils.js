@@ -5,7 +5,7 @@
 
 
 // API
-const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
+export const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 
 
 // Clear all visible error messages
