@@ -90,7 +90,7 @@ function initNavigation() {
                 setTimeout(() => {
                     if (map) map.invalidateSize();
                     locateUser();
-                    loadMapEvents();
+                    loadMapEvents(true);
                 }, 100);
             }
         });
@@ -233,7 +233,7 @@ function initMap() {
 }
 
 // Fetch events to create pins for
-async function loadMapEvents() {
+async function loadMapEvents(showAllPopups = false) {
     try {
         const endpoint = `${API}/get-events`;
         const response = await fetch(endpoint, {
@@ -243,21 +243,25 @@ async function loadMapEvents() {
         if (!response.ok) return;
 
         const events = await safeJson(response);
-        renderMapMarkers(events);
+        renderMapMarkers(events, showAllPopups);
     } catch (err) {
         console.error("Map event load failed:", err);
     }
 }
 
 // Render map markers
-function renderMapMarkers(events) {
+function renderMapMarkers(events, showAllPopups = false) {
     mapMarkers.forEach(marker => marker.remove());
     mapMarkers = [];
 
     events.forEach(event => {
         if (!event.lat || !event.lng) return;
         const marker = L.marker([event.lat, event.lng]).addTo(map);
-        marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`);
+        const popup = L.popup({ closeButton: false, autoClose, closeOnClick: false, className: "map-label-popup" });
+        popup.setContent(event.title);
+        marker.bindPopup(popup);
+        if (showAllPopups) marker.openPopup();
+            // `<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`);
         mapMarkers.push(marker);
     });
 }
