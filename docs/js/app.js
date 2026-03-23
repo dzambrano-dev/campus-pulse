@@ -257,10 +257,12 @@ function renderMapMarkers(events, showAllPopups = false) {
     events.forEach(event => {
         if (!event.lat || !event.lng) return;
         const marker = L.marker([event.lat, event.lng]).addTo(map);
-        const popup = L.popup({ closeButton: false, autoClose, closeOnClick: false, className: "map-label-popup" });
+        const popup = L.popup({ closeButton: false, autoClose: false, closeOnClick: false, className: "map-label-popup" });
         popup.setContent(event.title);
         marker.bindPopup(popup);
-        if (showAllPopups) marker.openPopup();
+        if (showAllPopups) {
+            setTimeout(() => marker.openPopup(), 50);
+        }
             // `<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`);
         mapMarkers.push(marker);
     });
