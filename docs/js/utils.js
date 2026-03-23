@@ -59,6 +59,7 @@ export async function checkSession() {
     try {
         const endpoint = `${API}/user`
         const response = await fetch(endpoint, { credentials: "include" });
+        if (response.status === 401) return false;  // The user has no token
         return response.ok;
     } catch {
         return false;
