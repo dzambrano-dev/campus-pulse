@@ -39,9 +39,8 @@
 			"id": "7002a1a21a0c43e39b582e256dfd6f41"
 		},
 		{
-			"binding": "RATE_LIMIT_KV",
-			"id": "17801504f9c44b5f9541458178d36482",
-			"preview_id": "a30c638b634a4671ad51534de0dd2a63"
+			"binding": "RATE_LIMITS",
+			"id": "e9d113096a1d4c339ac44d7e40616d60"
 		}
 	]
 }

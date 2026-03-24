@@ -18,7 +18,7 @@ export async function login(request, env) {
 	const ip = request.headers.get("CF-Connecting-IP") ?? "127.0.0.1";
 
 	// Check rate limit BEFORE touching credentials
-	const limitCheck = await checkRateLimit(env.RATE_LIMIT_KV, ip);
+	const limitCheck = await checkRateLimit(env.RATE_LIMITS, ip);
 	if (limitCheck.limited) return rateLimitResponse(limitCheck.retryAfter);
 
 	try {
@@ -39,7 +39,7 @@ export async function login(request, env) {
 			const resolved = await env.EMAILS.get(username);
 			if (!resolved) {
 				// Count as a failed attempt
-				const { limited, retryAfter } = await recordFailedAttempt(env.RATE_LIMIT_KV, ip);
+				const { limited, retryAfter } = await recordFailedAttempt(env.RATE_LIMITS, ip);
 				if (limited) return rateLimitResponse(retryAfter);
 				return jsonError("Invalid username/email or password", 401);
 			}
@@ -49,7 +49,7 @@ export async function login(request, env) {
 		// Retrieve user from KV
 		const storedUser = await env.USERS.get(lookupUsername);
 		if (!storedUser) {
-			const { limited, retryAfter } = await recordFailedAttempt(env.RATE_LIMIT_KV, ip);
+			const { limited, retryAfter } = await recordFailedAttempt(env.RATE_LIMITS, ip);
 			if (limited) return rateLimitResponse(retryAfter);
 			return jsonError("Invalid username or password", 401);
 		}
@@ -59,7 +59,7 @@ export async function login(request, env) {
 		// Hash password and verify it matches stored hash
 		const match = await verifyPassword(password, user.passwordHash);
 		if (!match) {
-			const { limited, retryAfter, remaining } = await recordFailedAttempt(env.RATE_LIMIT_KV, ip);
+			const { limited, retryAfter, remaining } = await recordFailedAttempt(env.RATE_LIMITS, ip);
 			if (limited) return rateLimitResponse(retryAfter);
 			return jsonError(
 				`Invalid username or password. ${remaining} attempt${remaining === 1 ? "" : "s"} remaining.`,
@@ -68,7 +68,7 @@ export async function login(request, env) {
 		}
 
 		// Successful login — clear any recorded failures for this IP
-		await clearRateLimit(env.RATE_LIMIT_KV, ip);
+		await clearRateLimit(env.RATE_LIMITS, ip);
 
 		// Generate and store a session token through cookies
 		const token = crypto.randomUUID();
