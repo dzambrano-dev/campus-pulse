@@ -8,7 +8,7 @@
  * Admin accounts cannot be modified
  */
 
-import { json, jsonError, getSessionUser } from "./utils.js";
+import { json, jsonError, getSessionUser } from "../utils.js";
 
 export async function toggleOrganizer(request, env) {
 	if (request.method !== "POST") return jsonError("Method not allowed", 405);

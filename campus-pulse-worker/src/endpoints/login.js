@@ -2,13 +2,13 @@
  * login.js
  * API call for logins — with brute-force rate limiting.
  */
-import { jsonError, verifyPassword, withSessionCookie } from "./utils.js";
+import { jsonError, verifyPassword, withSessionCookie } from "../utils.js";
 import {
 	checkRateLimit,
 	recordFailedAttempt,
 	clearRateLimit,
 	rateLimitResponse,
-} from "./rateLimit.js";
+} from "../security/rateLimit.js";
 
 export async function login(request, env) {
 	// Only allow POST requests

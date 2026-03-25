@@ -3,7 +3,7 @@
  * API call for looking up user info
  */
 
-import { json, jsonError, getSessionUser } from "./utils.js";
+import { json, jsonError, getSessionUser } from "../utils.js";
 
 export async function user(request, env) {
 	// Only allow GET requests

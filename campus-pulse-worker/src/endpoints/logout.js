@@ -3,7 +3,7 @@
  * API call for logging out
  */
 
-import {json, jsonError, parseCookies} from "./utils.js"
+import {json, jsonError, parseCookies} from "../utils.js"
 
 export async function logout(request, env) {
 	// Only allow POST

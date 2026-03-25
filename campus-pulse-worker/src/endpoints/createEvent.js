@@ -3,7 +3,7 @@
  * API call to generate a new event
  */
 
-import { requireRole, json, jsonError, getSessionUser } from "./utils.js";
+import { requireRole, json, jsonError, getSessionUser } from "../utils.js";
 
 export async function createEvent(request, env) {
 	// Require organizer or admin role

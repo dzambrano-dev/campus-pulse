@@ -3,7 +3,7 @@
  * API call for creating accounts
  */
 
-import { jsonError, hashPassword, withSessionCookie } from "./utils.js"
+import { jsonError, hashPassword, withSessionCookie } from "../utils.js"
 
 export async function signup(request, env) {
 	// Only allow POST requests

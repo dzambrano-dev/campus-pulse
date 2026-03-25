@@ -3,7 +3,7 @@
  * API call for fetching all available interests (tags) on the platform
  */
 
-import { json, jsonError } from "./utils.js"
+import { json, jsonError } from "../utils.js"
 
 export async function getInterests(request, env) {
 	// Only allow GET requests

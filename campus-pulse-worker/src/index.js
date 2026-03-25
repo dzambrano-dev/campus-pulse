@@ -10,15 +10,15 @@
  * API URL: https://campus-pulse-worker.vindictivity.workers.dev/api
  */
 
-import { createEvent } from "./createEvent.js";
-import { getEvents } from "./getEvents.js";
-import { getInterests } from "./getInterests.js";
-import { login } from "./login.js";
-import { logout } from "./logout.js";
-import { toggleOrganizer } from "./toggleOrganizer.js";
-import { signup } from "./signup.js";
-import { updateInterests } from "./updateInterests.js";
-import { user } from "./user.js";
+import { createEvent } from "./endpoints/createEvent.js";
+import { getEvents } from "./endpoints/getEvents.js";
+import { getInterests } from "./endpoints/getInterests.js";
+import { login } from "./endpoints/login.js";
+import { logout } from "./endpoints/logout.js";
+import { toggleOrganizer } from "./endpoints/toggleOrganizer.js";
+import { signup } from "./endpoints/signup.js";
+import { updateInterests } from "./endpoints/updateInterests.js";
+import { user } from "./endpoints/user.js";
 
 
 const corsHeaders = {

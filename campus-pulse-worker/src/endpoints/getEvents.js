@@ -3,7 +3,7 @@
  * API call for fetching events
  */
 
-import { json, jsonError, getSessionUser } from "./utils.js";
+import { json, jsonError, getSessionUser } from "../utils.js";
 
 export async function getEvents(request, env) {
 	// Only allow GET requests
