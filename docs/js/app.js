@@ -127,6 +127,7 @@ async function loadEvents() {
 
 // Create an event card
 function createEventCard(event) {
+    
     const card = document.createElement("div");
     card.className = "event-card";
 
@@ -199,6 +200,10 @@ function createEventCard(event) {
     const clubBtn = document.createElement("button");
     clubBtn.className = "primary-button";
     clubBtn.textContent = "See Details";
+
+    clubBtn.addEventListener("click", () => {
+    window.location.href = `event.html?id=${event.id}`;
+    });
 
     const mapBtn = document.createElement("button");
     mapBtn.className = "tertiary-button";
@@ -511,7 +516,7 @@ async function logout() {
 
 // Format event datetime
 function formatEventTime(timestamp) {
-    const date = new Date(timestamp * 1000);
+    new Date(event.datetime)
     const month = date.toLocaleString("default", { month: "long" });
     const day = date.getDate();
     const time = date.toLocaleString("default", { hour: "numeric", minute: "2-digit", hour12: true });
