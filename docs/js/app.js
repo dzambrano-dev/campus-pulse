@@ -200,10 +200,14 @@ function createEventCard(event) {
     const clubBtn = document.createElement("button");
     clubBtn.className = "primary-button";
     clubBtn.textContent = "See Details";
-
     clubBtn.addEventListener("click", () => {
     window.location.href = `event.html?id=${event.id}`;
     });
+
+    clubBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // prevents parent click interference
+    window.location.href = `event.html?id=${event.id}`;
+});
 
     const mapBtn = document.createElement("button");
     mapBtn.className = "tertiary-button";
