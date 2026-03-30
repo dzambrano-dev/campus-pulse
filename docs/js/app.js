@@ -111,6 +111,8 @@ async function loadEvents() {
 
         const events = await safeJson(eventsResponse);
 
+        console.log(events);
+
         // Clear events container
         const eventsContainer = document.getElementById("events-container");
         eventsContainer.innerHTML = "";
@@ -127,6 +129,11 @@ async function loadEvents() {
 
 // Create an event card
 function createEventCard(event) {
+
+    if (!event || !event.datetime) {
+    console.warn("Bad event:", event);
+    return document.createElement("div"); // skip broken event
+    }
     
     const card = document.createElement("div");
     card.className = "event-card";
