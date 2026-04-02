@@ -112,7 +112,6 @@ async function loadEvents() {
        const data = await safeJson(eventsResponse);
        const events = data.events || data;
 
-       renderMapMarkers(events);
 
        if (!Array.isArray(events)) {
             console.error("Events is not an array:", events);
