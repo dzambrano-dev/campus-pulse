@@ -981,3 +981,26 @@ body.compact-ui .author-meta {
 #profile-page {
     padding: 20px;
 }
+
+.event-detail-card {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.event-detail-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.discord-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #5865F2;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
