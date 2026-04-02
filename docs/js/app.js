@@ -109,8 +109,10 @@ async function loadEvents() {
         // If no events are found, return
         if (!eventsResponse.ok) return;
 
-       const data = await safeJson(eventsResponse);
+       const data = await safeJson(response);
        const events = data.events || data;
+
+       renderMapMarkers(events);
 
        if (!Array.isArray(events)) {
             console.error("Events is not an array:", events);
@@ -125,9 +127,7 @@ async function loadEvents() {
 
         // Create a card for each event
         events.forEach((event,index)=> {
-            console.log("EVENT OBJECT:", event);
-            console.log("EVENT:", event);
-            const card = createEventCard(event);
+            const card = createEventCard(event, index);
             eventsContainer.appendChild(card);
         });
     } catch (err) {
@@ -136,9 +136,8 @@ async function loadEvents() {
 }
 
 // Create an event card
-function createEventCard(event) {
+function createEventCard(event, index) {
 
-    event.date   
     
     const card = document.createElement("div");
     card.className = "event-card";
@@ -212,14 +211,9 @@ function createEventCard(event) {
     const clubBtn = document.createElement("button");
     clubBtn.className = "primary-button";
     clubBtn.textContent = "See Details";
-    clubBtn.addEventListener("click", () => {
-    const eventId = event.id || event.eventId || event._id;
-    window.location.href = `event.html?id=${index}`;
-    });
 
     clubBtn.addEventListener("click", (e) => {
     e.stopPropagation(); // prevents parent click interference
-    const eventId = event.id || event.eventId || event._id;
     window.location.href = `event.html?id=${index}`;
 });
 
