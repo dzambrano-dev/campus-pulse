@@ -214,6 +214,7 @@ function createEventCard(event, index) {
 
     clubBtn.addEventListener("click", (e) => {
     e.stopPropagation(); // prevents parent click interference
+    console.log("click works!");
     window.location.href = `event.html?id=${index}`;
 });
 
