@@ -109,7 +109,7 @@ async function loadEvents() {
         // If no events are found, return
         if (!eventsResponse.ok) return;
 
-       const data = await safeJson(response);
+       const data = await safeJson(eventsResponse);
        const events = data.events || data;
 
        renderMapMarkers(events);
