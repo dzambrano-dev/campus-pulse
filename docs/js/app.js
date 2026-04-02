@@ -212,12 +212,14 @@ function createEventCard(event) {
     clubBtn.className = "primary-button";
     clubBtn.textContent = "See Details";
     clubBtn.addEventListener("click", () => {
-    window.location.href = `event.html?id=${event.id}`;
+    const eventId = event.id || event.eventId || event._id;
+    window.location.href = `event.html?id=${eventId}`;
     });
 
     clubBtn.addEventListener("click", (e) => {
     e.stopPropagation(); // prevents parent click interference
-    window.location.href = `event.html?id=${event.id}`;
+    const eventId = event.id || event.eventId || event._id;
+    window.location.href = `event.html?id=${eventId}`;
 });
 
     const mapBtn = document.createElement("button");
@@ -425,6 +427,7 @@ function initEventMap() {
 
 // Submit the event
 async function submitEvent(event) {
+    const discord = document.getElementById("event-discord").value;
     event.preventDefault();
     const eventError = document.getElementById("event-error");
     clearErrors(eventError);
@@ -466,7 +469,8 @@ async function submitEvent(event) {
         location: location,
         lat: latlng.lat,
         lng: latlng.lng,
-        image: null
+        image: null,
+        discord
     };
 
     try {

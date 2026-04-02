@@ -6,82 +6,23 @@
     <title>Event Details</title>
 
     <link rel="stylesheet" href="css/styles.css">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #0f172a;
-            color: white;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .back-btn {
-            margin-bottom: 20px;
-            display: inline-block;
-            cursor: pointer;
-            color: #38bdf8;
-        }
-
-        .event-card {
-            background: #1e293b;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .event-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .event-content {
-            padding: 20px;
-        }
-
-        .event-title {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .event-meta {
-            color: #94a3b8;
-            margin-bottom: 15px;
-        }
-
-        .event-meta span {
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .event-description {
-            line-height: 1.6;
-        }
-
-        .not-found {
-            text-align: center;
-            margin-top: 100px;
-        }
-    </style>
 </head>
 
-<body>
+<body class="app-body">
 
-<div class="container">
+<div class="app-container">
 
-    <div class="back-btn" onclick="goBack()">← Back to Feed</div>
+    <!-- Back button -->
+    <div style="padding: 15px;">
+        <a href="app.html">← Back to Feed</a>
+    </div>
 
+    <!-- Event content -->
     <div id="event-container"></div>
 
 </div>
 
-<script src="js/event.js"></script>
+<script type="module" src="js/event.js"></script>
 
 </body>
 </html>
