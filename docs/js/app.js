@@ -125,6 +125,7 @@ async function loadEvents() {
 
         // Create a card for each event
         events.forEach(event => {
+            console.log("EVENT OBJECT:", event);
             console.log("EVENT:", event);
             const card = createEventCard(event);
             eventsContainer.appendChild(card);
@@ -277,6 +278,7 @@ function renderMapMarkers(events) {
     mapMarkers = [];
 
     events.forEach(event => {
+        console.log("EVENT OBJECT:", event);
         if (!event.lat || !event.lng) return;
         const marker = L.marker([event.lat, event.lng]).addTo(map);
 
