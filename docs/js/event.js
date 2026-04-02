@@ -7,28 +7,32 @@ function getEventId() {
 }
 
 async function loadEvent() {
-    const id = getEventId();
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
 
-    console.log("Event ID:", id);
+    console.log("Index ID:", id);
 
-    if (!id) {
+    if (id === null) {
         showError("No event ID provided");
         return;
     }
 
     try {
-        const response = await fetch(`${API}/get-event?id=${id}`, {
+        const response = await fetch(`${API}/get-events`, {
             credentials: "include"
         });
 
-        if (!response.ok) {
+        const data = await safeJson(response);
+        const events = data.events || data;
+
+        console.log("All events:", events);
+
+        const event = events[id]; // 👈 THIS IS THE FIX
+
+        if (!event) {
             showError("Event not found");
             return;
         }
-
-        const event = await safeJson(response);
-
-        console.log("Loaded event:", event);
 
         renderEvent(event);
 
