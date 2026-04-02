@@ -109,7 +109,13 @@ async function loadEvents() {
         // If no events are found, return
         if (!eventsResponse.ok) return;
 
-        const events = await safeJson(eventsResponse);
+       const data = await safeJson(eventsResponse);
+       const events = data.events || data;
+
+       if (!Array.isArray(events)) {
+            console.error("Events is not an array:", events);
+            return;
+        }
 
         console.log(events);
 
@@ -119,6 +125,7 @@ async function loadEvents() {
 
         // Create a card for each event
         events.forEach(event => {
+            console.log("EVENT:", event);
             const card = createEventCard(event);
             eventsContainer.appendChild(card);
         });
@@ -130,10 +137,7 @@ async function loadEvents() {
 // Create an event card
 function createEventCard(event) {
 
-    if (!event || !event.datetime) {
-    console.warn("Bad event:", event);
-    return document.createElement("div"); // skip broken event
-    }
+    event.date   
     
     const card = document.createElement("div");
     card.className = "event-card";
@@ -527,10 +531,16 @@ async function logout() {
 
 // Format event datetime
 function formatEventTime(timestamp) {
-    new Date(event.datetime)
+    const date = new Date(timestamp * 1000); // assuming UNIX timestamp
+
     const month = date.toLocaleString("default", { month: "long" });
     const day = date.getDate();
-    const time = date.toLocaleString("default", { hour: "numeric", minute: "2-digit", hour12: true });
+    const time = date.toLocaleString("default", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
+
     return `${month} ${day}, ${time}`;
 }
 
