@@ -35,6 +35,7 @@ export async function createEvent(request, env) {
 		// Generate event ID
 		const eventId = crypto.randomUUID();
 		const event = {
+			id: eventId,
 			title: title,
 			description: description,
 			eventType: eventType,
