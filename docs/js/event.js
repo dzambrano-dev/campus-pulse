@@ -5,74 +5,66 @@ GET EVENT ID FROM URL
 */
 function getEventId() {
     const params = new URLSearchParams(window.location.search);
-    return params.get("id");
+    const id = params.get("id");
+
+    if (!id) {
+        console.warn("No ID in URL");
+        return null;
+    }
+
+    return id.trim();
 }
 
 /*
-LOAD EVENT
+ 
+FETCH EVENTS FROM API
+ 
 */
-async function loadEvent() {
-    const id = getEventId();
-
-    console.log("EVENT PAGE ID:", id);
-
-    if (id === null) {
-        showError("No event ID provided");
-        return;
-    }
-
+async function fetchEvents() {
     try {
-        // Fetch all events
         const response = await fetch(`${API}/get-events`, {
+            method: "GET",
             credentials: "include"
         });
 
         if (!response.ok) {
-            showError("Failed to fetch events");
-            return;
+            throw new Error(`HTTP error: ${response.status}`);
         }
 
         const data = await safeJson(response);
-        const events = data.events || data;
 
-        if (!Array.isArray(events)) {
-            console.error("Invalid events format:", events);
-            showError("Invalid data received");
-            return;
-        }
+        // Cloudflare APIs can vary → normalize
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data.events)) return data.events;
+        if (Array.isArray(data.data)) return data.data;
 
-        console.log("ALL EVENTS:", events);
-
-        /*
-        FIND EVENT
-        */
-
-        let event = null;
-
-        // Try index-based
-        if (!isNaN(id)) {
-            event = events[Number(id)];
-        }
-
-        // Fallback: try real ID match
-        if (!event) {
-            event = events.find(e => {
-                const possibleId = e.id || e.eventId || e._id || e.key;
-                return String(possibleId) === String(id);
-            });
-        }
-
-        if (!event) {
-            showError("Event not found");
-            return;
-        }
-
-        renderEvent(event);
+        console.error("Unexpected API format:", data);
+        return null;
 
     } catch (err) {
-        console.error("Event load failed:", err);
-        showError("Something went wrong loading the event");
+        console.error("Fetch failed:", err);
+        return null;
     }
+}
+
+/*
+ 
+FIND EVENT (STRICT MATCH ONLY)
+ 
+*/
+function findEvent(events, id) {
+    if (!Array.isArray(events)) return null;
+
+    return events.find(event => {
+        const possibleId =
+            event.id ||
+            event.eventId ||
+            event._id ||
+            event.key ||
+            event.uuid;
+
+        return String(possibleId) === String(id);
+    });
 }
 
 /*
@@ -81,19 +73,30 @@ RENDER EVENT
 function renderEvent(event) {
     const container = document.getElementById("event-container");
 
-    // safe defaults
+    // Safe defaults
     const title = event.title || "Untitled Event";
     const description = event.description || "No description available.";
     const location = event.location || "Unknown location";
     const createdBy = event.createdBy || "unknown";
-    const image = event.image || "assets/eventImages/default.png";
 
-    // date formatting
+    const image =
+        event.image ||
+        event.imageUrl ||
+        "assets/eventImages/default.png";
+
+    // Handle multiple datetime formats
     let formattedDate = "Date not available";
+
     if (event.datetime) {
-        const date = new Date(event.datetime * 1000);
-        formattedDate = date.toLocaleString();
+        if (typeof event.datetime === "number") {
+            // assume UNIX seconds
+            formattedDate = new Date(event.datetime * 1000).toLocaleString();
+        } else {
+            // assume ISO string
+            formattedDate = new Date(event.datetime).toLocaleString();
+        }
     }
+    const tags = Array.isArray(event.tags) ? event.tags : [];
 
     container.innerHTML = `
         <div class="event-detail-card">
@@ -109,7 +112,7 @@ function renderEvent(event) {
             <p class="event-description">${description}</p>
 
             <div class="event-tags">
-                ${(event.tags || []).map(tag =>
+                ${tags.map(tag =>
                     `<span class="tag-bubble">${toTitleCase(tag)}</span>`
                 ).join("")}
             </div>
@@ -148,7 +151,7 @@ function showError(message) {
 }
 
 /*
-HELPER: TITLE CASE
+HELPER
 */
 function toTitleCase(str) {
     return str
@@ -160,4 +163,35 @@ function toTitleCase(str) {
 /*
 INIT
 */
+async function loadEvent() {
+    const id = getEventId();
+
+    console.log("EVENT ID:", id);
+
+    if (!id) {
+        showError("No event ID provided");
+        return;
+    }
+
+    const events = await fetchEvents();
+
+    console.log("EVENTS FROM API:", events);
+
+    if (!events) {
+        showError("Failed to load events");
+        return;
+    }
+
+    const event = findEvent(events, id);
+
+    console.log("MATCHED EVENT:", event);
+
+    if (!event) {
+        showError("Event not found");
+        return;
+    }
+
+    renderEvent(event);
+}
+
 loadEvent();
