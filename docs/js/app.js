@@ -212,10 +212,24 @@ function createEventCard(event, index) {
     clubBtn.textContent = "See Details";
 
     clubBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // prevents parent click interference
-    console.log("click works!");
-    window.location.href = `event.html?id=${index}`;
-});
+        e.stopPropagation();
+
+        // extract real ID from Cloudflare event object
+        const eventId =
+            event.id ||
+            event._id ||
+            event.eventId ||
+            event.key ||
+            event.uuid;
+        console.log("CLICKED EVENT:", event);
+        console.log("USING EVENT ID:", eventId);
+
+        if (!eventId) {
+            console.error("No valid event ID found on event:", event);
+            return;
+        }
+        window.location.href = `event.html?id=${eventId}`;
+    });
 
     const mapBtn = document.createElement("button");
     mapBtn.className = "tertiary-button";
