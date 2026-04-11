@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Beach Pulse - discover events, connect with the community, and explore your university.">
+    <title>Beach Pulse</title>
+    <link rel="icon" type="image/x-icon" href="">  <!-- Icon -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script defer type="module" src="js/app.js"></script>
+</head>
+<body class="app-body">
+<div class="app-container">
+    <!-- Content container -->
+    <section id="events-page" class="app-page active"><div id="events-container"></div></section>
+    <section id="map-page" class="app-page"><div id="map"></div></section>
+</div>
+<!-- Profile Button -->
+<button id="profile-button" class="profile-button">👤</button>
+<!-- Profile Dropdown -->
+<div id="profile-menu" class="profile-menu hidden">
+    <button class="menu-item">Profile</button>
+    <button class="menu-item" id="toggle-theme">Toggle Dark Mode</button>
+    <button class="menu-item" id="toggle-ui">Toggle UI Mode</button>
+    <button class="menu-item" id="logout-button">Logout</button>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="bottom-nav">
+    <button class="nav-button active" data-page="events-page">Events</button>
+    <button class="nav-button" data-page="map-page">Map</button>
+</nav>
+<!-- Event Creation Modal -->
+<div class="event-modal hidden" id="event-modal">
+    <div class="event-sheet">
+        <h2 class="event-header">Create an Event</h2>
+        <div class="event-body">
+            <form id="event-form">
+                <input id="event-title" placeholder="Event Title" required>
+                <textarea id="event-description" placeholder="Description" maxlength="500" required></textarea>
+                <label>Event Type</label>
+                <select id="event-type" required>
+                    <option value="" disabled selected>Select event type</option>
+                    <option value="alert">Alert</option>
+                    <option value="academic">Academic</option>
+                    <option value="athletic">Athletic</option>
+                    <option value="career">Career</option>
+                    <option value="organization">Organization</option>
+                    <option value="social">Social</option>
+                </select>
+                <label>Tags</label>
+                <!-- Tags are injected through the API -->
+                <div id="event-tags" class="tag-container"></div>
+                <label>Date</label>
+                <input type="date" id="event-date" required>
+                <label>Time</label>
+                <input type="time" id="event-time" required>
+                <input id="event-location" placeholder="Location" required>
+                <label>Click map to place a pin</label>
+                <div id="event-map" class="event-map"></div>
+                <label>Event Image</label>
+                <input type="file" id="event-image" accept="image/*">
+                <div class="error" id="event-error"></div>
+                <div class="event-actions">
+                    <button type="submit" class="primary-button" id="submit-event-button">Create</button>
+                    <button type="button" class="secondary-button" id="cancel-event-button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

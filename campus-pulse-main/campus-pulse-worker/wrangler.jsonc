@@ -1,0 +1,53 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "campus-pulse-worker",
+	"main": "src/index.js",
+	"compatibility_date": "2026-03-01",
+	"observability": {
+		"enabled": true
+	},
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+
+	"vars": {
+		"MS_CLIENT_ID": "6d09abad-0363-4dbf-b260-6dd103d85e0c",
+		"MS_TENANT_ID": "d175679b-acd3-4644-be82-af041982977a",
+		"MS_REDIRECT_URI": "https://campus-pulse-worker.vindictivity.workers.dev/api/auth/callback"
+	},
+
+	"kv_namespaces": [
+		{
+			"binding": "USERS",
+			"id": "913118715ca54781a04612c731d6bd7a"
+		},
+		{
+			"binding": "EMAILS",
+			"id": "5c1adbc5f26a43dd982b52aa1801be32"
+		},
+		{
+			"binding": "SESSIONS",
+			"id": "2fd0a51593794f91ba28ddac54507686"
+		},
+		{
+			"binding": "EVENTS",
+			"id": "dd552a4e2ad34508beb10ddf1a54e0d2"
+		},
+		{
+			"binding": "INTERESTS",
+			"id": "2524b166e31f46d1925560b950f8c72b"
+		},
+		{
+			"binding": "EVENTS_INDEX",
+			"id": "7002a1a21a0c43e39b582e256dfd6f41"
+		},
+		{
+			"binding": "RATE_LIMITS",
+			"id": "e9d113096a1d4c339ac44d7e40616d60"
+		}
+	]
+}

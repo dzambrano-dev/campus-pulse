@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beach Pulse</title>
+    <link rel="icon" type="image/x-icon" href="">  <!-- Icon -->
+    <link rel="stylesheet" href="css/styles.css">
+    <script defer type="module" src="js/login.js"></script>
+</head>
+<body>
+    <div class="login-container active" id="login-card">
+        <h2>Beach Pulse Login</h2>
+        <img class="brand" src="assets/images/CSULB_brand.png" alt="CSULB brand">
+        <form id="login-form">
+            <input id="username" type="text" placeholder="Username or Email" autocomplete="username" autofocus>
+            <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+            <div class="error" id="login-error"></div>
+            <div class="button-row">
+                <button type="submit" class="primary-button" id="login-button">Login</button>
+                <button type="button" class="outlook-button" id="outlook-login-button">
+                    <img src="assets/images/outlook_icon.png" alt=""> Sign in with Outlook
+                </button>
+                <button type="button" class="secondary-button" id="signup-button">Sign Up</button>
+            </div>
+        </form>
+    </div>
+    <div class="login-container" id="signup-card">
+        <h2>Beach Pulse Signup</h2>
+        <img class="brand" src="assets/images/CSULB_brand.png" alt="CSULB brand">
+        <form id="signup-form">
+            <input id="signup-username" type="text" placeholder="Username" autocomplete="username">
+            <input id="signup-email" type="email" placeholder="Email" autocomplete="email">
+            <input id="signup-password" type="password" placeholder="Password" autocomplete="new-password">
+            <div class="error" id="signup-error"></div>
+           <div class="button-row">
+                <button type="submit" class="primary-button" id="login-button">Login</button>
+                <button type="button" class="outlook-button" id="outlook-login-button">
+                    <img src="assets/images/outlook_icon.png" alt=""> Sign in with Outlook
+                </button>
+                <button type="button" class="secondary-button" id="signup-button">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
