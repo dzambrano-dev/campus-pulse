@@ -461,72 +461,68 @@ input:focus {
     padding: 0 !important;
 }
 
-/* Bottom Navigation Bar */
+/* Bottom navbar */
+.bottom-nav{
+    height:76px;
+    width:100%;
 
-.bottom-nav {
-    height: var(--nav-height);
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    border-top: 1px solid var(--border);
-    background: var(--card);
-    backdrop-filter: blur(12px);
-    position: fixed;
-    bottom: 0;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
-    z-index: 400;
+    position:fixed;
+    bottom:0;
+    left:0;
+
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+
+    background:white;
+    border-top:1px solid #ececec;
+    box-shadow:0 -4px 14px rgba(0,0,0,.06);
 }
 
+/* Buttons */
 .nav-button{
     flex:1;
-    height:100%;
     border:none;
     background:transparent;
+
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
-    gap:4px;
-    font-size:12px;
-    font-weight:600;
-    color:var(--text);
-    cursor:pointer;
-    transition:all 0.2s ease;
 }
 
+/* Bigger icons */
 .nav-icon{
-    width:22px;
-    height:22px;
+    width:34px;
+    height:34px;
     object-fit:contain;
+    opacity:1;
 }
 
-.nav-button.active{
-    color:var(--primary);
+/* Active page */
+.nav-button.active .nav-icon{
+    transform:scale(1.08);
 }
 
+/* Center create button */
 .create-button{
-    width:64px;
-    height:64px;
-    min-width:64px;
+    width:70px;
+    height:70px;
+    min-width:70px;
     flex:none;
 
     border-radius:50%;
-    background:var(--primary);
-    color:white;
+    background:#FDB515;
 
-    transform:translateY(-16px);
+    transform:translateY(-18px);
 
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    gap:2px;
+    box-shadow:0 10px 18px rgba(0,0,0,.14);
+}
 
-    padding:0;
-
-    box-shadow:0 8px 18px rgba(0,0,0,.15);
+/* White icon inside gold circle */
+.create-button .nav-icon{
+    width:34px;
+    height:34px;
+    filter:brightness(0) invert(1);
 }
 
 .create-button .nav-icon{
