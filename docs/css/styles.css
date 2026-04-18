@@ -507,17 +507,16 @@ input:focus {
 }
 
 .create-button{
-    position:relative;
-    width:64px !important;
-    height:64px !important;
+    width:64px;
+    height:64px;
     min-width:64px;
-    flex:none !important;
+    flex:none;
 
     border-radius:50%;
     background:var(--primary);
     color:white;
 
-    transform:translateY(-18px);
+    transform:translateY(-16px);
 
     display:flex;
     flex-direction:column;
@@ -525,8 +524,9 @@ input:focus {
     align-items:center;
     gap:2px;
 
-    box-shadow:0 8px 18px rgba(0,0,0,.18);
     padding:0;
+
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
 }
 
 .create-button .nav-icon{
@@ -556,34 +556,6 @@ input:focus {
 .nav-button:active {
     color: var(--primary);
     font-weight: 600;
-}
-
-.floating-nav-button {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    border: none;
-    background: var(--primary);
-    color: white;
-    font-size: 24px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
-    z-index: 0;
-    transition: transform 0.15s ease, background 0.2s;
-    backdrop-filter: blur(6px);
-}
-
-.floating-nav-button:hover {
-    background: var(--primary-dark);
-    transform: translateX(-50%) scale(1.10);
 }
 
 /* Event Creation */

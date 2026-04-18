@@ -346,23 +346,27 @@ function locateUser() {
 
 // Generate addEvent button
 function initCreateEventButton() {
-    // Only show button to admins and organizers
+
+    // only admins / organizers
     if (!["organizer", "admin"].includes(currentRole)) return;
 
-    const nav = document.querySelector(".bottom-nav");
+    const addEventButton =
+        document.getElementById("open-event-modal");
 
-    const addEventButton = document.createElement("button");
-    addEventButton.textContent = "+";
-    addEventButton.classList.add("floating-nav-button");
-    addEventButton.id = "add-event-button";
+    if (!addEventButton) return;
 
-    addEventButton.addEventListener("click", openCreateEvent);
-    nav.appendChild(addEventButton);
+    addEventButton.addEventListener(
+        "click",
+        openCreateEvent
+    );
 
-    const closeEventButton = document.getElementById("cancel-event-button");
-    closeEventButton.addEventListener("click", closeCreateEvent);
+    document
+        .getElementById("cancel-event-button")
+        .addEventListener("click", closeCreateEvent);
 
-    document.getElementById("event-form").addEventListener("submit", submitEvent);
+    document
+        .getElementById("event-form")
+        .addEventListener("submit", submitEvent);
 }
 
 // Open create event modal
@@ -513,6 +517,10 @@ async function submitEvent(event) {
 function initProfileMenu () {
     const menu = document.getElementById("profile-menu");
     const button = document.getElementById("profile-button");
+
+    document
+    .getElementById("go-profile")
+    .addEventListener("click", goProfile);
 
     document.addEventListener("click", (event) => {
         const clickedButton = button.contains(event.target);
