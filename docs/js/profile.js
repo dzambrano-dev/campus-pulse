@@ -1,87 +1,120 @@
-// Runs when page fully loads
+// Wait until page fully loads
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Pull stored Microsoft email
-    let email = localStorage.getItem("userEmail");
+    // Load saved profile data
+    loadProfile();
 
-    // If not signed in, redirect home
-    if (!email) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    // Load saved username if it exists
-    let savedUsername = localStorage.getItem("publicUsername");
-
-    if (savedUsername) {
-        document.getElementById("username").value = savedUsername;
-    } else {
-        // Auto-generate username from email
-        document.getElementById("username").value =
-            generateDefaultUsername(email);
-    }
-
-    // Profile picture preview handling
+    // Listen for image uploads
     document
         .getElementById("pfpUpload")
-        .addEventListener("change", previewProfilePicture);
+        .addEventListener("change", previewImage);
 });
 
 
-// Generates username from email
-// john.smith27@student.csulb.edu
-// becomes @j.smith27
-function generateDefaultUsername(email) {
 
-    let firstPart = email.split("@")[0];
-    let parts = firstPart.split(".");
+  
+   /*Load Existing Profile Data*/
+   
+function loadProfile() {
 
-    if (parts.length >= 2) {
-        return "@" + parts[0][0] + "." + parts[1];
+    // Load saved username
+    const savedUsername =
+        localStorage.getItem("publicUsername");
+
+    // Load saved image
+    const savedImage =
+        localStorage.getItem("profilePicture");
+
+    // Username input
+    const usernameInput =
+        document.getElementById("username");
+
+    // Profile image
+    const avatar =
+        document.getElementById("pfpPreview");
+
+
+    // If username exists, show it
+    if (savedUsername) {
+        usernameInput.value = savedUsername;
     }
 
-    return "@" + firstPart;
+    // If image exists, show it
+    if (savedImage) {
+        avatar.src = savedImage;
+    }
 }
 
 
-// Reserved usernames users cannot use
+
+  
+  /* Live Image Preview*/
+   
+function previewImage(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        // Show image preview
+        document.getElementById(
+            "pfpPreview"
+        ).src = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+}
+
+
+
+  
+   /*Reserved Usernames*/
+   
 function isReservedUsername(name) {
 
     const reserved = [
-        "@admin",
-        "@administrator",
-        "@staff",
-        "@support",
-        "@official",
-        "@csulb",
-        "@moderator",
-        "@campuspulse"
+        "admin",
+        "staff",
+        "support",
+        "official",
+        "moderator",
+        "csulb",
+        "beachpulse"
     ];
 
-    return reserved.includes(name.toLowerCase());
+    return reserved.includes(
+        name.toLowerCase()
+    );
 }
 
 
-// Save profile info
+
+  
+   /*Save Profile*/
+   
 function saveProfile() {
 
-    let username =
-        document.getElementById("username")
-        .value
-        .trim();
+    const usernameInput =
+        document.getElementById("username");
 
-    // Require username
+    const avatar =
+        document.getElementById("pfpPreview");
+
+    let username =
+        usernameInput.value.trim();
+
+
+    // Empty username check
     if (username === "") {
         alert("Username cannot be empty.");
         return;
     }
 
-    // Force @ symbol
-    if (!username.startsWith("@")) {
-        username = "@" + username;
-    }
-
-    // Check reserved names
+    // Reserved username check
     if (isReservedUsername(username)) {
         alert("That username is reserved.");
         return;
@@ -93,31 +126,11 @@ function saveProfile() {
         username
     );
 
+    // Save profile image
+    localStorage.setItem(
+        "profilePicture",
+        avatar.src
+    );
+
     alert("Profile updated successfully.");
-}
-
-
-// Preview uploaded profile picture
-function previewProfilePicture(event) {
-
-    const file = event.target.files[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-
-        // Show preview image
-        document.getElementById("pfpPreview").src =
-            e.target.result;
-
-        // Save image locally
-        localStorage.setItem(
-            "profilePicture",
-            e.target.result
-        );
-    };
-
-    reader.readAsDataURL(file);
 }
