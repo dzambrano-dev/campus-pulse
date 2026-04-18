@@ -331,9 +331,11 @@ input:focus {
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.event-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+@media (hover:hover){
+  .event-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 12px 30px rgba(0,0,0,.12);
+  }
 }
 
 .event-image-wrapper {
@@ -477,15 +479,56 @@ input:focus {
     z-index: 400;
 }
 
-.nav-button {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    background: var(--card);
-    font-size: 14px;
-    color: var(--text);
-    cursor: pointer;
-    transition: background 0.2s;
+.nav-button{
+    flex:1;
+    height:100%;
+    border:none;
+    background:transparent;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--text);
+    cursor:pointer;
+    transition:all 0.2s ease;
+}
+
+.nav-icon{
+    width:22px;
+    height:22px;
+    object-fit:contain;
+}
+
+.nav-button.active{
+    color:var(--primary);
+}
+
+.create-button{
+    transform:translateY(-12px);
+    background:var(--primary);
+    color:white;
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    box-shadow:0 8px 18px rgba(0,0,0,.18);
+}
+
+.create-button .nav-icon{
+    width:26px;
+    height:26px;
+}
+
+.create-button span{
+    font-size:11px;
+}
+
+/*profile sizing */
+.profile-button img{
+    width:20px;
+    height:20px;
 }
 
 .nav-button:hover {
