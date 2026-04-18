@@ -1,40 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beach Pulse</title>
-    <link rel="icon" type="image/x-icon" href="">  <!-- Icon -->
+
+    <!-- Browser Tab Icon -->
+    <link rel="icon"
+          type="image/png"
+          href="assets/images/mainlogo_00000.png">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Login JS -->
     <script defer type="module" src="js/login.js"></script>
 </head>
+
 <body>
+
+    <!-- LOGIN CARD -->
     <div class="login-container active" id="login-card">
+
+        <!-- App Logo -->
+        <img class="app-logo"
+             src="assets/images/mainlogo_00000.png"
+             alt="Beach Pulse Logo">
+
         <h2>Beach Pulse Login</h2>
-        <img class="brand" src="assets/images/CSULB_brand.png" alt="CSULB brand">
+
+        <!-- CSULB Branding -->
+        <img class="brand"
+             src="assets/images/CSULB_brand.png"
+             alt="CSULB Brand">
+
         <form id="login-form">
-            <input id="username" type="text" placeholder="Username or Email" autocomplete="username" autofocus>
-            <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+
+            <input id="username"
+                   type="text"
+                   placeholder="Username or Email"
+                   autocomplete="username"
+                   autofocus>
+
+            <input id="password"
+                   type="password"
+                   placeholder="Password"
+                   autocomplete="current-password">
+
             <div class="error" id="login-error"></div>
+
             <div class="button-row">
-                <button type="submit" class="primary-button" id="login-button">Login</button>
-                <button type="button" class="secondary-button" id="signup-button">Sign Up</button>
+
+                <button type="submit"
+                        class="primary-button"
+                        id="login-button">
+                    Login
+                </button>
+
+                <button type="button"
+                        class="secondary-button"
+                        id="signup-button">
+                    Sign Up
+                </button>
+
             </div>
+
         </form>
     </div>
+
+
+    <!-- SIGNUP CARD -->
     <div class="login-container" id="signup-card">
+
+        <!-- App Logo -->
+        <img class="app-logo"
+             src="assets/images/mainlogo_00000.png"
+             alt="Beach Pulse Logo">
+
         <h2>Beach Pulse Signup</h2>
-        <img class="brand" src="assets/images/CSULB_brand.png" alt="CSULB brand">
+
+        <img class="brand"
+             src="assets/images/CSULB_brand.png"
+             alt="CSULB Brand">
+
         <form id="signup-form">
-            <input id="signup-username" type="text" placeholder="Username" autocomplete="username">
-            <input id="signup-email" type="email" placeholder="Email" autocomplete="email">
-            <input id="signup-password" type="password" placeholder="Password" autocomplete="new-password">
+
+            <input id="signup-username"
+                   type="text"
+                   placeholder="Username">
+
+            <input id="signup-email"
+                   type="email"
+                   placeholder="Email">
+
+            <input id="signup-password"
+                   type="password"
+                   placeholder="Password">
+
             <div class="error" id="signup-error"></div>
+
             <div class="button-row">
-                <button type="submit" class="primary-button" id="signup-submit-button">Create Account</button>
-                <button type="button" class="secondary-button" id="back-button">Back</button>
+
+                <button type="submit"
+                        class="primary-button"
+                        id="signup-submit-button">
+                    Create Account
+                </button>
+
+                <button type="button"
+                        class="secondary-button"
+                        id="back-button">
+                    Back
+                </button>
+
             </div>
+
         </form>
+
     </div>
+
 </body>
 </html>

@@ -1,47 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Basic page settings -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Beach Pulse - discover events, connect with the community, and explore your university.">
+
+    <!-- SEO / description -->
+    <meta name="description"
+          content="Beach Pulse - discover events, connect with the community, and explore your university.">
+
     <title>Beach Pulse</title>
-    <link rel="icon" type="image/x-icon" href="">  <!-- Icon -->
+
+    <!-- Browser tab icon -->
+    <link rel="icon"
+          type="image/png"
+          href="assets/images/mainlogo_00000.png">
+
+    <!-- Main stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <!-- Leaflet Map JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Main App Logic -->
     <script defer type="module" src="js/app.js"></script>
 </head>
+
 <body class="app-body">
+
 <div class="app-container">
-    <!-- Content container -->
-    <section id="events-page" class="app-page active"><div id="events-container"></div></section>
-    <section id="map-page" class="app-page"><div id="map"></div></section>
+     
+    <!-- EVENTS PAGE -->
+    <!-- Main event feed screen -->
+    <section id="events-page" class="app-page active">
+
+        <!-- Events injected with JavaScript -->
+        <div id="events-container"></div>
+
+    </section>
+
+    <!-- MAP PAGE -->
+    <!-- Campus map screen -->
+    <section id="map-page" class="app-page">
+
+        <!-- Leaflet map loads here -->
+        <div id="map"></div>
+
+    </section>
+
 </div>
-<!-- Profile Button -->
-<button id="profile-button" class="profile-button">👤</button>
-<!-- Profile Dropdown -->
-<div id="profile-menu" class="profile-menu hidden">
-    <button class="menu-item">Profile</button>
-    <button class="menu-item" id="toggle-theme">Toggle Dark Mode</button>
-    <button class="menu-item" id="toggle-ui">Toggle UI Mode</button>
-    <button class="menu-item" id="logout-button">Logout</button>
+
+<!-- PROFILE BUTTON -->
+<!-- Top-right profile icon -->
+<button id="profile-button"
+        class="profile-button">
+
+    <img src="assets/images/Profile_00000.png"
+         alt="Profile"
+         class="icon-sm">
+
+</button>
+ 
+<!-- PROFILE DROPDOWN MENU -->
+<!-- Opens when profile clicked -->
+ 
+<div id="profile-menu"
+     class="profile-menu hidden">
+
+    <button class="menu-item">
+        My Profile
+    </button>
+
+    <button class="menu-item"
+            id="toggle-theme">
+        Toggle Dark Mode
+    </button>
+
+    <button class="menu-item"
+            id="toggle-ui">
+        Toggle UI Mode
+    </button>
+
+    <button class="menu-item"
+            id="logout-button">
+        Logout
+    </button>
 </div>
-<!-- Bottom Navigation Bar -->
+ 
+<!-- BOTTOM NAVIGATION BAR -->
+<!-- Mobile style navigation -->
+ 
 <nav class="bottom-nav">
-    <button class="nav-button active" data-page="events-page">Events</button>
-    <button class="nav-button" data-page="map-page">Map</button>
+
+    <!-- Events Feed -->
+    <button class="nav-button active"
+            data-page="events-page">
+
+        <img src="assets/images/feed_00000.png"
+             alt="Feed"
+             class="icon-sm">
+
+        <span>Events</span>
+
+    </button>
+
+
+    <!-- Map Page -->
+    <button class="nav-button"
+            data-page="map-page">
+
+        <img src="assets/images/Map_00000.png"
+             alt="Map"
+             class="icon-sm">
+
+        <span>Map</span>
+
+    </button>
+
+
+    <!-- Create Event -->
+    <button class="nav-button"
+            id="open-event-modal">
+
+        <img src="assets/images/eventadd_00000.png"
+             alt="Add Event"
+             class="icon-sm">
+
+        <span>Create</span>
+
+    </button>
+
 </nav>
-<!-- Event Creation Modal -->
-<div class="event-modal hidden" id="event-modal">
+
+<!-- EVENT CREATION MODAL -->
+<!-- Slide-up form window -->
+<div class="event-modal hidden"
+     id="event-modal">
+
     <div class="event-sheet">
-        <h2 class="event-header">Create an Event</h2>
+
+        <!-- Modal Header -->
+        <h2 class="event-header">
+            Create an Event
+        </h2>
+
+
         <div class="event-body">
+
             <form id="event-form">
-                <input id="event-title" placeholder="Event Title" required>
-                <textarea id="event-description" placeholder="Description" maxlength="500" required></textarea>
+
+                <!-- Event Title -->
+                <input id="event-title"
+                       placeholder="Event Title"
+                       required>
+
+                <!-- Event Description -->
+                <textarea id="event-description"
+                          placeholder="Description"
+                          maxlength="500"
+                          required></textarea>
+
+                <!-- Event Type -->
                 <label>Event Type</label>
+
                 <select id="event-type" required>
-                    <option value="" disabled selected>Select event type</option>
+                    <option value="" disabled selected>
+                        Select event type
+                    </option>
+
                     <option value="alert">Alert</option>
                     <option value="academic">Academic</option>
                     <option value="athletic">Athletic</option>
@@ -49,26 +180,63 @@
                     <option value="organization">Organization</option>
                     <option value="social">Social</option>
                 </select>
+
+                <!-- Tags inserted by JS -->
                 <label>Tags</label>
-                <!-- Tags are injected through the API -->
-                <div id="event-tags" class="tag-container"></div>
+                <div id="event-tags"
+                     class="tag-container"></div>
+
+                <!-- Date -->
                 <label>Date</label>
-                <input type="date" id="event-date" required>
+                <input type="date"
+                       id="event-date"
+                       required>
+
+                <!-- Time -->
                 <label>Time</label>
-                <input type="time" id="event-time" required>
-                <input id="event-location" placeholder="Location" required>
+                <input type="time"
+                       id="event-time"
+                       required>
+
+                <!-- Location -->
+                <input id="event-location"
+                       placeholder="Location"
+                       required>
+
+                <!-- Mini map for pin drop -->
                 <label>Click map to place a pin</label>
-                <div id="event-map" class="event-map"></div>
+                <div id="event-map"
+                     class="event-map"></div>
+
+                <!-- Upload event image -->
                 <label>Event Image</label>
-                <input type="file" id="event-image" accept="image/*">
-                <div class="error" id="event-error"></div>
+                <input type="file"
+                       id="event-image"
+                       accept="image/*">
+
+                <!-- Error messages -->
+                <div class="error"
+                     id="event-error"></div>
+
+                <!-- Action buttons -->
                 <div class="event-actions">
-                    <button type="submit" class="primary-button" id="submit-event-button">Create</button>
-                    <button type="button" class="secondary-button" id="cancel-event-button">Cancel</button>
+
+                    <button type="submit"
+                            class="primary-button"
+                            id="submit-event-button">
+                        Create
+                    </button>
+
+                    <button type="button"
+                            class="secondary-button"
+                            id="cancel-event-button">
+                        Cancel
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 </body>
 </html>

@@ -1004,3 +1004,17 @@ body.compact-ui .author-meta {
     text-decoration: none;
     font-weight: bold;
 }
+
+/*ADDING ICONS*/
+.app-logo{
+    width:70px;
+    height:70px;
+    display:block;
+    margin:0 auto 10px auto;
+}
+
+.brand{
+    width:180px;
+    display:block;
+    margin:10px auto 20px auto;
+}
