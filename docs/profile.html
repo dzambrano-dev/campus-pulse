@@ -1,64 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Basic settings -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>My Profile</title>
 
     <!-- Main stylesheet -->
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Optional page-specific styles -->
+    <link rel="stylesheet" href="css/profile.css">
 </head>
 
-<body>
+<body class="profile-body">
 
-    <!-- Main profile container -->
-    <div class="profile-box">
+    <!-- Main profile card -->
+    <div class="profile-card">
 
-        <h1>My Profile</h1>
+        <!-- Page title -->
+        <h1 class="profile-title">My Profile</h1>
 
-        <!-- Default profile picture preview -->
-        <img
-            id="pfpPreview"
-            src="assets/default-avatar.png"
-            alt="Profile Picture"
-            class="avatar"
-        >
+        <!-- Avatar section -->
+        <div class="avatar-section">
 
-        <!-- Upload new profile picture -->
-        <input
-            type="file"
-            id="pfpUpload"
-            accept="image/*"
-        >
+            <!-- Current profile picture -->
+            <img
+                id="pfpPreview"
+                src="assets/images/default-avatar.png"
+                alt="Profile Picture"
+                class="profile-avatar"
+            >
 
-        <!-- Public username users can customize -->
-        <label for="username">Public Username</label>
+            <!-- Upload image -->
+            <input
+                type="file"
+                id="pfpUpload"
+                accept="image/*"
+            >
+        </div>
 
-        <input
-            type="text"
-            id="username"
-            placeholder="@j.smith"
-            maxlength="20"
-        >
+        <!-- Username section -->
+        <div class="profile-field">
 
-        <!-- Small helper text -->
-        <p class="note">
+            <label for="username">Public Username</label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="@j.smith"
+                maxlength="20"
+            >
+        </div>
+
+        <!-- Helper text -->
+        <p class="profile-note">
             Your school email stays private.
         </p>
 
-        <!-- Microsoft verification note -->
-        <p class="connected">
+        <p class="profile-note">
             Connected with CSULB Microsoft Account
         </p>
 
-        <!-- Save profile changes -->
-        <button onclick="saveProfile()">
+        <!-- Save button -->
+        <button onclick="saveProfile()" class="primary-button">
             Save Changes
         </button>
 
     </div>
 
-    <!-- Profile logic -->
+    <!-- JS -->
     <script src="assets/js/profile.js"></script>
 
 </body>

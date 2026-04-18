@@ -750,6 +750,74 @@ select:focus {
     display: none;
 }
 
+/* Page background */
+.profile-body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f4f4f4;
+    padding:20px;
+}
+
+/* Main card */
+.profile-card{
+    width:100%;
+    max-width:420px;
+    background:white;
+    border-radius:18px;
+    padding:32px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+/* Title */
+.profile-title{
+    text-align:center;
+    margin-bottom:24px;
+    color:#2B2B2B;
+}
+
+/* Avatar area */
+.avatar-section{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    margin-bottom:24px;
+}
+
+/* Circular avatar */
+.profile-avatar{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #FDB515;
+    background:#eee;
+}
+
+/* Form field block */
+.profile-field{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+/* Labels */
+.profile-field label{
+    font-weight:600;
+    color:#2B2B2B;
+}
+
+/* Notes */
+.profile-note{
+    font-size:14px;
+    color:#666;
+    margin-bottom:10px;
+    text-align:center;
+}
+
 .menu-item {
     padding: 10px;
     border: none;
