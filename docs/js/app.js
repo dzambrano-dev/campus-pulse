@@ -594,3 +594,7 @@ function toggleTheme() {
 function toggleUI() {
     document.body.classList.toggle("compact-ui");
 }
+
+function goProfile(){
+    window.location.href = "profile.html";
+}

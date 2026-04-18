@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+
+    <!-- Main profile container -->
+    <div class="profile-box">
+
+        <h1>My Profile</h1>
+
+        <!-- Default profile picture preview -->
+        <img
+            id="pfpPreview"
+            src="assets/default-avatar.png"
+            alt="Profile Picture"
+            class="avatar"
+        >
+
+        <!-- Upload new profile picture -->
+        <input
+            type="file"
+            id="pfpUpload"
+            accept="image/*"
+        >
+
+        <!-- Public username users can customize -->
+        <label for="username">Public Username</label>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="@j.smith"
+            maxlength="20"
+        >
+
+        <!-- Small helper text -->
+        <p class="note">
+            Your school email stays private.
+        </p>
+
+        <!-- Microsoft verification note -->
+        <p class="connected">
+            Connected with CSULB Microsoft Account
+        </p>
+
+        <!-- Save profile changes -->
+        <button onclick="saveProfile()">
+            Save Changes
+        </button>
+
+    </div>
+
+    <!-- Profile logic -->
+    <script src="assets/js/profile.js"></script>
+
+</body>
+</html>
