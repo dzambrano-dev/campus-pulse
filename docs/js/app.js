@@ -595,6 +595,7 @@ function toggleUI() {
     document.body.classList.toggle("compact-ui");
 }
 
+//make profile clicakble 
 function goProfile(){
     window.location.href = "profile.html";
 }
