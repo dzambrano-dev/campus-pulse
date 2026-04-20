@@ -8,17 +8,14 @@ function getEventId() {
     const id = params.get("id");
 
     if (!id) {
-        console.warn("No ID in URL");
+        console.warn("No ID found in URL");
         return null;
     }
-
     return id.trim();
 }
 
 /*
- 
 FETCH EVENTS FROM API
- 
 */
 async function fetchEvents() {
     try {
@@ -28,29 +25,26 @@ async function fetchEvents() {
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
+            throw new Error(`HTTP Error: ${response.status}`);
         }
 
         const data = await safeJson(response);
 
-        // Cloudflare APIs can vary → normalize
+        // Normalize possible API shapes
         if (Array.isArray(data)) return data;
         if (Array.isArray(data.events)) return data.events;
         if (Array.isArray(data.data)) return data.data;
 
-        console.error("Unexpected API format:", data);
+        console.error("Unexpected API response:", data);
         return null;
 
-    } catch (err) {
-        console.error("Fetch failed:", err);
+    } catch (error) {
+        console.error("Failed to fetch events:", error);
         return null;
     }
 }
-
 /*
- 
-FIND EVENT (STRICT MATCH ONLY)
- 
+FIND EVENT BY ID
 */
 function findEvent(events, id) {
     if (!Array.isArray(events)) return null;
@@ -68,12 +62,62 @@ function findEvent(events, id) {
 }
 
 /*
-RENDER EVENT
+FORMAT DATE
+*/
+function formatDate(datetime) {
+    if (!datetime) return "Date not available";
+
+    try {
+        if (typeof datetime === "number") {
+            return new Date(datetime * 1000).toLocaleString();
+        }
+
+        return new Date(datetime).toLocaleString();
+
+    } catch {
+        return "Date not available";
+    }
+}
+
+/*
+RENDER DISCORD BUTTON
+*/
+function renderDiscord(event) {
+    if (!event.discord) return "";
+
+    return `
+        <a
+            href="${event.discord}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="discord-button"
+        >
+            Join Discord
+        </a>
+    `;
+}
+
+/*
+RENDER TAGS
+*/
+function renderTags(tags) {
+    if (!Array.isArray(tags) || tags.length === 0) return "";
+
+    return `
+        <div class="event-tags">
+            ${tags.map(tag =>
+                `<span class="tag-bubble">${toTitleCase(tag)}</span>`
+            ).join("")}
+        </div>
+    `;
+}
+
+/*
+RENDER EVENT PAGE
 */
 function renderEvent(event) {
     const container = document.getElementById("event-container");
 
-    // Safe defaults
     const title = event.title || "Untitled Event";
     const description = event.description || "No description available.";
     const location = event.location || "Unknown location";
@@ -84,79 +128,69 @@ function renderEvent(event) {
         event.imageUrl ||
         "assets/eventImages/default.png";
 
-    // Handle multiple datetime formats
-    let formattedDate = "Date not available";
-
-    if (event.datetime) {
-        if (typeof event.datetime === "number") {
-            // assume UNIX seconds
-            formattedDate = new Date(event.datetime * 1000).toLocaleString();
-        } else {
-            // assume ISO string
-            formattedDate = new Date(event.datetime).toLocaleString();
-        }
-    }
+    const formattedDate = formatDate(event.datetime);
     const tags = Array.isArray(event.tags) ? event.tags : [];
 
     container.innerHTML = `
         <div class="event-detail-card">
 
-            <img src="${image}" class="event-detail-image"/>
+            <img 
+                src="${image}" 
+                alt="${title}"
+                class="event-detail-image"
+            >
 
-            <h1>${title}</h1>
+            <div class="event-detail-content">
 
-            <p><strong>Location:</strong> ${location}</p>
-            <p><strong>Date:</strong> ${formattedDate}</p>
-            <p><strong>Posted by:</strong> @${createdBy}</p>
+                <h1 class="event-title">${title}</h1>
 
-            <p class="event-description">${description}</p>
+                <div class="event-meta">
+                    <p><strong>📍 Location:</strong> ${location}</p>
+                    <p><strong>📅 Date:</strong> ${formattedDate}</p>
+                    <p><strong>👤 Posted by:</strong> @${createdBy}</p>
+                </div>
 
-            <div class="event-tags">
-                ${tags.map(tag =>
-                    `<span class="tag-bubble">${toTitleCase(tag)}</span>`
-                ).join("")}
+                <p class="event-description">
+                    ${description}
+                </p>
+
+                ${renderTags(tags)}
+
+                <div class="event-actions">
+                    ${renderDiscord(event)}
+                </div>
+
             </div>
-
-            ${renderDiscord(event)}
 
         </div>
     `;
 }
 
 /*
-DISCORD BUTTON
-*/
-function renderDiscord(event) {
-    if (!event.discord) return "";
-
-    return `
-        <a href="${event.discord}" target="_blank" class="discord-button">
-            Join Discord
-        </a>
-    `;
-}
-
-/*
-ERROR HANDLING
+SHOW ERROR
 */
 function showError(message) {
     const container = document.getElementById("event-container");
-
     container.innerHTML = `
-        <div style="padding: 40px; text-align: center;">
+        <div class="event-error">
             <h2>${message}</h2>
-            <a href="app.html">← Back to Feed</a>
+            <a href="app.html" class="back-button">
+                ← Back to Feed
+            </a>
         </div>
     `;
 }
 
 /*
-HELPER
+HELPER: TITLE CASE
 */
 function toTitleCase(str) {
     return str
         .split(" ")
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .map(word =>
+            word.charAt(0).toUpperCase() +
+            word.slice(1).toLowerCase()
+        )
         .join(" ");
 }
 
@@ -166,32 +200,22 @@ INIT
 async function loadEvent() {
     const id = getEventId();
 
-    console.log("EVENT ID:", id);
-
     if (!id) {
-        showError("No event ID provided");
+        showError("No event ID provided.");
         return;
     }
 
     const events = await fetchEvents();
-
-    console.log("EVENTS FROM API:", events);
-
     if (!events) {
-        showError("Failed to load events");
+        showError("Failed to load events.");
         return;
     }
 
     const event = findEvent(events, id);
-
-    console.log("MATCHED EVENT:", event);
-
     if (!event) {
-        showError("Event not found");
+        showError("Event not found.");
         return;
     }
-
     renderEvent(event);
 }
-
 loadEvent();

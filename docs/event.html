@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Details</title>
+    <title>Event Details | Campus Pulse</title>
 
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -12,15 +12,27 @@
 
 <div class="app-container">
 
-    <!-- Back button -->
-    <div style="padding: 15px;">
-        <a href="app.html">← Back to Feed</a>
-    </div>
+    <!-- Header -->
+    <header class="event-header">
 
-    <!-- Event content -->
-    <div id="event-container">
-        <p style="text-align:center; padding: 40px;">Loading event...</p>
-    </div>
+        <a href="app.html" class="back-btn">
+            ← Back to Feed
+        </a>
+
+    </header>
+
+    <!-- Event Details Injected by JS -->
+    <main class="event-main">
+
+        <section id="event-container" class="event-container">
+
+            <div class="loading-state">
+                <p>Loading event...</p>
+            </div>
+
+        </section>
+
+    </main>
 
 </div>
 
