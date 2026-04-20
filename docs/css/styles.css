@@ -1217,10 +1217,43 @@ body.compact-ui .author-meta {
 
 /*ADDING ICONS*/
 .app-logo{
-    width:70px;
-    height:70px;
+    width:180%;
+    max-width:220px;
+    height:auto;
+
     display:block;
-    margin:0 auto 10px auto;
+    margin:0 auto 12px auto;
+}
+
+/* new title */
+.login-title-wrap{
+    text-align:center;
+    margin-bottom:18px;
+}
+
+.brand-main{
+    margin:0;
+    font-size:44px;
+    line-height:1;
+    color:#1f1f1f;
+    font-weight:800;
+    letter-spacing:-0.03em;
+
+    font-family:
+        "Georgia",
+        "Times New Roman",
+        serif;
+}
+
+.brand-sub{
+    margin-top:6px;
+    font-size:22px;
+    font-weight:600;
+    color:#555;
+
+    font-family:
+        Arial,
+        sans-serif;
 }
 
 .brand{
