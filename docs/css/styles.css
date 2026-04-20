@@ -1167,8 +1167,9 @@ body.compact-ui .author-meta {
     box-shadow:0 3px 8px rgba(0,0,0,.25);
 }
 
-.marker.main{
-    background:red;
+/* ALERT */
+.marker.alert{
+    background:#ef4444;
     clip-path: polygon(
         50% 0%,
         61% 35%,
@@ -1183,7 +1184,14 @@ body.compact-ui .author-meta {
     );
 }
 
-.marker.sports{
+/* ACADEMIC */
+.marker.academic{
+    background:#7c3aed;
+    border-radius:50%;
+}
+
+/* ATHLETIC */
+.marker.athletic{
     background:#2563eb;
     clip-path: polygon(
         50% 0%,
@@ -1192,6 +1200,24 @@ body.compact-ui .author-meta {
     );
 }
 
-.marker.club{
+/* CAREER */
+.marker.career{
+    background:#16a34a;
+    clip-path: polygon(
+        50% 0%,
+        100% 50%,
+        50% 100%,
+        0% 50%
+    );
+}
+
+/* ORGANIZATION */
+.marker.organization{
     background:#FDB515;
+}
+
+/* SOCIAL */
+.marker.social{
+    background:#ec4899;
+    border-radius:8px;
 }

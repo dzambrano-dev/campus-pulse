@@ -280,6 +280,16 @@ async function loadMapEvents() {
     }
 }
 
+// for icons on map
+function getEventIcon(type){
+    return L.divIcon({
+        className: "map-marker",
+        html: `<div class="marker ${type}"></div>`,
+        iconSize: [26,26],
+        iconAnchor: [13,13]
+    });
+}
+
 // Render map markers
 function renderMapMarkers(events) {
     mapMarkers.forEach(marker => marker.remove());
@@ -288,7 +298,10 @@ function renderMapMarkers(events) {
     events.forEach(event => {
         console.log("EVENT OBJECT:", event);
         if (!event.lat || !event.lng) return;
-        const marker = L.marker([event.lat, event.lng]).addTo(map);
+        const marker = L.marker(
+            [event.lat, event.lng],
+            { icon: getEventIcon(event.type) }
+        ).addTo(map);
 
         // Create a tooltip
         marker.bindTooltip(event.title, {
