@@ -282,9 +282,14 @@ async function loadMapEvents() {
 
 // for icons on map
 function getEventIcon(type){
+    const cleanType = (type || "organization")
+        .toString()
+        .trim()
+        .toLowerCase();
+
     return L.divIcon({
         className: "map-marker",
-        html: `<div class="marker ${type}"></div>`,
+        html: `<div class="marker ${cleanType}"></div>`,
         iconSize: [26,26],
         iconAnchor: [13,13]
     });
