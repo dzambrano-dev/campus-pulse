@@ -1127,3 +1127,34 @@ body.compact-ui .author-meta {
     display:block;
     margin:10px auto 20px auto;
 }
+
+/* map stuff */
+.map-popup-card{
+    min-width:220px;
+}
+
+.map-popup-card h3{
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.map-popup-card p{
+    margin:4px 0;
+    font-size:14px;
+}
+
+.popup-event-btn{
+    margin-top:10px;
+    width:100%;
+    border:none;
+    border-radius:8px;
+    padding:10px;
+    background:#FDB515;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.popup-event-btn:hover{
+    background:#E5A100;
+}

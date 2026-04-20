@@ -299,8 +299,18 @@ function renderMapMarkers(events) {
         });
 
         // Create popups for each pin
-        marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`);
-
+        marker.bindPopup(`
+        <div class="map-popup-card">
+            <h3>${event.title}</h3>
+            <p>${event.location}</p>
+            <p>${formatEventTime(event.datetime)}</p>
+            <button
+                class="popup-event-btn"
+                onclick="window.location.href='event.html?id=${event.id}'">
+                View Event
+            </button>
+        </div>
+        `);
         // Hide label when popup opens
         marker.on("popupopen", () => {
             marker.unbindTooltip();
