@@ -88,7 +88,7 @@ function renderDiscord(event) {
             rel="noopener noreferrer"
             class="discord-button"
         >
-            Join Discord
+            Discord Link
         </a>
     `;
 }
