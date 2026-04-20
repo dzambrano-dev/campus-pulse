@@ -855,6 +855,40 @@ select:focus {
     margin:18px 0 24px 0;
 }
 
+/* Back button */
+
+.profile-back-button{
+    position:fixed;
+    top:20px;
+    left:20px;
+    width:auto;
+    padding:10px 14px;
+    border-radius:12px;
+    background:white;
+    box-shadow:0 6px 16px rgba(0,0,0,.08);
+    z-index:10;
+}
+
+/* Upload row */
+
+.upload-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.upload-label{
+    width:auto;
+    padding:10px 14px;
+    cursor:pointer;
+}
+
+#fileNameLabel{
+    font-size:14px;
+    color:#777;
+}
+
 /* Username status */
 
 #usernameStatus{

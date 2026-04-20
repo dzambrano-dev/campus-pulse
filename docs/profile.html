@@ -4,6 +4,7 @@
 <head>
     <!-- Basic settings -->
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -17,7 +18,7 @@
         href="css/styles.css"
     >
 
-    <!-- Optional page-specific styles -->
+    <!-- Page stylesheet -->
     <link
         rel="stylesheet"
         href="css/profile.css"
@@ -26,18 +27,26 @@
 
 <body class="profile-body">
 
+    <!-- Back button -->
+    <button
+        class="profile-back-button"
+        onclick="window.location.href='app.html'"
+    >
+        ← Back to App
+    </button>
+
+
+
     <!-- Main profile card -->
     <div class="profile-card">
 
         <!-- Header -->
         <div class="profile-header">
 
-            <!-- Page title -->
             <h1 class="profile-title">
                 My Profile
             </h1>
 
-            <!-- Small subtitle -->
             <p class="profile-note">
                 Manage your public campus profile
             </p>
@@ -49,7 +58,7 @@
         <!-- Avatar section -->
         <div class="avatar-section">
 
-            <!-- Current profile picture -->
+            <!-- Profile image -->
             <img
                 id="pfpPreview"
                 src="assets/images/default-avatar.png"
@@ -57,27 +66,34 @@
                 class="profile-avatar"
             >
 
-            <!-- Upload image -->
-            <input
-                type="file"
-                id="pfpUpload"
-                accept="image/*"
-            >
+            <!-- Upload controls -->
+            <div class="upload-row">
 
-            <!-- Reset image -->
-            <button
-                type="button"
-                class="secondary-button"
-                onclick="resetProfileImage()"
-            >
-                Remove Photo
-            </button>
+                <label
+                    for="pfpUpload"
+                    class="secondary-button upload-label"
+                >
+                    Update Photo
+                </label>
+
+                <span id="fileNameLabel">
+                    No file chosen
+                </span>
+
+                <input
+                    type="file"
+                    id="pfpUpload"
+                    accept="image/*"
+                    hidden
+                >
+
+            </div>
 
         </div>
 
 
 
-        <!-- Username section -->
+        <!-- Username -->
         <div class="profile-field">
 
             <label for="username">
@@ -87,12 +103,11 @@
             <input
                 type="text"
                 id="username"
-                placeholder="@j_smith"
                 maxlength="20"
+                placeholder="@j_smith"
                 autocomplete="off"
             >
 
-            <!-- Live username status -->
             <small
                 id="usernameStatus"
                 class="profile-note"
@@ -104,7 +119,7 @@
 
 
 
-        <!-- Info block -->
+        <!-- Info box -->
         <div class="profile-info">
 
             <p class="profile-note">
@@ -119,40 +134,17 @@
 
 
 
-        <!-- Action buttons -->
-        <div class="button-row">
-
-            <!-- Save button -->
-            <button
-                onclick="saveProfile()"
-                class="primary-button"
-            >
-                Save Changes
-            </button>
-
-            <!-- Reset button -->
-            <button
-                type="button"
-                onclick="resetProfile()"
-                class="secondary-button"
-            >
-                Reset
-            </button>
-
-        </div>
-
-
-
-        <!-- Back button -->
+        <!-- Save button -->
         <button
-            type="button"
-            class="tertiary-button"
-            onclick="window.location.href='app.html'"
+            onclick="saveProfile()"
+            class="primary-button"
         >
-            Back to App
+            Save Changes
         </button>
 
     </div>
+
+
 
     <!-- JS -->
     <script src="assets/js/profile.js"></script>
