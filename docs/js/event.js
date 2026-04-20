@@ -10,62 +10,84 @@ const discordLinks = {
 function getEventId() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
+
     return id ? id.trim() : null;
 }
 
 // fetch events
 async function fetchEvents() {
     try {
-        const res = await fetch(`${API}/get-events`, {
+        const response = await fetch(`${API}/get-events`, {
             method: "GET",
             credentials: "include"
         });
 
-        if (!res.ok) throw new Error(res.status);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
 
-        const data = await safeJson(res);
+        const data = await safeJson(response);
 
         if (Array.isArray(data)) return data;
         if (Array.isArray(data.events)) return data.events;
         if (Array.isArray(data.data)) return data.data;
 
         return null;
-    } catch (err) {
-        console.error("fetch failed", err);
+
+    } catch (error) {
+        console.error("fetch failed", error);
         return null;
     }
 }
 
-// find event
+// find matching event
 function findEvent(events, id) {
-    return events.find(e => {
-        const eid = e.id || e.eventId || e._id || e.key || e.uuid;
-        return String(eid) === String(id);
+    if (!Array.isArray(events)) return null;
+
+    return events.find(event => {
+        const eventId =
+            event.id ||
+            event.eventId ||
+            event._id ||
+            event.key ||
+            event.uuid;
+
+        return String(eventId) === String(id);
     });
 }
 
 // format date
-function formatDate(dt) {
-    if (!dt) return "Date not available";
+function formatDate(datetime) {
+    if (!datetime) return "Date not available";
 
-    if (typeof dt === "number") {
-        return new Date(dt * 1000).toLocaleString();
+    try {
+        if (typeof datetime === "number") {
+            return new Date(datetime * 1000).toLocaleString();
+        }
+
+        return new Date(datetime).toLocaleString();
+
+    } catch {
+        return "Date not available";
     }
-
-    return new Date(dt).toLocaleString();
 }
 
 // discord button
 function renderDiscord(event) {
     const link =
         event.discord ||
-        discordLinks[event.id] ||
+        discordLinks[String(event.id)] ||
         discordLinks[event.title];
 
     if (!link) return "";
 
     return `
-        <a href="${link}" target="_blank" rel="noopener noreferrer" class="discord-button">
+        <a
+            href="${link}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="discord-button"
+        >
             Join Discord
         </a>
     `;
@@ -73,38 +95,55 @@ function renderDiscord(event) {
 
 // tags
 function renderTags(tags) {
-    if (!tags?.length) return "";
+    if (!Array.isArray(tags) || tags.length === 0) return "";
 
     return `
         <div class="event-tags">
-            ${tags.map(t => `<span class="tag-bubble">${toTitleCase(t)}</span>`).join("")}
+            ${tags.map(tag =>
+                `<span class="tag-bubble">${toTitleCase(tag)}</span>`
+            ).join("")}
         </div>
     `;
 }
 
-// render page
+// render event page
 function renderEvent(event) {
     const container = document.getElementById("event-container");
 
-    const image = event.image || event.imageUrl || "assets/eventImages/default.png";
+    if (!container) return;
+
+    const title = event.title || "Untitled Event";
+    const image =
+        event.image ||
+        event.imageUrl ||
+        "assets/eventImages/default.png";
+
+    const location = event.location || "Unknown";
+    const createdBy = event.createdBy || "unknown";
+    const description =
+        event.description || "No description available.";
 
     container.innerHTML = `
         <div class="event-detail-card">
 
-            <img src="${image}" class="event-detail-image"/>
+            <img
+                src="${image}"
+                alt="${title}"
+                class="event-detail-image"
+            >
 
             <div class="event-detail-content">
 
-                <h1 class="event-title">${event.title || "Untitled Event"}</h1>
+                <h1 class="event-title">${title}</h1>
 
                 <div class="event-meta">
-                    <p><strong>Location:</strong> ${event.location || "Unknown"}</p>
+                    <p><strong>Location:</strong> ${location}</p>
                     <p><strong>Date:</strong> ${formatDate(event.datetime)}</p>
-                    <p><strong>Posted by:</strong> @${event.createdBy || "unknown"}</p>
+                    <p><strong>Posted by:</strong> @${createdBy}</p>
                 </div>
 
                 <p class="event-description">
-                    ${event.description || "No description available."}
+                    ${description}
                 </p>
 
                 ${renderTags(event.tags || [])}
@@ -112,37 +151,58 @@ function renderEvent(event) {
                 ${renderDiscord(event)}
 
             </div>
+
         </div>
     `;
 }
 
-// error state
-function showError(msg) {
-    document.getElementById("event-container").innerHTML = `
+// error message
+function showError(message) {
+    const container = document.getElementById("event-container");
+
+    if (!container) return;
+
+    container.innerHTML = `
         <div class="event-error">
-            <h2>${msg}</h2>
-            <a href="app.html">← Back</a>
+            <h2>${message}</h2>
+            <a href="app.html" class="back-btn">← Back</a>
         </div>
     `;
 }
 
 // helper
 function toTitleCase(str) {
-    return str.split(" ")
-        .map(w => w[0].toUpperCase() + w.slice(1))
+    return str
+        .split(" ")
+        .map(word =>
+            word.charAt(0).toUpperCase() +
+            word.slice(1).toLowerCase()
+        )
         .join(" ");
 }
 
 // init
 async function loadEvent() {
     const id = getEventId();
-    if (!id) return showError("No event ID");
+
+    if (!id) {
+        showError("No event ID");
+        return;
+    }
 
     const events = await fetchEvents();
-    if (!events) return showError("Failed to load events");
+
+    if (!events) {
+        showError("Failed to load events");
+        return;
+    }
 
     const event = findEvent(events, id);
-    if (!event) return showError("Event not found");
+
+    if (!event) {
+        showError("Event not found");
+        return;
+    }
 
     renderEvent(event);
 }
