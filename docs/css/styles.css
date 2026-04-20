@@ -508,19 +508,20 @@ input:focus {
     width:72px;
     height:72px;
     min-width:72px;
-    border-radius:50%;
 
-    background:transparent;   /* IMPORTANT */
+    background:none !important;
     border:none;
-
-    transform:translateY(-18px);
+    border-radius:50%;
 
     display:flex;
     justify-content:center;
     align-items:center;
 
-    box-shadow:none;
     padding:0;
+    margin:0;
+
+    transform:translateY(-18px);
+    box-shadow:none;
 }
 
 .create-button .nav-icon{
