@@ -520,7 +520,7 @@ input:focus {
     padding:0;
     margin:0;
 
-    transform:translateY(-18px);
+    transform:translateY(-12px);
     box-shadow:none;
 }
 
