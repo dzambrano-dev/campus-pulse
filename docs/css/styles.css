@@ -465,13 +465,9 @@ input:focus {
 .bottom-nav{
     height:76px;
     width:100%;
-
     position:fixed;
     bottom:0;
     left:0;
-    width: 100%;
-
-    z-index: 9999;
 
     display:flex;
     justify-content:space-around;
@@ -480,6 +476,9 @@ input:focus {
     background:white;
     border-top:1px solid #ececec;
     box-shadow:0 -4px 14px rgba(0,0,0,.06);
+
+    z-index:9999;
+    overflow: visible;
 }
 
 /* Buttons */
