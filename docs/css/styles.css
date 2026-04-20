@@ -1159,22 +1159,35 @@ body.compact-ui .author-meta {
     background:#E5A100;
 }
 
-/* Leaflet popup shell */
-.leaflet-popup-content-wrapper{
-    background:#ffffff !important;
+/* Entire popup container */
+.leaflet-popup{
     opacity:1 !important;
+}
+
+/* Outer white card */
+.leaflet-popup-content-wrapper{
+    background:#fff !important;
     border-radius:18px !important;
-    box-shadow:0 10px 25px rgba(0,0,0,.18) !important;
+    box-shadow:0 12px 28px rgba(0,0,0,.18) !important;
+    padding:0 !important;
+    overflow:hidden !important;
 }
 
-/* Bottom popup tip arrow */
-.leaflet-popup-tip{
-    background:#ffffff !important;
-}
-
-/* Inner spacing */
+/* Inner content */
 .leaflet-popup-content{
     margin:0 !important;
+    background:#fff !important;
+}
+
+/* Arrow pointer */
+.leaflet-popup-tip{
+    background:#fff !important;
+    box-shadow:none !important;
+}
+
+/* Remove weird transparent borders */
+.leaflet-popup-tip-container{
+    filter:none !important;
 }
 
 /*icons on map specific */
