@@ -1,4 +1,12 @@
 import { API, safeJson } from "./utils.js";
+import { API, safeJson } from "./utils.js";
+
+const discordLinks = {
+    "12": "https://discord.gg/cyberclub",
+    "15": "https://discord.gg/chessclub"
+};
+
+const link = event.discord || discordLinks[event.id];
 
 /*
 GET EVENT ID FROM URL
@@ -61,6 +69,7 @@ function findEvent(events, id) {
     });
 }
 
+
 /*
 FORMAT DATE
 */
@@ -83,16 +92,18 @@ function formatDate(datetime) {
 RENDER DISCORD BUTTON
 */
 function renderDiscord(event) {
-    if (!event.discord) return "";
+    const link =
+        event.discord ||
+        discordLinks[event.title];
+
+    if (!link) return "";
 
     return `
-        <a
-            href="${event.discord}"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="discord-button"
-        >
-            Join Discord
+        <a href="${link}"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="discord-button">
+           Join Discord
         </a>
     `;
 }
