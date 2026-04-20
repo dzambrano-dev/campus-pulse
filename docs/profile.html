@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Basic settings -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>My Profile</title>
 
     <!-- Main stylesheet -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
 
     <!-- Optional page-specific styles -->
-    <link rel="stylesheet" href="css/profile.css">
+    <link
+        rel="stylesheet"
+        href="css/profile.css"
+    >
 </head>
 
 <body class="profile-body">
@@ -19,8 +29,22 @@
     <!-- Main profile card -->
     <div class="profile-card">
 
-        <!-- Page title -->
-        <h1 class="profile-title">My Profile</h1>
+        <!-- Header -->
+        <div class="profile-header">
+
+            <!-- Page title -->
+            <h1 class="profile-title">
+                My Profile
+            </h1>
+
+            <!-- Small subtitle -->
+            <p class="profile-note">
+                Manage your public campus profile
+            </p>
+
+        </div>
+
+
 
         <!-- Avatar section -->
         <div class="avatar-section">
@@ -39,33 +63,93 @@
                 id="pfpUpload"
                 accept="image/*"
             >
+
+            <!-- Reset image -->
+            <button
+                type="button"
+                class="secondary-button"
+                onclick="resetProfileImage()"
+            >
+                Remove Photo
+            </button>
+
         </div>
+
+
 
         <!-- Username section -->
         <div class="profile-field">
 
-            <label for="username">Public Username</label>
+            <label for="username">
+                Public Username
+            </label>
 
             <input
                 type="text"
                 id="username"
-                placeholder="@j.smith"
+                placeholder="@j_smith"
                 maxlength="20"
+                autocomplete="off"
             >
+
+            <!-- Live username status -->
+            <small
+                id="usernameStatus"
+                class="profile-note"
+            >
+                Choose a unique username
+            </small>
+
         </div>
 
-        <!-- Helper text -->
-        <p class="profile-note">
-            Your school email stays private.
-        </p>
 
-        <p class="profile-note">
-            Connected with CSULB Microsoft Account
-        </p>
 
-        <!-- Save button -->
-        <button onclick="saveProfile()" class="primary-button">
-            Save Changes
+        <!-- Info block -->
+        <div class="profile-info">
+
+            <p class="profile-note">
+                Your school email stays private.
+            </p>
+
+            <p class="profile-note">
+                Connected with CSULB Microsoft Account
+            </p>
+
+        </div>
+
+
+
+        <!-- Action buttons -->
+        <div class="button-row">
+
+            <!-- Save button -->
+            <button
+                onclick="saveProfile()"
+                class="primary-button"
+            >
+                Save Changes
+            </button>
+
+            <!-- Reset button -->
+            <button
+                type="button"
+                onclick="resetProfile()"
+                class="secondary-button"
+            >
+                Reset
+            </button>
+
+        </div>
+
+
+
+        <!-- Back button -->
+        <button
+            type="button"
+            class="tertiary-button"
+            onclick="window.location.href='app.html'"
+        >
+            Back to App
         </button>
 
     </div>
