@@ -1159,6 +1159,24 @@ body.compact-ui .author-meta {
     background:#E5A100;
 }
 
+/* Leaflet popup shell */
+.leaflet-popup-content-wrapper{
+    background:#ffffff !important;
+    opacity:1 !important;
+    border-radius:18px !important;
+    box-shadow:0 10px 25px rgba(0,0,0,.18) !important;
+}
+
+/* Bottom popup tip arrow */
+.leaflet-popup-tip{
+    background:#ffffff !important;
+}
+
+/* Inner spacing */
+.leaflet-popup-content{
+    margin:0 !important;
+}
+
 /*icons on map specific */
 .marker{
     width:24px;
