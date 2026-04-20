@@ -1116,10 +1116,12 @@ body.compact-ui .author-meta {
 
 /*ADDING ICONS*/
 .app-logo{
-    width:70px;
-    height:70px;
+    width:100%;
+    max-width:170px;
+    height:auto;
     display:block;
     margin:0 auto 10px auto;
+    transform:scale(1.45);
 }
 
 .brand{
