@@ -378,8 +378,7 @@ function initCreateEventButton() {
     // only admins / organizers
     if (!["organizer", "admin"].includes(currentRole)) return;
 
-    const addEventButton =
-        document.getElementById("open-event-modal");
+    const addEventButton = document.getElementById("open-event-modal");
 
     if (!addEventButton) return;
 
@@ -388,13 +387,8 @@ function initCreateEventButton() {
         openCreateEvent
     );
 
-    document
-        .getElementById("cancel-event-button")
-        .addEventListener("click", closeCreateEvent);
-
-    document
-        .getElementById("event-form")
-        .addEventListener("submit", submitEvent);
+    document.getElementById("cancel-event-button").addEventListener("click", closeCreateEvent);
+    document.getElementById("event-form").addEventListener("submit", submitEvent);
 }
 
 // Open create event modal

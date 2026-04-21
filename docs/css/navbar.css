@@ -1,28 +1,38 @@
 /* Navigation bar */
 
-.bottom-nav {
+.navigation-bar {
     height: var(--nav-height);
     width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
     background: white;
     border-top: 1px solid var(--primary-soft);
     box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.06);
     z-index: 9999;
-    overflow: visible;
 }
 
 .nav-button {
-    flex: 1;
-    border: none;
-    background: transparent;
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
+    background: transparent;
+    border: none;
+    position: relative;
+}
+
+.nav-button:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.nav-button.active {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.nav-button:active {
+    background: rgba(0, 0, 0, 0.08);
 }
 
 .nav-icon {
@@ -37,55 +47,33 @@
 }
 
 .create-button {
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    width: 64px;
+    height: 64px;
     background: none !important;
     border: none;
     border-radius: 50%;
-    display: flex;
     justify-content: center;
     align-items: center;
     padding: 0;
     margin: 0;
-    transform: translateY(-12px);
+    transform: translateX(-50%);
     box-shadow: none;
-    position: relative;
     z-index: 10000;
 }
 
 .create-button .nav-icon {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    filter: none;
+    width: 48px;
+    height: 48px;
 }
 
-.create-button .nav-icon {
-    width: 250%;
-    height: 250%;
-    object-fit: contain;
+.create-button:hover {
+    transform: translateX(-50%) translateY(-2px);
 }
 
-.create-button span {
-    font-size: 10px;
-    margin: 0;
-}
-
-.settings-button img {
-    width: 20px;
-    height: 20px;
-}
-
-.nav-button {
-    background: transparent;
-}
-
-.nav-button:hover {
-    background: rgba(0, 0, 0, 0.03);
-}
-
-.nav-button:active {
-    color: var(--primary);
-    font-weight: 600;
+.create-button:active {
+    transform: translateX(-50%) scale(0.95);
 }
