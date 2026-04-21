@@ -484,6 +484,9 @@
 }
 
 .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
     padding: 10px 14px;
     border-radius: 10px;
@@ -503,6 +506,19 @@
 
 .menu-item:active {
     transform: scale(0.98);
+}
+.menu-item img {
+    height: 18px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+    opacity: 0.8;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.menu-item:hover img {
+    opacity: 1;
+    transform: scale(1.05);
 }
 
 /* Dark Mode */
