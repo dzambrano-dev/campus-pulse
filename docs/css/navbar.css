@@ -25,7 +25,7 @@
     transition: transform 0.15s ease;
 }
 
-.nav-button:not(.create-button):hover {
+.nav-button:hover {
     transform: translateY(-2px);
     background: rgba(0, 0, 0, 0.03);
 }

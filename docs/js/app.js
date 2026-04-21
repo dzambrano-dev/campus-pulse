@@ -379,7 +379,7 @@ function initCreateEventButton() {
 
     // Create button
     const button = document.createElement("button");
-    button.className = "nav-button create-event-button";
+    button.className = "create-event-button";
     button.id = "open-event-modal";
 
     // Create image
