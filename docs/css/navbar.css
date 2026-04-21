@@ -21,10 +21,12 @@
     background: transparent;
     border: none;
     position: relative;
-    padding: 6px;
+    margin: 6px 40px;
+    transition: translate 0.15s ease;
 }
 
 .nav-button:hover {
+    transform: translateY(-2px) !important;
     background: rgba(0, 0, 0, 0.03);
 }
 
