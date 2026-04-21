@@ -447,7 +447,7 @@
     transform: scale(0.95);
 }
 
-.settings-button img {
+.settings-button svg {
     height: 100%;
     width: auto;
 }
@@ -514,7 +514,7 @@
     transform: scale(0.98);
 }
 
-.menu-item img {
+.menu-item svg {
     height: 18px;
     width: auto;
     object-fit: contain;
@@ -523,7 +523,7 @@
     transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
-.menu-item:hover img {
+.menu-item:hover svg {
     opacity: 1;
     transform: scale(1.05);
 }

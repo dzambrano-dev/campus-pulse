@@ -16,6 +16,9 @@ let userMarker;
 let eventMap;
 let eventMarker;
 
+const moonSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 13.51c-.78.23-1.58.35-2.38.35-4.52 0-8.2-3.68-8.2-8.2 0-.8.12-1.6.35-2.38a1.002 1.002 0 0 0-1.25-1.25A10.17 10.17 0 0 0 2 11.8C2 17.42 6.58 22 12.2 22c4.53 0 8.45-2.91 9.76-7.24a1.002 1.002 0 0 0-1.25-1.25"></path><path d="m16 8 .94-2.06L19 5l-2.06-.94L16 2l-.94 2.06L13 5l2.06.94zm4.25-.5-.55 1.2-1.2.55 1.2.55.55 1.2.55-1.2 1.2-.55-1.2-.55z"></path></svg>`;
+const sunSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M12 6.99a5.01 5.01 0 1 0 0 10.02 5.01 5.01 0 1 0 0-10.02M13 19h-2v3h2zm0-17h-2v3h2zM2 11h3v2H2zm17 0h3v2h-3zM4.22 18.36l.71.71.71.71 1.06-1.06 1.06-1.06-.71-.71-.71-.71-1.06 1.06zM19.78 5.64l-.71-.71-.71-.71-1.06 1.06-1.06 1.06.71.71.71.71 1.06-1.06zm-12.02.7L6.7 5.28 5.64 4.22l-.71.71-.71.71L5.28 6.7l1.06 1.06.71-.71zm8.48 11.32 1.06 1.06 1.06 1.06.71-.71.71-.71-1.06-1.06-1.06-1.06-.71.71z"></path></svg>`;
+const calendarSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.1 0-2 .9-2 2v1h18V6c0-1.1-.9-2-2-2M3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8H3zm5-6h3v-3h2v3h3v2h-3v3h-2v-3H8z"></path></svg>`
 
 document.addEventListener("DOMContentLoaded", initApp);
 
@@ -277,7 +280,7 @@ async function loadMapEvents() {
     }
 }
 
-// for icons on map
+// for icons_test on map
 function getEventIcon(type){
     const cleanType = (type || "organization")
         .toString()
@@ -382,14 +385,8 @@ function initCreateEventButton() {
     button.className = "create-event-button";
     button.id = "open-event-modal";
 
-    // Create image
-    const img = document.createElement("img");
-    img.src = "assets/images/icons/create_event.png";
-    img.className = "nav-icon";
-    img.alt = "Create Event";
-
     // Place button in center
-    button.appendChild(img);
+    button.innerHTML = calendarSVG;
     navBar.insertBefore(button, navBar.children[1]);
 
     // Attach listeners
@@ -551,6 +548,12 @@ async function submitEvent(event) {
 
 // Initialize settings menu
 function initSettingsMenu () {
+    const icon = document.getElementById("theme-icon");
+    if (icon) {
+        const isDark = document.body.classList.contains("dark-mode");
+        icon.innerHTML = isDark ? sunSVG : moonSVG;
+    }
+
     const menu = document.getElementById("settings-menu");
     const button = document.getElementById("settings-button");
     if (!button || !menu) return;
@@ -613,7 +616,9 @@ function toTitleCase(str) {
 }
 
 function toggleTheme() {
-    document.body.classList.toggle("dark-mode");
+    const isDark = document.body.classList.toggle("dark-mode");
+    const icon = document.getElementById("theme-icon");
+    if (icon) icon.innerHTML = isDark ? sunSVG : moonSVG;
 
     if (map) {
         map.eachLayer(layer => {
