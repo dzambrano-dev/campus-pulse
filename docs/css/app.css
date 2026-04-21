@@ -5,7 +5,8 @@
 }
 
 .app-container {
-    width: var(--max-page-width);
+    width: 100%;
+    height: 100%;
 }
 
 .app-page {
@@ -14,6 +15,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
+    overflow-y: auto;
 }
 
 .app-page.active {
@@ -28,10 +30,10 @@
     padding: 20px;
 }
 
-#event-container {
-    max-width: 820px;
-    margin: 30px auto 120px auto;
-    padding: 0 16px;
+#events-container {
+    max-width: var(--max-page-width);
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .event-detail-card{
@@ -278,6 +280,7 @@
     background: var(--background);
     border-radius: 20px;
     padding: 20px;
+    color: var(--text);
     box-shadow:
             0 18px 36px rgba(0,0,0,.18),
             0 6px 14px rgba(0,0,0,.08);
@@ -289,13 +292,11 @@
     font-weight: 700;
     line-height: 1.18;
     letter-spacing: 0.02em;
-    color: #1f1f1f;
 }
 
 .map-popup-card p {
     font-size: 16px;
     line-height: 1.45;
-    color: #5f5f5f;
 }
 
 .map-popup-card .popup-event-btn {
@@ -304,7 +305,7 @@
     border: none;
     border-radius: 14px;
     background: var(--primary);
-    color: white;
+    color: var(--card);
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.01em;
@@ -389,8 +390,8 @@
 
 .settings-button {
     position: fixed;
-    top: 16px;
-    right: 16px;
+    top: 32px;
+    right: 32px;
     width: 44px;
     height: 44px;
     border-radius: 50%;
