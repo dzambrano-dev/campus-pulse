@@ -40,7 +40,7 @@ async function initApp() {
     currentRole = user.role;
 
     // Initialize application
-    initProfileMenu();
+    initSettingsMenu();
     initNavigation();
     initCreateEventButton();
     initMap();
@@ -119,8 +119,6 @@ async function loadEvents() {
             return;
         }
 
-        console.log(events);
-
         // Clear events container
         const eventsContainer = document.getElementById("events-container");
         eventsContainer.innerHTML = "";
@@ -137,8 +135,6 @@ async function loadEvents() {
 
 // Create an event card
 function createEventCard(event, index) {
-
-    
     const card = document.createElement("div");
     card.className = "event-card";
 
@@ -543,14 +539,13 @@ async function submitEvent(event) {
     }
 }
 
-// Initialize profile menu
-function initProfileMenu () {
-    const menu = document.getElementById("profile-menu");
-    const button = document.getElementById("profile-button");
+// Initialize settings menu
+function initSettingsMenu () {
+    const menu = document.getElementById("settings-menu");
+    const button = document.getElementById("settings-button");
+    if (!button || !menu) return;
 
-    document
-    .getElementById("go-profile")
-    .addEventListener("click", goProfile);
+    document.getElementById("go-to-profile").addEventListener("click", goProfile);
 
     document.addEventListener("click", (event) => {
         const clickedButton = button.contains(event.target);
@@ -633,7 +628,7 @@ function toggleUI() {
     document.body.classList.toggle("compact-ui");
 }
 
-//make profile clicakble 
+//make profile clickable
 function goProfile(){
     window.location.href = "profile.html";
 }
