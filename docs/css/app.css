@@ -33,18 +33,18 @@
 #events-container {
     max-width: var(--max-page-width);
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
+    gap: 12px;
 }
 
-.event-detail-card{
+.event-detail-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 22px;
     overflow: hidden;
-
     box-shadow:
-            0 14px 34px rgba(0,0,0,.08),
-            0 6px 14px rgba(0,0,0,.04);
+            0 14px 34px rgba(0, 0, 0, 0.08),
+            0 6px 14px rgba(0, 0, 0, 0.04);
 }
 
 .event-detail-image{
