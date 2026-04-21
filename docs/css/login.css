@@ -143,7 +143,6 @@ input:focus {
     pointer-events: none;
 }
 
-
 /* Animations */
 
 @keyframes fadeIn {
