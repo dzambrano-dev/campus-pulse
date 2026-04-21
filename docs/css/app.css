@@ -162,11 +162,14 @@
     margin-bottom: 6px;
 }
 
+.author-meta {
+    margin: 0 auto 14px 0;
+}
+
 .author-link {
     color: var(--primary);
     font-weight: 600;
     cursor: pointer;
-    margin-bottom: 14px;
 }
 
 .event-description {
@@ -181,6 +184,7 @@
     flex-wrap: wrap;
     gap: 6px;
     padding: 8px 0;
+    margin: 0 auto 0 0;
 }
 
 .tag-bubble {
@@ -425,8 +429,8 @@
 
 .settings-menu {
     position: fixed;
-    top: 64px;
-    right: 16px;
+    top: 90px;
+    right: 30px;
     width: 220px;
     background: var(--card);
     color: var(--text);

@@ -181,14 +181,13 @@ function createEventCard(event, index) {
 
     const author = document.createElement("div");
     author.className = "event-meta author-meta";
+    author.innerHTML = `Posted by <span class="author-link" data-user="${event.createdBy}">@${event.createdBy}</span>`;
 
-    const authorLink = document.createElement("span");
-    authorLink.className = "author-link";
-    authorLink.dataset.user = event.createdBy;
-    authorLink.textContent = `@${event.createdBy}`;
-
-    author.textContent = "Posted by ";
-    author.appendChild(authorLink);
+    const authorLink = author.querySelector(".author-link");
+    authorLink.addEventListener("click", (event) => {
+        event.stopPropagation();
+        // Navigate to profile
+    });
 
     const description = document.createElement("p");
     description.className = "event-description";
