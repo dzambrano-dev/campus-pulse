@@ -18,7 +18,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const isLoggedIn = await checkSession();
 
     if (!isLoggedIn) {
-        redirect("index.html");
+        // Smooth exit
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+            redirect("index.html");
+        }, 300);
         return;
     }
 
@@ -55,7 +60,12 @@ async function loadInterests() {
 
         // If no user is found, redirect to log in
         if (!userResponse.ok) {
-            redirect("index.html");
+            // Smooth exit
+            document.body.classList.add("fade-out");
+
+            setTimeout(() => {
+                redirect("index.html");
+            }, 300);
             return;
         }
 
@@ -138,7 +148,12 @@ async function submit(event) {
 
 // Skip interest selection
 function skip() {
-    redirect("app.html");
+    // Smooth exit
+    document.body.classList.add("fade-out");
+
+    setTimeout(() => {
+        redirect("app.html");
+    }, 300);
 }
 
 // Uppercase the first letter of each word
