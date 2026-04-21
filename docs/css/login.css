@@ -84,6 +84,10 @@ input:focus {
     box-shadow: 0 0 0 3px var(--primary-soft);
 }
 
+#login-error {
+    margin: 34px 10px 10px 10px;
+}
+
 .app-logo {
     width: 140px;
     height: auto;
@@ -99,11 +103,6 @@ input:focus {
 /* Media Queries */
 
 @media (max-width: 600px) {
-    .login-wrapper {
-        height: auto;
-        max-height: 95dvh;
-    }
-
     .login-container {
         padding: 24px;
     }
