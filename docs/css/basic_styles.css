@@ -1,0 +1,158 @@
+/* Variables */
+
+:root {
+    --primary: #FDB515;         /* CSULB Gold */
+    --primary-dark: #E5A100;    /* Dark Gold */
+    --primary-soft: #FDB51526;  /* CSULB Gold transparent */
+    --error-color: #dc2626;     /* Error color */
+}
+
+/* Basics */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    margin: 0;
+    background: var(--background);
+    overscroll-behavior: contain;
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+}
+
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* Universal */
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.05s;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.button-row button {
+    flex: 1;
+    margin-top: 0;
+}
+
+.primary-button {
+    background: var(--primary);
+    color: white;
+}
+
+.primary-button:hover {
+    background: var(--primary-dark);
+}
+
+.secondary-button {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.secondary-button:hover {
+    background: var(--primary-soft);
+}
+
+.tertiary-button {
+    background: #2B2B2B;
+    color: white;
+}
+
+.tertiary-button:hover {
+    background: #3B3B3B;
+}
+
+.danger-button {
+    background: var(--error-color);
+    color: white;
+}
+
+.danger-button:hover {
+    filter: brightness(0.8);
+}
+
+.error {
+    margin: 10px;
+    font-size: 14px;
+    text-align: center;
+    color: var(--error-color);
+    min-height: 18px;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 0.6s linear infinite;
+}
+
+/* Animations */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

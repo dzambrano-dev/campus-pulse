@@ -1,0 +1,153 @@
+/* Event Creation */
+
+.event-modal {
+    position: fixed;
+    inset: 0;
+    padding: 0 16px;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 1000;
+}
+
+.event-modal.hidden {
+    display: none;
+}
+
+.event-sheet {
+    width: min(800px, 90vw);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    color: var(--text);
+    border-radius: 20px;
+    margin-bottom: 85px;
+    padding: 24px;
+    box-shadow:
+            0 -6px 20px rgba(0, 0, 0, 0.18),
+            0 -2px 8px rgba(0, 0, 0, 0.08);
+    animation: sheetSlideUp 0.35s ease;
+}
+
+.event-header {
+    text-align: center;
+    padding: 0 24px 24px 24px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+}
+
+.event-header::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    margin: 0 auto 10px;
+    border-radius: 2px;
+    background: #ccc;
+}
+
+.event-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px 24px;
+}
+
+#event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#event-form label {
+    font-size: 14px;
+    color: dimgray;
+}
+
+#event-form input,
+#event-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    transition:
+            border 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+#event-form input:focus,
+#event-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-soft);
+}
+
+#event-description {
+    resize: none;
+    height: 120px;
+}
+
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--card);
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-soft);
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    padding: 6px 12px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: #f6f6f6;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tag:hover {
+    border-color: var(--primary);
+}
+
+.tag.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.event-map {
+    height: 260px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.event-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.event-actions button {
+    flex: 1;
+    margin-top: 0;
+    font-size: 15px;
+}
