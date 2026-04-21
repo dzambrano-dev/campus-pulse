@@ -21,10 +21,6 @@
     backdrop-filter: blur(2px);
 }
 
-.event-modal.open .event-sheet {
-    transform: translateY(0);
-}
-
 .event-sheet {
     width: min(800px, 90vw);
     max-height: 90vh;
@@ -39,7 +35,12 @@
             0 -6px 20px rgba(0, 0, 0, 0.18),
             0 -2px 8px rgba(0, 0, 0, 0.08);
     transform: translateY(100%);
-    transition: 0.35s cubic-bezier(0.22, 1.0, 0.36, 1.0);
+    transition: 0.35s cubic-bezier(0.4, 0.0, 0.2, 1.0);
+}
+
+.event-modal.open .event-sheet {
+    transform: translateY(0);
+    transition: 0.4s cubic-bezier(0.22, 1.0, 0.36, 1.0);
 }
 
 .event-header {

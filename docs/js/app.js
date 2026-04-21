@@ -562,9 +562,9 @@ function initSettingsMenu () {
         const clickedMenu = menu.contains(event.target);
 
         if (clickedButton) {
-            menu.classList.toggle("hidden");
+            menu.classList.toggle("open");
         } else if (!clickedMenu) {
-            menu.classList.add("hidden");
+            menu.classList.remove("open");
         }
     });
 
