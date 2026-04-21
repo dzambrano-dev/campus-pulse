@@ -10,44 +10,58 @@
     <script defer type="module" src="js/login.js"></script>  <!-- Login JS -->
 </head>
 <body>
-    <div class="login-wrapper">
-        <!-- LOGIN CARD -->
-        <div class="login-container" id="login-card">
-            <!-- CSULB Branding -->
+    <div class="login-page">
+        <!-- Branding -->
+        <div class="login-header">
             <img class="app-logo" src="assets/images/logos/beach_pulse.png" alt="Beach Pulse Logo">
-            <img class="brand" src="assets/images/logos/csulb_full.png" alt="CSULB Brand">
-            <h2>Beach Pulse Login</h2>
-
-            <!-- Login Form -->
-            <form id="login-form">
-                <input id="username" type="text" placeholder="Username or Email" autocomplete="username" autofocus>
-                <input id="password" type="password" placeholder="Password" autocomplete="current-password">
-                <div class="error" id="login-error"></div>
-                <div class="button-row">
-                    <button type="submit" class="primary-button" id="login-button">Login</button>
-                    <button type="button" class="secondary-button" id="signup-button">Sign Up</button>
-                </div>
-            </form>
+            <div class="divider-vertical"></div>
+            <img class="university-brand" src="assets/images/logos/csulb_full.png" alt="CSULB Brand">
         </div>
 
-        <!-- SIGNUP CARD -->
-        <div class="login-container" id="signup-card">
-            <!-- CSULB Branding -->
-            <img class="app-logo" src="assets/images/logos/beach_pulse.png" alt="Beach Pulse Logo">
-            <img class="brand" src="assets/images/logos/csulb_full.png" alt="CSULB Brand">
-            <h2>Beach Pulse Signup</h2>
+        <!-- Cards -->
+        <div class="login-wrapper">
+            <!-- Login Card -->
+            <div class="login-container" id="login-card">
+                <!-- Login Form -->
+                <h2>Sign in to Beach Pulse</h2>
+                <form id="login-form">
+                    <input id="username" type="text" placeholder="Username or Email" autocomplete="username" autofocus>
+                    <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+                    <div class="error" id="login-error"></div>
+                    <div class="button-row">
+                        <button type="submit" class="primary-button" id="login-button">Login</button>
+                        <button type="button" class="secondary-button" id="signup-button">Sign Up</button>
+                    </div>
+                    <!-- Divider -->
+                    <div class="divider"><span>or sign in with</span></div>
+                    <!-- OAuth -->
+                    <div class="oauth-column">
+                        <!-- <button class="oauth-button">Outlook</button> -->
+                    </div>
+                </form>
+            </div>
 
-            <!-- Signup Form -->
-            <form id="signup-form">
-                <input id="signup-username" type="text" placeholder="Username">
-                <input id="signup-email" type="email" placeholder="Email">
-                <input id="signup-password" type="password" placeholder="Password">
-                <div class="error" id="signup-error"></div>
-                <div class="button-row">
-                    <button type="submit" class="primary-button" id="signup-submit-button">Create Account</button>
-                    <button type="button" class="secondary-button" id="back-button">Back</button>
-                </div>
-            </form>
+            <!-- Signup Card -->
+            <div class="login-container" id="signup-card">
+                <!-- Signup Form -->
+                <h2>Create your Beach Pulse account</h2>
+                <form id="signup-form">
+                    <input id="signup-username" type="text" placeholder="Username">
+                    <input id="signup-email" type="email" placeholder="Email">
+                    <input id="signup-password" type="password" placeholder="Password">
+                    <div class="error" id="signup-error"></div>
+                    <div class="button-row">
+                        <button type="submit" class="primary-button" id="signup-submit-button">Create Account</button>
+                        <button type="button" class="secondary-button" id="back-button">Back</button>
+                    </div>
+                    <!-- Divider -->
+                    <div class="divider"><span>or sign up with</span></div>
+                    <!-- OAuth -->
+                    <div class="oauth-column">
+                        <!-- <button class="oauth-button">Outlook</button> -->
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>
