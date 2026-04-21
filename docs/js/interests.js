@@ -123,7 +123,12 @@ async function submit(event) {
             return;
         }
 
-        redirect("app.html");
+        // Smooth exit
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+            redirect("app.html");
+        }, 300);
     } catch(err) {
         showError(interestsError, "Failed to save interests");
         setLoading(form, false);

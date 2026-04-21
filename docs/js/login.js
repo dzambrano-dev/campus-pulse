@@ -11,10 +11,8 @@
 import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoading } from "./utils.js";
 
 
-// Cards
+// Wrapper
 const loginWrapper = document.querySelector(".login-wrapper");
-const loginCard = document.getElementById("login-card");
-const signupCard = document.getElementById("signup-card");
 
 // Forms
 const loginForm = document.getElementById("login-form");
@@ -43,7 +41,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const isLoggedIn = await checkSession();
 
     if (isLoggedIn) {
-        redirect("app.html");
+        // Smooth exit
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+            redirect("app.html");
+        }, 300);
         return;
     }
 
@@ -102,7 +105,12 @@ async function handleLogin(event) {
             return;
         }
 
-        redirect("app.html");
+        // Smooth exit
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+            redirect("app.html");
+        }, 300);
     } catch(err) {
         showError(loginError, "Failed to login");
         setLoading(loginButton, false);
@@ -145,7 +153,12 @@ async function handleSignup(event) {
             return;
         }
 
-        redirect("interests.html");
+        // Smooth exit
+        document.body.classList.add("fade-out");
+
+        setTimeout(() => {
+            redirect("interests.html");
+        }, 300);
     } catch(err) {
         showError(signupError, "Failed to create account");
         setLoading(signupSubmitButton, false);
