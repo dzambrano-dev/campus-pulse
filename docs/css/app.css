@@ -231,11 +231,10 @@
     padding: 0 !important;
 }
 
-
-/* Leaflet Popup Shell*/
+/* Leaflet Popup Shell */
 
 .leaflet-popup{
-    opacity:1 !important;
+    opacity: 1 !important;
 }
 
 .leaflet-popup-content-wrapper{

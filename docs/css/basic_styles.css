@@ -9,6 +9,7 @@
     --card: #ffffff;            /* Card Background */
     --text: #2B2B2B;            /* CSULB Dark Gray */
     --border: #d6d6d6;          /* Border Color */
+    --nav-height: 65px;         /* Navigation Bar Height */
 }
 
 /* Basics */
