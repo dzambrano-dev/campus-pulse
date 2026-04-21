@@ -371,19 +371,29 @@ function locateUser() {
 
 // Generate addEvent button
 function initCreateEventButton() {
-
     // only admins / organizers
     if (!["organizer", "admin"].includes(currentRole)) return;
 
-    const addEventButton = document.getElementById("open-event-modal");
+    const navBar = document.querySelector(".navigation-bar");
+    if (!navBar) return;
 
-    if (!addEventButton) return;
+    // Create button
+    const button = document.createElement("button");
+    button.className = "nav-button create-event-button";
+    button.id = "open-event-modal";
 
-    addEventButton.addEventListener(
-        "click",
-        openCreateEvent
-    );
+    // Create image
+    const img = document.createElement("img");
+    img.src = "assets/images/icons/create_event.png";
+    img.className = "nav-icon";
+    img.alt = "Create Event";
 
+    // Place button in center
+    button.appendChild(img);
+    navBar.insertBefore(button, navBar.children[1]);
+
+    // Attach listeners
+    button.addEventListener("click", openCreateEvent);
     document.getElementById("cancel-event-button").addEventListener("click", closeCreateEvent);
     document.getElementById("event-form").addEventListener("submit", submitEvent);
 }

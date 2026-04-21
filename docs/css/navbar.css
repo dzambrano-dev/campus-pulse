@@ -49,7 +49,7 @@
     transform: scale(1.1);
 }
 
-.create-button {
+.create-event-button {
     display: flex;
     position: absolute;
     left: 50%;
@@ -68,15 +68,15 @@
     z-index: 10000;
 }
 
-.create-button .nav-icon {
+.create-event-button .nav-icon {
     width: 64px;
     height: 64px;
 }
 
-.create-button:hover {
+.create-event-button:hover {
     transform: translateX(-50%) translateY(-2px);
 }
 
-.create-button:active {
+.create-event-button:active {
     transform: translateX(-50%) scale(0.95);
 }
