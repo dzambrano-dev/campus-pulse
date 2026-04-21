@@ -10,6 +10,7 @@ import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoadi
 // Data members
 const interestsError = document.getElementById("interests-error");
 const form = document.getElementById("interests-form");
+const submitBtn = document.getElementById("submit-interests");
 const skipBtn = document.getElementById("skip-interests");
 
 
@@ -107,7 +108,7 @@ async function loadInterests() {
 async function submit(event) {
     event.preventDefault();
     clearErrors(interestsError);
-    setLoading(form, true);
+    setLoading(submitBtn, true);
 
     // Collect pre-selected interests
     const selectedInterests = [];
