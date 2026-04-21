@@ -5,6 +5,10 @@
     --primary-dark: #E5A100;    /* Dark Gold */
     --primary-soft: #FDB51526;  /* CSULB Gold transparent */
     --error-color: #dc2626;     /* Error color */
+    --background: #f4f4f4;      /* Light Gray */
+    --card: #ffffff;            /* Card Background */
+    --text: #2B2B2B;            /* CSULB Dark Gray */
+    --border: #d6d6d6;          /* Border Color */
 }
 
 /* Basics */
@@ -69,6 +73,10 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s, color 0.2s, transform 0.05s;
+}
+
+button:hover {
+    transform: translateY(-1px);
 }
 
 button:active {

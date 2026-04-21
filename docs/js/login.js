@@ -12,6 +12,7 @@ import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoadi
 
 
 // Cards
+const loginWrapper = document.querySelector(".login-wrapper");
 const loginCard = document.getElementById("login-card");
 const signupCard = document.getElementById("signup-card");
 
@@ -155,13 +156,18 @@ async function handleSignup(event) {
 // Switch UI to signup card
 function showSignup() {
     clearErrors(loginError, signupError);
-    loginCard.classList.remove("active");
-    signupCard.classList.add("active");
+    clearForm(usernameInput, passwordInput);
+    loginWrapper.classList.add("flipped");
 }
 
 // Switch UI to login card
 function showLogin() {
     clearErrors(loginError, signupError);
-    signupCard.classList.remove("active");
-    loginCard.classList.add("active");
+    clearForm(signupUsername, signupEmail, signupPassword);
+    loginWrapper.classList.remove("flipped");
+}
+
+// Clear inputs
+function clearForm(...inputs) {
+    inputs.forEach(input => input.value = "");
 }
