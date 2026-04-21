@@ -71,7 +71,7 @@ function init() {
 async function handleLogin(event) {
     event.preventDefault();
     setLoading(loginButton, true);
-    clearErrors(loginButton);
+    clearErrors(loginError, signupError);
 
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();

@@ -48,6 +48,9 @@ html {
 
 body {
     display: flex;
+    height: 100dvh;
+    width: 100vw;
+    overflow: hidden;
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
