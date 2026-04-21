@@ -66,6 +66,7 @@
     transform: translateX(-50%);
     box-shadow: none;
     z-index: 10000;
+    transition: transform 0.15s ease;
 }
 
 .create-event-button .nav-icon {
