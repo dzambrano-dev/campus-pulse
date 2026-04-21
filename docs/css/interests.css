@@ -68,13 +68,6 @@
     color: var(--text);
 }
 
-.fade-out {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-    pointer-events: none;
-}
-
 /* Animations */
 
 @keyframes fadeIn {
