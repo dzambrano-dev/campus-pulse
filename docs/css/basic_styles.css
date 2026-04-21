@@ -121,6 +121,16 @@ button:disabled {
     background: var(--primary-soft);
 }
 
+.oauth-button {
+    background: transparent;
+    color: deepskyblue;
+    border: 2px solid deepskyblue;
+}
+
+.oauth-button:hover {
+    background: skyblue;
+}
+
 .tertiary-button {
     background: #2B2B2B;
     color: white;

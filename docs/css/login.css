@@ -2,8 +2,9 @@
 
 .login-header {
     position: absolute;
-    top: 10dvh;
+    top: 50px;
     display: flex;
+    align-items: center;
     width: 420px;
     max-width: 90vw;
     gap: 16px;
@@ -11,7 +12,7 @@
 
 .app-logo {
     height: 120px;
-    width: 120px;
+    width: auto;
 }
 
 .university-brand {
@@ -21,7 +22,7 @@
 
 .divider-vertical {
     width: 1px;
-    height: 120px;
+    align-self: stretch;
     background: var(--primary-dark);
 }
 
