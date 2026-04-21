@@ -394,7 +394,7 @@ function initCreateEventButton() {
 // Open create event modal
 function openCreateEvent() {
     const eventModal = document.getElementById("event-modal");
-    eventModal.classList.remove("hidden");
+    eventModal.classList.add("open");
     document.body.classList.add("no-scroll");
 
     loadTags();
@@ -420,8 +420,10 @@ function closeCreateEvent() {
     const submitButton = document.getElementById("submit-event-button");
     setLoading(submitButton, false);
 
-    document.getElementById("event-modal").classList.add("hidden");
-    document.body.classList.remove("no-scroll");
+    document.getElementById("event-modal").classList.remove("open");
+    setTimeout(() => {
+        document.body.classList.remove("no-scroll");
+    }, 300);
 }
 
 // Load a list of tags

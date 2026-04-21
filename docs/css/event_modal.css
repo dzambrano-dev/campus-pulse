@@ -4,11 +4,25 @@
     position: fixed;
     inset: 0;
     padding: 0 16px;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    z-index: 1000;
+    z-index: 10001;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.event-modal.open {
+    opacity: 1;
+    pointer-events: all;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+}
+
+.event-modal.open .event-sheet {
+    transform: translateY(0);
 }
 
 .event-modal.hidden {
@@ -28,7 +42,8 @@
     box-shadow:
             0 -6px 20px rgba(0, 0, 0, 0.18),
             0 -2px 8px rgba(0, 0, 0, 0.08);
-    animation: sheetSlideUp 0.35s ease;
+    transform: translateY(100%);
+    transition: 0.35s cubic-bezier(0.22, 1.0, 0.36, 1.0);
 }
 
 .event-header {
