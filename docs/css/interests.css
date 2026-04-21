@@ -3,8 +3,6 @@
 .interests-container {
     width: 420px;
     max-width: 90vw;
-    height: 420px;
-    max-height: 90dvh;
     padding: 40px;
     background: var(--card);
     border-radius: 16px;
