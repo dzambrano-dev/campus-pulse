@@ -25,8 +25,8 @@
     transition: translate 0.15s ease;
 }
 
-.nav-button:hover {
-    transform: translateY(-2px) !important;
+.nav-button:not(.create-button):hover {
+    transform: translateY(-2px);
     background: rgba(0, 0, 0, 0.03);
 }
 
@@ -74,9 +74,9 @@
 }
 
 .create-button:hover {
-    transform: translateY(-2px);
+    transform: translateX(-50%) translateY(-2px);
 }
 
 .create-button:active {
-    transform: scale(0.95);
+    transform: translateX(-50%) scale(0.95);
 }
