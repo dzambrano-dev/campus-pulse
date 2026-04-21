@@ -20,12 +20,6 @@
     height: auto;
 }
 
-.divider-vertical {
-    width: 1px;
-    align-self: stretch;
-    background: var(--primary-dark);
-}
-
 /* Login Card */
 
 .login-wrapper {
