@@ -28,7 +28,7 @@
 .nav-button svg {
     width: 48px;
     height: 48px;
-    color: var(--primary-dark);
+    color: var(--text);
 }
 
 .nav-button:hover {
@@ -78,7 +78,7 @@
 .create-event-button svg {
     width: 48px;
     height: 48px;
-    color: var(--primary-dark);
+    color: var(--text);
 }
 
 .create-event-button:hover {
