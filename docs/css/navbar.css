@@ -22,7 +22,7 @@
     border: none;
     position: relative;
     margin: 6px 40px;
-    transition: translate 0.15s ease;
+    transition: transform 0.15s ease;
 }
 
 .nav-button:not(.create-button):hover {
