@@ -2,24 +2,13 @@
  * login.js
  * API call for logins — with brute-force rate limiting.
  */
+
 import { jsonError, verifyPassword, withSessionCookie } from "../utils.js";
-import {
-	checkRateLimit,
-	recordFailedAttempt,
-	clearRateLimit,
-	rateLimitResponse,
-} from "../security/rateLimit.js";
+import { checkAccountLock, recordLoginFailure, clearLoginFailures } from "../security/accountLockout.js";
 
 export async function login(request, env) {
 	// Only allow POST requests
 	if (request.method !== "POST") return jsonError("Method not allowed", 405);
-
-	// Get client IP from Cloudflare header
-	const ip = request.headers.get("CF-Connecting-IP") ?? "127.0.0.1";
-
-	// Check rate limit BEFORE touching credentials
-	const limitCheck = await checkRateLimit(env.RATE_LIMITS, ip);
-	if (limitCheck.limited) return rateLimitResponse(limitCheck.retryAfter);
 
 	try {
 		// Parse request
@@ -39,18 +28,20 @@ export async function login(request, env) {
 			const resolved = await env.EMAILS.get(username);
 			if (!resolved) {
 				// Count as a failed attempt
-				const { limited, retryAfter } = await recordFailedAttempt(env.RATE_LIMITS, ip);
-				if (limited) return rateLimitResponse(retryAfter);
 				return jsonError("Invalid username/email or password", 401);
 			}
 			lookupUsername = resolved;
 		}
 
+		// Check account lock state
+		const lock = await checkAccountLock(env.SECURITY, lookupUsername);
+		if (lock.locked) {
+			return jsonError(`Too many failed attempts. Try again in ${Math.ceil(lock.retryAfter)} seconds.`, 429);
+		}
+
 		// Retrieve user from KV
 		const storedUser = await env.USERS.get(lookupUsername);
 		if (!storedUser) {
-			const { limited, retryAfter } = await recordFailedAttempt(env.RATE_LIMITS, ip);
-			if (limited) return rateLimitResponse(retryAfter);
 			return jsonError("Invalid username or password", 401);
 		}
 
@@ -59,16 +50,16 @@ export async function login(request, env) {
 		// Hash password and verify it matches stored hash
 		const match = await verifyPassword(password, user.passwordHash);
 		if (!match) {
-			const { limited, retryAfter, remaining } = await recordFailedAttempt(env.RATE_LIMITS, ip);
-			if (limited) return rateLimitResponse(retryAfter);
-			return jsonError(
-				`Invalid username or password. ${remaining} attempt${remaining === 1 ? "" : "s"} remaining.`,
-				401
-			);
+			const result = await recordLoginFailure(env.SECURITY, lookupUsername);
+			if (result.locked) {
+				return jsonError(`Too many failed attempts. Try again in ${Math.ceil(result.retryAfter)} seconds.`, 429);
+			}
+
+			return jsonError(`Invalid username or password. ${result.remaining} attempt${result.remaining === 1 ? "" : "s"} remaining.`, 401);
 		}
 
-		// Successful login — clear any recorded failures for this IP
-		await clearRateLimit(env.RATE_LIMITS, ip);
+		// Clear failures on success
+		await clearLoginFailures(env.SECURITY, lookupUsername);
 
 		// Generate and store a session token through cookies
 		const token = crypto.randomUUID();
