@@ -66,7 +66,7 @@ async function loadUser() {
 
 // Initialize navigation bar
 function initNavigation() {
-    const navButtons = document.querySelectorAll(".nav-button");
+    const navButtons = document.querySelectorAll(".nav-button:not(.create-button)");
     const pages = document.querySelectorAll(".app-page");
 
     // Set up buttons
@@ -74,6 +74,7 @@ function initNavigation() {
         button.addEventListener("click", () => {
             // Page belonging to current button
             const targetPage = button.dataset.page;
+            if (!targetPage) return;
 
             // Hide all pages
             pages.forEach(page => page.classList.remove("active"));
@@ -394,6 +395,11 @@ function initCreateEventButton() {
 // Open create event modal
 function openCreateEvent() {
     const eventModal = document.getElementById("event-modal");
+    if (!eventModal) {
+        console.error("Modal not found");
+        return;
+    }
+
     eventModal.classList.add("open");
     document.body.classList.add("no-scroll");
 

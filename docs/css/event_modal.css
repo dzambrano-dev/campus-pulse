@@ -25,10 +25,6 @@
     transform: translateY(0);
 }
 
-.event-modal.hidden {
-    display: none;
-}
-
 .event-sheet {
     width: min(800px, 90vw);
     max-height: 90vh;
