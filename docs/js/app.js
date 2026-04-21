@@ -44,8 +44,8 @@ async function initApp() {
 
     // Initialize application
     initSettingsMenu();
+    initEventCreation();
     initNavigation();
-    initCreateEventButton();
     initMap();
 
     await loadEvents();
@@ -69,7 +69,7 @@ async function loadUser() {
 
 // Initialize navigation bar
 function initNavigation() {
-    const navButtons = document.querySelectorAll(".nav-button:not(.create-button)");
+    const navButtons = document.querySelectorAll(".nav-button");
     const pages = document.querySelectorAll(".app-page");
 
     // Set up buttons
@@ -127,8 +127,8 @@ async function loadEvents() {
         eventsContainer.innerHTML = "";
 
         // Create a card for each event
-        events.forEach((event,index)=> {
-            const card = createEventCard(event, index);
+        events.forEach((event)=> {
+            const card = createEventCard(event);
             eventsContainer.appendChild(card);
         });
     } catch (err) {
@@ -137,7 +137,7 @@ async function loadEvents() {
 }
 
 // Create an event card
-function createEventCard(event, index) {
+function createEventCard(event) {
     const card = document.createElement("div");
     card.className = "event-card";
 
@@ -316,18 +316,28 @@ function renderMapMarkers(events) {
         });
 
         // Create popups for each pin
-        marker.bindPopup(`
-        <div class="map-popup-card">
-            <h3>${event.title}</h3>
-            <p>${event.location}</p>
-            <p>${formatEventTime(event.datetime)}</p>
-            <button
-                class="popup-event-btn"
-                onclick="window.location.href='event.html?id=${event.id}'">
-                View Event
-            </button>
-        </div>
-        `);
+        const popupDiv = document.createElement("div");
+        popupDiv.className = "map-popup-card";
+        const title = document.createElement("h3");
+        title.textContent = event.title;
+        const location = document.createElement("p");
+        location.textContent = event.location;
+        const time = document.createElement("p");
+        time.textContent = formatEventTime(event.datetime);
+        const button = document.createElement("button");
+        button.className = "popup-event-btn";
+        button.textContent = "View Event";
+        button.addEventListener("click", () => {
+            const eventId = event.id;
+            if (!eventId) {
+                console.error("No valid event ID found.");
+                return;
+            }
+            window.location.href = `event.html?id=${eventId}`;
+        })
+        popupDiv.append(title, location, time, button);
+
+        marker.bindPopup(popupDiv);
         // Hide label when popup opens
         marker.on("popupopen", () => {
             marker.unbindTooltip();
@@ -335,7 +345,7 @@ function renderMapMarkers(events) {
 
         // Restore label when popup closes
         marker.on("popupclose", () => {
-            marker.bindTooltip(event.title, {
+            marker.bindTooltip(String(event.title), {
                 permanent: true,
                 direction: "top",
                 offset: [0, -10],
@@ -371,68 +381,123 @@ function locateUser() {
     );
 }
 
-// Generate addEvent button
-function initCreateEventButton() {
+// Generate Event Creation module
+function initEventCreation() {
     // only admins / organizers
     if (!["organizer", "admin"].includes(currentRole)) return;
 
     const navBar = document.querySelector(".navigation-bar");
-    if (!navBar) return;
+    const appContainer = document.querySelector(".app-container");
+    if (!navBar || !appContainer) return;
 
-    // Create button
-    const button = document.createElement("button");
-    button.className = "create-event-button";
-    button.id = "open-event-modal";
+    // Create the event button in the center of our nav bar
+    const creationButton = document.createElement("button");
+    creationButton.className = "nav-button";
+    creationButton.dataset.page = "create-event-page";
+    creationButton.innerHTML = calendarSVG;
+    navBar.insertBefore(creationButton, navBar.children[1]);
 
-    // Place button in center
-    button.innerHTML = calendarSVG;
-    navBar.insertBefore(button, navBar.children[1]);
+    // Create the event creation page
+    const creationPage = document.createElement("section");
+    creationPage.className = "app-page";
+    creationPage.id = "create-event-page";
+    creationPage.innerHTML = `
+        <div class="create-event-page">
+            <h2 class="event-header">Create an Event</h2>
+            <div class="event-body">
+                <form id="event-form">
+                    <input id="event-title" placeholder="Event Title" required>
+                    <textarea id="event-description" placeholder="Description" maxlength="500" required></textarea>
 
-    // Attach listeners
-    button.addEventListener("click", openCreateEvent);
-    document.getElementById("cancel-event-button").addEventListener("click", closeCreateEvent);
-    document.getElementById("event-form").addEventListener("submit", submitEvent);
+                    <!-- Event Type -->
+                    <label>Event Type</label>
+                    <select id="event-type" required>
+                        <option value="" disabled selected>Select event type</option>
+                        <option value="alert">Alert</option>
+                        <option value="academic">Academic</option>
+                        <option value="athletic">Athletic</option>
+                        <option value="career">Career</option>
+                        <option value="organization">Organization</option>
+                        <option value="social">Social</option>
+                    </select>
+
+                    <label>Tags</label>
+                    <!-- Tags injected by JS -->
+                    <div id="event-tags" class="tag-container"></div>
+
+                    <!-- Date -->
+                    <label>Date</label>
+                    <input type="date" id="event-date" required>
+
+                    <!-- Time & Location -->
+                    <label>Time</label>
+                    <input type="time" id="event-time" required>
+                    <input id="event-location" placeholder="Location" required>
+
+                    <!-- Map pin -->
+                    <label>Click map to place a pin</label>
+                    <div id="event-map" class="event-map"></div>
+
+                    <!-- Upload event image -->
+                    <label>Event Image</label>
+                    <input type="file" id="event-image" accept="image/*">
+
+                    <!-- Error messages -->
+                    <div class="error" id="event-error"></div>
+
+                    <!-- Action buttons -->
+                    <div class="event-actions">
+                        <button type="submit" class="primary-button" id="submit-event-button">Create</button>
+                        <button type="button" class="secondary-button" id="reset-event-button">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+
+    appContainer.insertBefore(creationPage, appContainer.children[1]);
+
+    // Page initialization
+    creationButton.addEventListener("click", () => {
+        loadTags();
+
+        setTimeout(() => {
+            initEventMap();
+        }, 50);
+    });
+
+    // Form submission
+    const form = creationPage.querySelector("#event-form");
+    form.addEventListener("submit", submitEvent);
+
+    form.addEventListener("reset", () => {
+        // Clear errors
+        const eventError = document.getElementById("event-error");
+        clearErrors(eventError);
+
+        document.getElementById("event-form").reset();
+        document.getElementById("event-type").value = "";
+
+        // Clear tags
+        document.querySelectorAll(".tag.active").forEach(tag => tag.classList.remove("active"));
+
+        // Reset map marker
+        if (eventMarker && eventMap) {
+            eventMap.removeLayer(eventMarker);
+            eventMarker = null;
+        }
+
+        // Reset map view
+        if (eventMap) {
+            eventMap.setView([33.7838, -118.1141], 15);
+        }
+
+        // Reset loading state
+        const submitButton = document.getElementById("submit-event-button");
+        setLoading(submitButton, false);
+    });
 }
 
-// Open create event modal
-function openCreateEvent() {
-    const eventModal = document.getElementById("event-modal");
-    if (!eventModal) {
-        console.error("Modal not found");
-        return;
-    }
-
-    eventModal.classList.add("open");
-    document.body.classList.add("no-scroll");
-
-    loadTags();
-    setTimeout(initEventMap, 50);
-}
-
-// Close create event modal
-function closeCreateEvent() {
-    const eventError = document.getElementById("event-error");
-    clearErrors(eventError);
-
-    document.getElementById("event-form").reset();
-    document.getElementById("event-type").value = "";
-    document.querySelectorAll(".tag.active").forEach(tag => tag.classList.remove("active"));
-
-    eventMarker = null;
-
-    if (eventMap) {
-        eventMap.remove();
-        eventMap = null;
-    }
-
-    const submitButton = document.getElementById("submit-event-button");
-    setLoading(submitButton, false);
-
-    document.getElementById("event-modal").classList.remove("open");
-    setTimeout(() => {
-        document.body.classList.remove("no-scroll");
-    }, 300);
-}
 
 // Load a list of tags
 async function loadTags() {
@@ -473,7 +538,6 @@ function initEventMap() {
 
 // Submit the event
 async function submitEvent(event) {
-    const discord = document.getElementById("event-discord").value;
     event.preventDefault();
     const eventError = document.getElementById("event-error");
     clearErrors(eventError);
@@ -516,7 +580,6 @@ async function submitEvent(event) {
         lat: latlng.lat,
         lng: latlng.lng,
         image: null,
-        discord
     };
 
     try {
@@ -536,7 +599,12 @@ async function submitEvent(event) {
             return;
         }
 
-        closeCreateEvent();
+        // Reset form
+        document.getElementById("event-form").reset();
+
+        // Switch to events
+        document.querySelector('[data-page="events-page"]').click();
+
         await loadEvents();
     } catch (err) {
         console.error("Event creation failed:", err);
