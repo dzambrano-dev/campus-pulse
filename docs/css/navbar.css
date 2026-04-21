@@ -21,6 +21,7 @@
     background: transparent;
     border: none;
     position: relative;
+    padding: 6px;
 }
 
 .nav-button:hover {
@@ -43,7 +44,7 @@
 }
 
 .nav-button.active .nav-icon {
-    transform: scale(1.08);
+    transform: scale(1.1);
 }
 
 .create-button {
@@ -66,8 +67,8 @@
 }
 
 .create-button .nav-icon {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
 }
 
 .create-button:hover {
