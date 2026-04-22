@@ -1,3 +1,14 @@
+/* Variables */
+
+:root {
+    --academic-color: #3b82f6;
+    --alert-color: #ef4444;
+    --athletics-color: #22c55e;
+    --career-color: #8b5cf6;
+    --club-color: #eab308;
+    --social-color: #ec4899;
+}
+
 /* Events Page */
 
 #events-container {
@@ -176,4 +187,31 @@ body.compact-ui #events-container {
 
 body.compact-ui .author-meta {
     display: none;
+}
+body.compact-ui .event-card {
+    color: white;
+}
+
+body.compact-ui .academic-event {
+    background: var(--academic-color);
+}
+
+body.compact-ui .alert-event {
+    background: var(--alert-color);
+}
+
+body.compact-ui .athletics-event {
+    background: var(--athletics-color);
+}
+
+body.compact-ui .career-event {
+    background: var(--career-color);
+}
+
+body.compact-ui .club-event {
+    background: var(--club-color);
+}
+
+body.compact-ui .social-event {
+    background: var(--social-color);
 }

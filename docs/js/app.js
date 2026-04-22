@@ -138,6 +138,9 @@ function createEventCard(event) {
     const card = document.createElement("div");
     card.className = "event-card";
 
+    const type = (event.type || "club").toLowerCase();
+    card.classList.add(`${type}-event`);
+
     const imageWrapper = document.createElement("div");
     imageWrapper.className = "event-image-wrapper";
 
