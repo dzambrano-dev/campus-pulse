@@ -38,26 +38,6 @@ export function initMap() {
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors"
     }).addTo(map);
-
-    setTimeout(() => {
-        const button = document.getElementById("toggle-labels-button");
-        if (!button) return;
-
-        button.onclick = () => {
-            labelsVisible = !labelsVisible;
-
-            mapMarkers.forEach(marker => {
-                const tooltipElement = marker.getTooltip()?._container;
-                if (!tooltipElement) return;
-
-                if (labelsVisible) {
-                    tooltipElement.classList.remove("hidden");
-                } else {
-                    tooltipElement.classList.add("hidden");
-                }
-            });
-        }
-    }, 100);
 }
 
 
@@ -69,6 +49,20 @@ export function activateMap() {
         map.invalidateSize();
         locateUser();
         loadMapEvents();
+
+        const button = document.getElementById("toggle-labels-button");
+        if (!button) return;
+
+        button.onclick = () => {
+            labelsVisible = !labelsVisible;
+
+            mapMarkers.forEach(marker => {
+                const tooltipElement = marker.getTooltip()?._container;
+                if (!tooltipElement) return;
+
+                tooltipElement.classList.toggle("hidden", !labelsVisible);
+            });
+        }
     }, 100);
 }
 
@@ -114,6 +108,10 @@ function renderMapMarkers(events) {
             offset: [0, -16],
             className: "map-label-tooltip"
         });
+
+        // Test DOM
+        marker.openTooltip();
+        marker.closeTooltip();
 
         // Create popups for each pin
         const popupDiv = document.createElement("div");

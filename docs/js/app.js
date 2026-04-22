@@ -217,8 +217,6 @@ function createEventCard(event) {
             event.eventId ||
             event.key ||
             event.uuid;
-        console.log("CLICKED EVENT:", event);
-        console.log("USING EVENT ID:", eventId);
 
         if (!eventId) {
             console.error("No valid event ID found on event:", event);

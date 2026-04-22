@@ -337,8 +337,8 @@
 
 .map-label-button {
     position: absolute;
-    height: 30px;
-    width: 30px;
+    height: 32px;
+    width: 32px;
     top: 74px;
     left: 10px;
     z-index: 1000;
@@ -346,7 +346,7 @@
     margin: 0;
     justify-content: center;
     align-items: center;
-    border-radius: 2px;
+    border-radius: 3px;
     border: 2px solid var(--border);
     background: #ffffff;
     color: #000000;
