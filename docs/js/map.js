@@ -118,6 +118,7 @@ function renderMapMarkers(events) {
         title.textContent = event.title;
         const location = document.createElement("p");
         location.textContent = event.location;
+        const brk = document.createElement("br");
         const time = document.createElement("p");
         time.textContent = formatEventTime(event.datetime);
 
@@ -138,7 +139,7 @@ function renderMapMarkers(events) {
             }
             window.location.href = `event.html?id=${eventId}`;
         })
-        popupDiv.append(title, location, time, button);
+        popupDiv.append(title, location, brk, time, button);
 
         marker.bindPopup(popupDiv, {
             offset: [0, -21]

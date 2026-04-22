@@ -51,8 +51,8 @@
 
 .map-pin:hover {
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
 
 /* Marker Tooltips */
 
@@ -63,6 +63,10 @@
     color: var(--text);
     font-weight: 600;
     font-size: 16px;
+}
+
+.dark-mode .map-label-tooltip {
+    color: var(--text);
 }
 
 .map-label-tooltip::before {
