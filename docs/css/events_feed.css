@@ -233,6 +233,7 @@ body.compact-ui .event-actions {
 
 body.compact-ui .event-actions button {
     flex: 1;
+    font-size: 14px;
 }
 
 body.compact-ui .event-card {
