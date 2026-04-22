@@ -87,17 +87,28 @@ function initNavigation() {
             navButtons.forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
 
+            // Prepare next page
+            nextPage.classList.remove("hidden");
+            nextPage.style.display = "block";
+
             // Fade out current page
             if (currentPage) {
                 currentPage.classList.remove("active");
                 currentPage.classList.add("fade-out");
             }
 
-            // Wait for fade then fade next page in
-            setTimeout(() => {
-                // Hide all pages
-                pages.forEach(page => page.classList.remove("fade-out"));
+            // Fade in next page
+            requestAnimationFrame(() => {
                 nextPage.classList.add("active");
+            });
+
+            // Wait for animation, then hide old page
+            setTimeout(() => {
+                if (currentPage) {
+                    currentPage.classList.remove("fade-out");
+                    currentPage.classList.add("hidden");
+                    currentPage.style.display = "none";
+                }
 
                 // Redraw map if map page is open
                 if (targetPage === "map-page") {
