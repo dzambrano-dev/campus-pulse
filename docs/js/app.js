@@ -79,20 +79,31 @@ function initNavigation() {
             const targetPage = button.dataset.page;
             if (!targetPage) return;
 
-            // Hide all pages
-            pages.forEach(page => page.classList.remove("active"));
+            const currentPage = document.querySelector(".app-page.active");
+            const nextPage = document.getElementById(targetPage);
+            if (currentPage === nextPage) return;
 
-            // Remove active state from all buttons
-            navButtons.forEach(btn => btn.classList.remove("active"));
-
-            // Show selected page
-            document.getElementById(targetPage).classList.add("active");
+            // Update nav buttons
+            navButtons.forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
 
-            // Redraw map if map page is open
-            if (targetPage === "map-page") {
-                activateMap();
+            // Fade out current page
+            if (currentPage) {
+                currentPage.classList.remove("active");
+                currentPage.classList.add("fade-out");
             }
+
+            // Wait for fade then fade next page in
+            setTimeout(() => {
+                // Hide all pages
+                pages.forEach(page => page.classList.remove("fade-out"));
+                nextPage.classList.add("active");
+
+                // Redraw map if map page is open
+                if (targetPage === "map-page") {
+                    activateMap();
+                }
+            }, 250);
         });
     });
 }
