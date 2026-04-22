@@ -330,8 +330,8 @@
 
 .map-label-button {
     position: absolute;
-    height: 32px;
-    width: 32px;
+    height: 34px;
+    width: 34px;
     top: 74px;
     left: 10px;
     z-index: 1000;
@@ -354,7 +354,7 @@
 .map-pin {
     width: 42px;
     height: 42px;
-    background: var(--background);
+    background: var(--text);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -375,7 +375,7 @@
 .map-pin-icon svg {
     width: 32px;
     height: 32px;
-    color: var(--background);
+    color: var(--text);
 }
 
 .marker {

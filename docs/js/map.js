@@ -93,7 +93,6 @@ function renderMapMarkers(events) {
     mapMarkers = [];
 
     events.forEach(event => {
-        console.log("EVENT OBJECT:", event);
         if (!event.lat || !event.lng) return;
         const marker = L.marker(
             [event.lat, event.lng],
