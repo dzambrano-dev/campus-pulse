@@ -335,9 +335,10 @@
     top: 84px;
     left: 10px;
     z-index: 1000;
-    padding: 10px 14px;
-    border-radius: 12px;
-    border: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    border: 2px solid var(--border);
     background: var(--background);
     color: var(--text);
     cursor: pointer;
