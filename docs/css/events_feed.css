@@ -29,7 +29,11 @@
     overflow: hidden;
     margin-bottom: 12px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition:
+            background 0.35s ease,
+            color 0.25s ease,
+            box-shadow 0.2s ease,
+            transform 0.15s ease;
 }
 
 .event-card:hover {
@@ -61,6 +65,7 @@
     padding: 6px 14px;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: 0.15s ease;
 }
 
 .event-date .month {
@@ -82,6 +87,7 @@
     padding: 18px 20px;
     display: flex;
     flex-direction: column;
+    transition: color 0.15s ease;
 }
 
 .event-title {
@@ -138,10 +144,27 @@
 /* Compact UI */
 
 body.compact-ui .event-card {
+    position: relative;
     display: flex;
     align-items: stretch;
     padding: 10px;
+    overflow: hidden;
     gap: 12px;
+}
+
+body.compact-ui .event-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+    z-index: 0;
+    transition: background 0.35s ease;
+}
+
+body.compact-ui .event-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 body.compact-ui .event-image-wrapper {
@@ -166,6 +189,7 @@ body.compact-ui .event-date {
 
 body.compact-ui .event-content {
     flex: 1;
+    min-width: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -173,8 +197,10 @@ body.compact-ui .event-content {
 }
 
 body.compact-ui .event-title {
-    font-size: 16px;
     margin-bottom: 4px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 body.compact-ui .event-tags {
@@ -185,9 +211,30 @@ body.compact-ui #events-container {
     gap: 10px;
 }
 
+body.compact-ui .event-meta {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 13px;
+}
+
 body.compact-ui .author-meta {
     display: none;
 }
+
+body.compact-ui .event-description {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+body.compact-ui .event-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    width: 100%;
+}
+
+body.compact-ui .event-actions button {
+    flex: 1;
+}
+
 body.compact-ui .event-card {
     color: white;
 }
