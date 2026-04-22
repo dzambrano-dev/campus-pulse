@@ -6,6 +6,7 @@
 
 import { API, checkSession, safeJson, redirect } from "./utils.js";
 import { initEventCreation } from "./eventCreation.js";
+import { initMap, activateMap } from "./map.js";
 
 
 // Data members
@@ -90,11 +91,7 @@ function initNavigation() {
 
             // Redraw map if map page is open
             if (targetPage === "map-page") {
-                setTimeout(() => {
-                    if (map) map.invalidateSize();
-                    locateUser();
-                    loadMapEvents();
-                }, 100);
+                activateMap();
             }
         });
     });

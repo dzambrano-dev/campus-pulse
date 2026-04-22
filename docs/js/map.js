@@ -30,7 +30,10 @@ const CATEGORY_STYLES = {
 
 // Initialize map
 export function initMap() {
+    if (map) return;
+
     map = L.map("map").setView([33.7838, -118.1141], 16);
+
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors"
     }).addTo(map);
