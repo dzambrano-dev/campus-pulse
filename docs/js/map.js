@@ -35,9 +35,8 @@ export function initMap() {
 
     map = L.map("map").setView([33.7838, -118.1141], 16);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap contributors"
-    }).addTo(map);
+    const isDark = document.body.classList.contains("dark-mode");
+    setMapTheme(isDark);
 }
 
 
@@ -206,4 +205,24 @@ function formatEventTime(timestamp) {
     });
 
     return `${month} ${day}, ${time}`;
+}
+
+// Change map to dark mode
+export function setMapTheme(isDark) {
+    if (!map) return;
+
+    // Remove existing tile layers only
+    map.eachLayer(layer => {
+        if (layer instanceof L.TileLayer) {
+            map.removeLayer(layer);
+        }
+    });
+
+    const tileUrl = isDark
+        ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+    L.tileLayer(tileUrl, {
+        attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
 }

@@ -6,7 +6,7 @@
 
 import { API, checkSession, safeJson, redirect } from "./utils.js";
 import { initEventCreation } from "./eventCreation.js";
-import { initMap, activateMap } from "./map.js";
+import { initMap, setMapTheme, activateMap } from "./map.js";
 
 
 // Data members
@@ -292,24 +292,7 @@ function toggleDarkMode() {
     const isDark = document.body.classList.toggle("dark-mode");
     const icon = document.getElementById("theme-icon");
     if (icon) icon.innerHTML = isDark ? sunSVG : moonSVG;
-
-    if (map) {
-        map.eachLayer(layer => {
-            if (layer instanceof L.TileLayer) {
-                map.removeLayer(layer);
-            }
-        });
-
-        const isDark = document.body.classList.contains("dark-mode");
-
-        const tile = isDark
-            ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-
-        L.tileLayer(tile, {
-            attribution: "&copy; OpenStreetMap contributors"
-        }).addTo(map);
-    }
+    setMapTheme(isDark);
 }
 
 // Toggle compact UI for events feed

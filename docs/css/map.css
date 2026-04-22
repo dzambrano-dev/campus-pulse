@@ -9,6 +9,53 @@
     height: 100%;
 }
 
+/* Map Markers */
+
+.map-pin {
+    width: 42px;
+    height: 42px;
+    background: var(--text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border: 2px solid var(--primary-soft);
+}
+
+.map-pin-inner {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-pin-icon svg {
+    width: 32px;
+    height: 32px;
+    color: var(--text);
+}
+
+.marker {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,.22);
+}
+
+.map-pin {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.map-pin:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Marker Tooltips */
+
 .map-label-tooltip {
     background: transparent;
     border: none;
@@ -22,10 +69,6 @@
     display: none;
 }
 
-.dark-mode .map-label-tooltip {
-    color: #fff;
-}
-
 .leaflet-tooltip.map-label-tooltip {
     background: transparent !important;
     border: none !important;
@@ -33,17 +76,17 @@
     padding: 0 !important;
 }
 
-/* Leaflet Popup Shell */
+/* Marker Popups */
 
 .leaflet-popup {
     opacity: 1 !important;
 }
 
-.leaflet-popup-content-wrapper{
-    background:transparent !important;
-    box-shadow:none !important;
-    padding:0 !important;
-    border-radius:0 !important;
+.leaflet-popup-content-wrapper {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
 }
 
 .leaflet-popup-content p {
@@ -66,15 +109,11 @@
     margin-top:-2px;
 }
 
-/* Close X button */
-
 .leaflet-container a.leaflet-popup-close-button {
     color: var(--text);
     font-size: 20px;
     font-weight: 400;
 }
-
-/* Popup Card */
 
 .map-popup-card {
     width: 300px;
@@ -124,7 +163,7 @@
     transform: scale(0.97);
 }
 
-/* Map Category Markers */
+/* Map Label Toggle Button */
 
 .map-label-button {
     position: absolute;
@@ -147,47 +186,4 @@
 .map-label-button svg {
     height: 22px;
     width: 22px;
-}
-
-.map-pin {
-    width: 42px;
-    height: 42px;
-    background: var(--text);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    border: 2px solid var(--primary-soft);
-}
-
-.map-pin-inner {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.map-pin-icon svg {
-    width: 32px;
-    height: 32px;
-    color: var(--text);
-}
-
-.marker {
-    width: 24px;
-    height: 24px;
-    border: 2px solid #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,.22);
-}
-
-.map-pin {
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.map-pin:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
