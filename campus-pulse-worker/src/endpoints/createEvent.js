@@ -16,10 +16,10 @@ export async function createEvent(request, env) {
 	// User is now authorized
 	try {
 		const body = await request.json();
-		const { title, description, eventType, tags, datetime, location, lat, lng, image } = body;
+		const { title, description, type, tags, datetime, location, lat, lng, image } = body;
 
 		// Basic validation
-		if (!title || !description || !eventType || !tags || !datetime || !location || !lat || !lng) {
+		if (!title || !description || !type || !tags || !datetime || !location || !lat || !lng) {
 			return jsonError("Missing required fields", 400);
 		}
 
@@ -38,7 +38,7 @@ export async function createEvent(request, env) {
 			id: eventId,
 			title: title,
 			description: description,
-			eventType: eventType,
+			type: type,
 			tags: tags,
 			datetime: datetime,
 			location: location,
