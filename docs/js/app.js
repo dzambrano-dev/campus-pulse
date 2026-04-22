@@ -4,7 +4,8 @@
  */
 
 
-import { API, checkSession, safeJson, showError, redirect, setLoading, clearErrors } from "./utils.js";
+import { API, checkSession, safeJson, redirect } from "./utils.js";
+import { initEventCreation } from "./eventCreation";
 
 
 // Data members
@@ -13,12 +14,9 @@ let currentRole;
 let map;
 let mapMarkers = [];
 let userMarker;
-let eventMap;
-let eventMarker;
 
 const moonSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 13.51c-.78.23-1.58.35-2.38.35-4.52 0-8.2-3.68-8.2-8.2 0-.8.12-1.6.35-2.38a1.002 1.002 0 0 0-1.25-1.25A10.17 10.17 0 0 0 2 11.8C2 17.42 6.58 22 12.2 22c4.53 0 8.45-2.91 9.76-7.24a1.002 1.002 0 0 0-1.25-1.25"></path><path d="m16 8 .94-2.06L19 5l-2.06-.94L16 2l-.94 2.06L13 5l2.06.94zm4.25-.5-.55 1.2-1.2.55 1.2.55.55 1.2.55-1.2 1.2-.55-1.2-.55z"></path></svg>`;
 const sunSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M12 6.99a5.01 5.01 0 1 0 0 10.02 5.01 5.01 0 1 0 0-10.02M13 19h-2v3h2zm0-17h-2v3h2zM2 11h3v2H2zm17 0h3v2h-3zM4.22 18.36l.71.71.71.71 1.06-1.06 1.06-1.06-.71-.71-.71-.71-1.06 1.06zM19.78 5.64l-.71-.71-.71-.71-1.06 1.06-1.06 1.06.71.71.71.71 1.06-1.06zm-12.02.7L6.7 5.28 5.64 4.22l-.71.71-.71.71L5.28 6.7l1.06 1.06.71-.71zm8.48 11.32 1.06 1.06 1.06 1.06.71-.71.71-.71-1.06-1.06-1.06-1.06-.71.71z"></path></svg>`;
-const calendarSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.1 0-2 .9-2 2v1h18V6c0-1.1-.9-2-2-2M3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8H3zm5-6h3v-3h2v3h3v2h-3v3h-2v-3H8z"></path></svg>`
 
 document.addEventListener("DOMContentLoaded", initApp);
 
@@ -44,12 +42,13 @@ async function initApp() {
 
     // Initialize application
     initSettingsMenu();
-    initEventCreation();
+    initEventCreation(currentRole);
     initNavigation();
     initMap();
 
     await loadEvents();
 }
+
 
 // Authenticate user
 async function loadUser() {
@@ -66,6 +65,7 @@ async function loadUser() {
         return null;
     }
 }
+
 
 // Initialize navigation bar
 function initNavigation() {
@@ -100,6 +100,7 @@ function initNavigation() {
         });
     });
 }
+
 
 // Load events from API
 async function loadEvents() {
@@ -381,238 +382,6 @@ function locateUser() {
     );
 }
 
-// Generate Event Creation module
-function initEventCreation() {
-    // only admins / organizers
-    if (!["organizer", "admin"].includes(currentRole)) return;
-
-    const navBar = document.querySelector(".navigation-bar");
-    const appContainer = document.querySelector(".app-container");
-    if (!navBar || !appContainer) return;
-
-    // Create the event button in the center of our nav bar
-    const creationButton = document.createElement("button");
-    creationButton.className = "nav-button";
-    creationButton.dataset.page = "create-event-page";
-    creationButton.innerHTML = calendarSVG;
-    navBar.insertBefore(creationButton, navBar.children[1]);
-
-    // Create the event creation page
-    const creationPage = document.createElement("section");
-    creationPage.className = "app-page";
-    creationPage.id = "create-event-page";
-    creationPage.innerHTML = `
-        <div class="create-event-page">
-            <h2 class="event-header">Create an Event</h2>
-            <div class="event-body">
-                <form id="event-form">
-                    <input id="event-title" placeholder="Event Title" required>
-                    <textarea id="event-description" placeholder="Description" maxlength="500" required></textarea>
-
-                    <!-- Event Type -->
-                    <label>Event Type</label>
-                    <select id="event-type" required>
-                        <option value="" disabled selected>Select event type</option>
-                        <option value="alert">Alert</option>
-                        <option value="academic">Academic</option>
-                        <option value="athletic">Athletic</option>
-                        <option value="career">Career</option>
-                        <option value="organization">Organization</option>
-                        <option value="social">Social</option>
-                    </select>
-
-                    <label>Tags</label>
-                    <!-- Tags injected by JS -->
-                    <div id="event-tags" class="tag-container"></div>
-
-                    <!-- Date -->
-                    <label>Date</label>
-                    <input type="date" id="event-date" required>
-
-                    <!-- Time & Location -->
-                    <label>Time</label>
-                    <input type="time" id="event-time" required>
-                    <input id="event-location" placeholder="Location" required>
-
-                    <!-- Map pin -->
-                    <label>Click map to place a pin</label>
-                    <div id="event-map" class="event-map"></div>
-
-                    <!-- Upload event image -->
-                    <label>Event Image</label>
-                    <input type="file" id="event-image" accept="image/*">
-
-                    <!-- Error messages -->
-                    <div class="error" id="event-error"></div>
-
-                    <!-- Action buttons -->
-                    <div class="event-actions">
-                        <button type="submit" class="primary-button" id="submit-event-button">Create</button>
-                        <button type="button" class="secondary-button" id="reset-event-button">Reset</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    `;
-
-    appContainer.insertBefore(creationPage, appContainer.children[1]);
-
-    // Page initialization
-    creationButton.addEventListener("click", () => {
-        loadTags();
-
-        setTimeout(() => {
-            initEventMap();
-        }, 50);
-    });
-
-    // Form submission
-    const form = creationPage.querySelector("#event-form");
-    form.addEventListener("submit", submitEvent);
-
-    form.addEventListener("reset", () => {
-        // Clear errors
-        const eventError = document.getElementById("event-error");
-        clearErrors(eventError);
-
-        document.getElementById("event-form").reset();
-        document.getElementById("event-type").value = "";
-
-        // Clear tags
-        document.querySelectorAll(".tag.active").forEach(tag => tag.classList.remove("active"));
-
-        // Reset map marker
-        if (eventMarker && eventMap) {
-            eventMap.removeLayer(eventMarker);
-            eventMarker = null;
-        }
-
-        // Reset map view
-        if (eventMap) {
-            eventMap.setView([33.7838, -118.1141], 15);
-        }
-
-        // Reset loading state
-        const submitButton = document.getElementById("submit-event-button");
-        setLoading(submitButton, false);
-    });
-}
-
-
-// Load a list of tags
-async function loadTags() {
-    const interestsEndpoint = `${API}/get-interests`;
-    const interestsResponse = await fetch(interestsEndpoint);
-    const data = await interestsResponse.json();
-
-    const tagContainer = document.getElementById("event-tags");
-    tagContainer.innerHTML = "";
-
-    data.interests.forEach(tag => {
-        const btn = document.createElement("div");
-        btn.classList.add("tag");
-        btn.textContent = `${tag}`;
-        btn.onclick = () => btn.classList.toggle("active");
-        tagContainer.appendChild(btn);
-    })
-}
-
-// Initialize the create event map
-function initEventMap() {
-    if (eventMap) eventMap.remove();
-    eventMap = L.map("event-map").setView([33.7838, -118.1141], 15);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(eventMap);
-
-    eventMarker = null;
-
-    eventMap.on("click", event => {
-        const { lat, lng } = event.latlng;
-        if (eventMarker) {
-            eventMarker.setLatLng([lat, lng]);
-        } else {
-            eventMarker = L.marker([lat, lng]).addTo(eventMap);
-        }
-    });
-}
-
-// Submit the event
-async function submitEvent(event) {
-    event.preventDefault();
-    const eventError = document.getElementById("event-error");
-    clearErrors(eventError);
-
-    // Disable button
-    const submitButton = document.getElementById("submit-event-button");
-    setLoading(submitButton, true);
-
-    // Organize data
-    const title = document.getElementById("event-title").value;
-    const description = document.getElementById("event-description").value;
-    const eventType = document.getElementById("event-type").value;
-    const tags = [...document.querySelectorAll(".tag.active")].map(t => t.textContent);
-    const date = document.getElementById("event-date").value;
-    const time = document.getElementById("event-time").value;
-    const location = document.getElementById("event-location").value;
-    const latlng = eventMarker ? eventMarker.getLatLng() : null;
-
-    // Validate data
-    if (!title) { showError(eventError, "Event title is required"); setLoading(submitButton, false); return; }
-    if (description.length < 50) { showError(eventError, "Description must be at least 50 characters"); setLoading(submitButton, false); return; }
-    if (!eventType) { showError(eventError, "Please select an event type"); setLoading(submitButton, false); return; }
-    if (tags.length === 0) { showError(eventError, "Please select at least one tag"); setLoading(submitButton, false); return; }
-    if (tags.length > 3) { showError(eventError, "You can select at most 3 tags"); setLoading(submitButton, false); return; }
-    if (!location) { showError(eventError, "Please provide a location"); setLoading(submitButton, false); return; }
-    if (!date || !time) { showError(eventError, "Date and time are required"); setLoading(submitButton, false); return; }
-    if (!latlng) { showError(eventError, "Please place a pin on the map"); setLoading(submitButton, false); return; }
-
-    // Convert datetime
-    const timestamp = toUTCTimestamp(date, time);
-
-    // Build event object
-    const eventObject = {
-        title: title,
-        description: description,
-        type: eventType,
-        tags: tags,
-        datetime: timestamp,
-        location: location,
-        lat: latlng.lat,
-        lng: latlng.lng,
-        image: null,
-    };
-
-    try {
-        const createEventEndpoint = `${API}/create-event`;
-        const response = await fetch(createEventEndpoint, {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(eventObject)
-        });
-
-        const result = await safeJson(response);
-
-        if (!response.ok) {
-            showError(eventError, result.error || "Failed to create event");
-            setLoading(submitButton, false);
-            return;
-        }
-
-        // Reset form
-        document.getElementById("event-form").reset();
-
-        // Switch to events
-        document.querySelector('[data-page="events-page"]').click();
-
-        await loadEvents();
-    } catch (err) {
-        console.error("Event creation failed:", err);
-        showError(eventError, "Network error, please try again");
-        setLoading(submitButton, false);
-    }
-}
-
 // Initialize settings menu
 function initSettingsMenu () {
     const icon = document.getElementById("theme-icon");
@@ -625,7 +394,7 @@ function initSettingsMenu () {
     const button = document.getElementById("settings-button");
     if (!button || !menu) return;
 
-    document.getElementById("go-to-profile").addEventListener("click", goProfile);
+    document.getElementById("go-to-profile").addEventListener("click", goToProfile);
 
     document.addEventListener("click", (event) => {
         const clickedButton = button.contains(event.target);
@@ -639,7 +408,7 @@ function initSettingsMenu () {
     });
 
     document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
-    document.getElementById("toggle-ui").addEventListener("click", toggleUI);
+    document.getElementById("toggle-ui").addEventListener("click", toggleCompactUI);
     document.getElementById("logout-button").addEventListener("click", logout);
 }
 
@@ -706,11 +475,11 @@ function toggleTheme() {
     }
 }
 
-function toggleUI() {
+function toggleCompactUI() {
     document.body.classList.toggle("compact-ui");
 }
 
-//make profile clickable
-function goProfile(){
+// Send to ake profile clickable
+function goToProfile(){
     window.location.href = "profile.html";
 }
