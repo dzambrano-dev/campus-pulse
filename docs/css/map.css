@@ -56,10 +56,10 @@
 }
 
 .leaflet-popup-tip {
-    background: #ffffff !important;
+    background: var(--text) !important;
     width: 18px !important;
     height: 18px !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,.12) !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12) !important;
 }
 
 .leaflet-popup-tip-container {
@@ -69,8 +69,6 @@
 /* Close X button */
 
 .leaflet-container a.leaflet-popup-close-button {
-    top: 10px !important;
-    right: 10px !important;
     color: var(--text);
     font-size: 20px;
     font-weight: 400;
@@ -92,12 +90,16 @@
 }
 
 .map-popup-card h3 {
+    display: inline-block;
+    width: fit-content;
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 4px;
 }
 
 .map-popup-card p {
+    display: inline-block;
+    width: fit-content;
     font-size: 14px;
     margin: 2px 0;
 }

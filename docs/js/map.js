@@ -140,7 +140,9 @@ function renderMapMarkers(events) {
         })
         popupDiv.append(title, location, time, button);
 
-        marker.bindPopup(popupDiv);
+        marker.bindPopup(popupDiv, {
+            offset: [0, -21]
+        });
 
         // Hide label when popup opens
         marker.on("popupopen", () => {
