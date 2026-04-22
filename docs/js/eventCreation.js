@@ -24,16 +24,16 @@ export function initEventCreation({ currentRole, loadEvents }) {
     // Create the nav button
     const creationButton = document.createElement("button");
     creationButton.className = "nav-button";
-    creationButton.dataset.page = "create-event-page";
+    creationButton.dataset.page = "event-creation-page";
     creationButton.innerHTML = calendarSVG;
     navBar.insertBefore(creationButton, navBar.children[1]);
 
     // Create the event creation page
     const creationPage = document.createElement("section");
     creationPage.className = "app-page";
-    creationPage.id = "create-event-page";
+    creationPage.id = "event-creation-page";
     creationPage.innerHTML = `
-        <div class="create-event-page">
+        <div id="event-creation-container">
             <h2 class="event-header">Create an Event</h2>
             <form id="event-form" class="event-body">
                 <input id="event-title" placeholder="Event Title" required>

@@ -1,46 +1,10 @@
-/* Event Creation */
+/* Event Creation Page */
 
-.event-modal {
-    position: fixed;
-    inset: 0;
-    padding: 0 16px;
-    background: rgba(0, 0, 0, 0);
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    z-index: 10001;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-}
-
-.event-modal.open {
-    opacity: 1;
-    pointer-events: all;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(2px);
-}
-
-.event-sheet {
-    width: min(800px, 90vw);
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    background: var(--card);
-    color: var(--text);
-    border-radius: 20px;
-    margin-bottom: 85px;
-    padding: 24px;
-    box-shadow:
-            0 -6px 20px rgba(0, 0, 0, 0.18),
-            0 -2px 8px rgba(0, 0, 0, 0.08);
-    transform: translateY(100%);
-    transition: 0.35s cubic-bezier(0.4, 0.0, 0.2, 1.0);
-}
-
-.event-modal.open .event-sheet {
-    transform: translateY(0);
-    transition: 0.4s cubic-bezier(0.22, 1.0, 0.36, 1.0);
+#event-creation-container {
+    max-width: var(--max-page-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 20px calc(20px + var(--nav-height)) 20px;
 }
 
 .event-header {
