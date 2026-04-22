@@ -57,11 +57,14 @@ export function activateMap() {
             labelsVisible = !labelsVisible;
 
             mapMarkers.forEach(marker => {
-                if (labelsVisible) {
-                    marker.openTooltip();
-                } else {
-                    marker.closeTooltip();
-                }
+                marker.unbindTooltip();
+
+                marker.bindTooltip(marker._labelText, {
+                    permanent: labelsVisible,
+                    direction: "top",
+                    offset: [0, -16],
+                    className: "map-label-tooltip"
+                });
             });
         }
     }, 100);
@@ -103,13 +106,11 @@ function renderMapMarkers(events) {
         marker._labelText = event.title;
 
         marker.bindTooltip(event.title, {
-            permanent: false,
+            permanent: labelsVisible,
             direction: "top",
             offset: [0, -16],
             className: "map-label-tooltip"
         });
-
-        if (labelsVisible) marker.openTooltip();
 
         // Create popups for each pin
         const popupDiv = document.createElement("div");
@@ -142,16 +143,6 @@ function renderMapMarkers(events) {
 
         marker.bindPopup(popupDiv, {
             offset: [0, -21]
-        });
-
-        // Hide label when popup opens
-        marker.on("popupopen", () => {
-            marker.closeTooltip();
-        });
-
-        // Restore label when popup closes
-        marker.on("popupclose", () => {
-            if (labelsVisible) marker.openTooltip();
         });
 
         mapMarkers.push(marker);
