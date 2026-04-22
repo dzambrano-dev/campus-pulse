@@ -9,14 +9,13 @@
 }
 
 .app-page {
-    min-height: calc(100dvh - var(--nav-height));
+    height: calc(100dvh - var(--nav-height));
     width: 100%;
     display: none;
     opacity: 0;
     overflow: visible;
     pointer-events: none;
     transition: opacity 0.2s ease;
-    padding-bottom: var(--nav-height);
 }
 
 .app-page.active {
