@@ -1,4 +1,4 @@
-/* Events page */
+/* Events Page */
 
 #events-container {
     max-width: var(--max-page-width);
@@ -8,63 +8,7 @@
     padding: 20px 20px calc(20px + var(--nav-height)) 20px;
 }
 
-.event-detail-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    overflow: hidden;
-    box-shadow:
-            0 14px 34px rgba(0, 0, 0, 0.08),
-            0 6px 14px rgba(0, 0, 0, 0.04);
-}
-
-.event-detail-image{
-    width:100%;
-    height:340px;
-    object-fit:cover;
-    display:block;
-}
-
-.event-detail-content{
-    padding:28px;
-}
-
-.event-title{
-    font-size:42px;
-    line-height:1.08;
-    margin-bottom:18px;
-    font-weight:800;
-    color:var(--text);
-}
-
-.event-meta{
-    display:grid;
-    gap:10px;
-    margin-bottom:22px;
-    color:#666;
-    font-size:15px;
-}
-
-.event-description{
-    font-size:17px;
-    line-height:1.75;
-    color:#444;
-    margin:22px 0;
-}
-
-.back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin: 18px 0 10px 16px;
-    padding: 10px 14px;
-    background: white;
-    color: #222;
-    text-decoration: none;
-    border-radius: 12px;
-    box-shadow: 0 6px 16px rgba(0,0,0,.08);
-    font-weight: 600;
-}
+/* Event Card */
 
 .event-card {
     background: var(--card);
@@ -82,6 +26,8 @@
     box-shadow: 0 12px 30px rgba(0,0,0,.12);
 }
 
+/* Event Card Image */
+
 .event-image-wrapper {
     position: relative;
 }
@@ -91,6 +37,8 @@
     height: 200px;
     object-fit: cover;
 }
+
+/* Event Date Badge */
 
 .event-date {
     position: absolute;
@@ -117,24 +65,28 @@
     font-weight: 900;
 }
 
+/* Event Card Content */
+
 .event-content {
     padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .event-title {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 6px;
+    color: var(--text);
 }
 
 .event-meta {
+    display: inline-block;
+    width: fit-content;
     font-size: 14px;
-    color: #777;
     margin-bottom: 6px;
-}
-
-.author-meta {
-    margin: 0 auto 14px 0;
+    color: #777777;
 }
 
 .author-link {
@@ -145,7 +97,7 @@
 
 .event-description {
     font-size: 14px;
-    color: #555;
+    color: #555555;
     line-height: 1.5;
     margin: 12px 0;
 }
