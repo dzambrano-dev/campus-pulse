@@ -113,7 +113,7 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.08s ease, background 0.18s ease;
+    transition: all 0.15s ease;
 }
 
 .map-popup-card .popup-event-button:hover {
