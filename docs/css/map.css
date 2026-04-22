@@ -1,0 +1,187 @@
+/* Map */
+
+#map-page {
+    height: calc(100dvh - var(--nav-height));
+    z-index: 105;
+}
+
+#map {
+    height: 100%;
+}
+
+.map-label-tooltip {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.map-label-tooltip::before {
+    display: none;
+}
+
+.dark-mode .map-label-tooltip {
+    color: #fff;
+}
+
+.leaflet-tooltip.map-label-tooltip {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Leaflet Popup Shell */
+
+.leaflet-popup{
+    opacity: 1 !important;
+}
+
+.leaflet-popup-content-wrapper{
+    background:transparent !important;
+    box-shadow:none !important;
+    padding:0 !important;
+    border-radius:0 !important;
+}
+
+.leaflet-popup-content{
+    margin:0 !important;
+    padding:0 !important;
+}
+
+.leaflet-popup-tip{
+    background:#ffffff !important;
+    width:18px !important;
+    height:18px !important;
+    box-shadow:0 6px 18px rgba(0,0,0,.12) !important;
+}
+
+.leaflet-popup-tip-container{
+    margin-top:-2px;
+}
+
+/* Close X button */
+
+.leaflet-container a.leaflet-popup-close-button{
+    top: 20px;
+    right: 20px;
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 400;
+}
+
+/* Popup Card */
+
+.map-popup-card {
+    width: 300px;
+    max-width: 85vw;
+    background: var(--text);
+    border-radius: 16px;
+    padding: 14px;
+    color: var(--text);
+    box-shadow:
+            0 18px 36px rgba(0, 0, 0, 0.18),
+            0 6px 14px rgba(0, 0, 0, 0.08);
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+}
+
+.map-popup-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.map-popup-card p {
+    font-size: 14px;
+    margin: 2px 0;
+}
+
+.map-popup-card .popup-event-button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.08s ease, background 0.18s ease;
+}
+
+.map-popup-card .popup-event-btn:hover {
+    filter: brightness(1.1);
+}
+
+.map-popup-card .popup-event-btn:active {
+    transform: scale(0.97);
+}
+
+/* Map Category Markers */
+
+.map-label-button {
+    position: absolute;
+    height: 34px;
+    width: 34px;
+    top: 74px;
+    left: 10px;
+    z-index: 1000;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    border: 2px solid var(--border);
+    background: #ffffff;
+    color: #000000;
+    cursor: pointer;
+}
+
+.map-label-button svg {
+    height: 22px;
+    width: 22px;
+}
+
+.map-pin {
+    width: 42px;
+    height: 42px;
+    background: var(--text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border: 2px solid var(--primary-soft);
+}
+
+.map-pin-inner {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-pin-icon svg {
+    width: 32px;
+    height: 32px;
+    color: var(--text);
+}
+
+.marker {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,.22);
+}
+
+.map-pin {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.map-pin:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}

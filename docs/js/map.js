@@ -120,8 +120,15 @@ function renderMapMarkers(events) {
         location.textContent = event.location;
         const time = document.createElement("p");
         time.textContent = formatEventTime(event.datetime);
+
+        const rawType = event.type || "club";
+        const type = rawType.toString().trim().toLowerCase();
+        const config = CATEGORY_STYLES[type] || CATEGORY_STYLES["club"];
+
         const button = document.createElement("button");
-        button.className = "popup-event-btn";
+        button.className = "popup-event-button";
+        button.style.background = config.color;
+        button.style.color = "#ffffff";
         button.textContent = "View Event";
         button.addEventListener("click", () => {
             const eventId = event.id;
