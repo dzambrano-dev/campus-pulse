@@ -4,7 +4,7 @@
  */
 
 
-import { API, safeJson } from "./utils.js";
+import { API, safeJson } from "../utils.js";
 
 
 let map;

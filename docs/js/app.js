@@ -5,8 +5,8 @@
 
 
 import { API, checkSession, safeJson, redirect } from "./utils.js";
-import { initEventCreation } from "./eventCreation.js";
-import { initMap, setMapTheme, activateMap } from "./map.js";
+import { initEventCreation } from "./app-pages/eventCreation.js";
+import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
 
 
 // Data members

@@ -1,4 +1,4 @@
-import { API, safeJson } from "./utils.js";
+import { API, safeJson } from "../utils.js";
 
 const discordLinks = {
     "12": "https://discord.gg/cyberclub",

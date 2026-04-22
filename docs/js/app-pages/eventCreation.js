@@ -4,7 +4,7 @@
  */
 
 
-import { API, clearErrors, safeJson, setLoading, showError } from "./utils.js";
+import { API, clearErrors, safeJson, setLoading, showError } from "../utils.js";
 
 
 let eventMap;
