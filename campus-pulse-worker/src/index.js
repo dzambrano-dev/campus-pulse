@@ -19,6 +19,7 @@ import { toggleOrganizer } from "./endpoints/toggleOrganizer.js";
 import { signup } from "./endpoints/signup.js";
 import { updateInterests } from "./endpoints/updateInterests.js";
 import { user } from "./endpoints/user.js";
+import { outlookCallback } from "./endpoints/outlookCallback.js";
 
 
 const corsHeaders = {
@@ -51,6 +52,7 @@ export default {
 			case "/api/toggle-organizer": return addCors(await toggleOrganizer(request, env));
 			case "/api/user": return addCors(await user(request, env));
 			case "/api/update-interests": return addCors(await updateInterests(request, env));
+			case "/api/auth/callback": return addCors(await outlookCallback(request, env)); //Used for Outlook callback
 			case "/api/health": return addCors(Response.json({ status: "OK" }));  // Used to check if API is alive
 			default: return new Response("Not Found", { status: 404, headers: corsHeaders });
 		}

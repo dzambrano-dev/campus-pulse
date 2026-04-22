@@ -35,6 +35,11 @@ const signupUsername = document.getElementById("signup-username");
 const signupEmail = document.getElementById("signup-email");
 const signupPassword = document.getElementById("signup-password");
 
+// Needed for signing in with outlook
+const MS_TENANT_ID = "d175679b-acd3-4644-be82-af041982977a"; 
+const MS_CLIENT_ID = "6d09abad-0363-4dbf-b260-6dd103d85e0c";
+const MS_REDIRECT_URI = "https://campus-pulse-worker.vindictivity.workers.dev/api/auth/callback";
+
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
@@ -68,6 +73,12 @@ function init() {
     // Form handlers
     loginForm.addEventListener("submit", handleLogin);
     signupForm.addEventListener("submit", handleSignup);
+
+    // Listener for the new sign in with outlook button
+    const outlookBtn = document.getElementById("outlook-login-button");
+    if (outlookBtn) {
+        outlookBtn.addEventListener("click", handleOutlookLogin);
+    }
 }
 
 // Handles login form submission
@@ -164,6 +175,13 @@ async function handleSignup(event) {
         setLoading(signupSubmitButton, false);
         console.error(err);
     }
+}
+
+// Creates the redirect function for signing in with outlook
+function handleOutlookLogin() {
+    const scope = encodeURIComponent("openid profile email User.Read");
+    const url = `https://login.microsoftonline.com/${MS_TENANT_ID}/oauth2/v2.0/authorize?client_id=${MS_CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(MS_REDIRECT_URI)}&response_mode=query&scope=${scope}`;
+    window.location.href = url;
 }
 
 // Switch UI to signup card
