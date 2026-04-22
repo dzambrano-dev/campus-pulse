@@ -165,7 +165,11 @@ body.dark-mode .secondary-button:hover {
 }
 
 body.dark-mode .event-description {
-    color: #777;
+    color: #ffffff;
+}
+
+body.dark-mode .event-description {
+    color: #777777;
 }
 
 body.dark-mode .event-meta {
