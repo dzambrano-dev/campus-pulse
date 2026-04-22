@@ -64,7 +64,7 @@ export function activateMap() {
                 }
             });
         }
-    }, 100);
+    }, 0);
 }
 
 
@@ -189,6 +189,9 @@ function locateUser() {
             fillOpacity: 1,
             weight: 2
         }).addTo(map);
+
+        // Center map on user
+        map.setView([latitude, longitude], 16);
     });
 }
 
