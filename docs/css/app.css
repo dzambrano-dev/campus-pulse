@@ -221,13 +221,6 @@
     color: var(--text);
     font-weight: 600;
     font-size: 16px;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.map-label-tooltip.hidden {
-    opacity: 0;
-    transform: translateY(-4px);
-    pointer-events: none;
 }
 
 .map-label-tooltip::before {
