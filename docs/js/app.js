@@ -338,3 +338,19 @@ async function logout() {
 function toTitleCase(str) {
     return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 }
+
+
+// Format event datetime
+function formatEventTime(timestamp) {
+    const date = new Date(timestamp * 1000); // assuming UNIX timestamp
+
+    const month = date.toLocaleString("default", { month: "long" });
+    const day = date.getDate();
+    const time = date.toLocaleString("default", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
+
+    return `${month} ${day}, ${time}`;
+}
