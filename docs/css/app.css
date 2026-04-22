@@ -220,7 +220,14 @@
     box-shadow: none;
     color: var(--text);
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.map-label-tooltip.hidden {
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
 }
 
 .map-label-tooltip::before {
@@ -342,7 +349,7 @@
     border-radius: 2px;
     border: 2px solid var(--border);
     background: #ffffff;
-    color: var(--text);
+    color: #000000;
     cursor: pointer;
 }
 
@@ -393,62 +400,6 @@
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
-
-/* ALERT / MAIN EVENTS */
-/*.marker.alert{*/
-/*    background:#ef4444;*/
-/*    clip-path:polygon(*/
-/*            50% 0%,*/
-/*            61% 35%,*/
-/*            98% 35%,*/
-/*            68% 57%,*/
-/*            79% 91%,*/
-/*            50% 70%,*/
-/*            21% 91%,*/
-/*            32% 57%,*/
-/*            2% 35%,*/
-/*            39% 35%*/
-/*    );*/
-/*}*/
-
-/*!* ACADEMIC *!*/
-/*.marker.academic{*/
-/*    background:#7c3aed;*/
-/*    border-radius:50%;*/
-/*}*/
-
-/*!* ATHLETIC *!*/
-/*.marker.athletic{*/
-/*    background:#2563eb;*/
-/*    clip-path:polygon(*/
-/*            50% 0%,*/
-/*            0% 100%,*/
-/*            100% 100%*/
-/*    );*/
-/*}*/
-
-/*!* CAREER *!*/
-/*.marker.career{*/
-/*    background:#16a34a;*/
-/*    clip-path:polygon(*/
-/*            50% 0%,*/
-/*            100% 50%,*/
-/*            50% 100%,*/
-/*            0% 50%*/
-/*    );*/
-/*}*/
-
-/*!* ORGANIZATION / CLUB *!*/
-/*.marker.organization{*/
-/*    background:#FDB515;*/
-/*    border-radius:6px;*/
-/*}*/
-
-/*!* SOCIAL *!*/
-/*.marker.social{*/
-/*    background:#ec4899;*/
-/*    border-radius:8px;*/
-/*}*/
 
 /* Profile Button */
 
