@@ -179,8 +179,8 @@ function getEventIcon(event) {
                 </div>
             </div>
         `,
-        iconSize: [52, 52],
-        iconAnchor: [26, 26]
+        iconSize: [42, 42],
+        iconAnchor: [21, 21]
     });
 }
 
