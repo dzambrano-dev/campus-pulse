@@ -62,7 +62,8 @@ async function loadMapEvents() {
 
         if (!response.ok) return;
 
-        const events = await safeJson(response);
+        const data = await safeJson(response);
+        const events = data.events || data;
         renderMapMarkers(events);
     } catch (err) {
         console.error("Map event load failed:", err);
@@ -136,8 +137,8 @@ function renderMapMarkers(events) {
 
 // Get icon based on event type
 function getEventIcon(event) {
-    const type = (event.type || event.tags?.[0]).toString().toLowerCase();
-    const config = CATEGORY_STYLES[type];
+    const type = (event.type).toString().toLowerCase();
+    const config = CATEGORY_STYLES[type] || CATEGORY_STYLES["club"];
 
     return L.divIcon({
         className: "map-marker-wrapper",
