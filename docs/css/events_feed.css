@@ -127,16 +127,43 @@
 /* Compact UI */
 
 body.compact-ui .event-card {
-    padding: 8px;
-    gap: 8px;
+    display: flex;
+    align-items: stretch;
+    padding: 10px;
+    gap: 12px;
 }
 
 body.compact-ui .event-image-wrapper {
-    display: none;
+    display: block;
+    order: 2;
+    width: 90px;
+    min-width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+body.compact-ui .event-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 body.compact-ui .event-date {
     display: none;
+}
+
+body.compact-ui .event-content {
+    flex: 1;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+body.compact-ui .event-title {
+    font-size: 16px;
+    margin-bottom: 4px;
 }
 
 body.compact-ui .event-tags {
@@ -145,14 +172,6 @@ body.compact-ui .event-tags {
 
 body.compact-ui #events-container {
     gap: 10px;
-}
-
-body.compact-ui .event-content {
-    padding: 10px;
-}
-
-body.compact-ui .event-title {
-    font-size: 16px;
 }
 
 body.compact-ui .author-meta {
