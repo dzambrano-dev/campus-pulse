@@ -169,10 +169,10 @@ body.compact-ui .event-card > * {
 
 body.compact-ui .event-image-wrapper {
     display: block;
-    order: 2;
-    width: 90px;
-    min-width: 90px;
-    height: 90px;
+    order: 0;
+    width: 100px;
+    min-width: 100px;
+    height: 100px;
     border-radius: 12px;
     overflow: hidden;
 }
