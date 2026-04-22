@@ -10,7 +10,7 @@
     --text: #2B2B2B;            /* CSULB Dark Gray */
     --border: #d6d6d6;          /* Border Color */
     --nav-height: 65px;         /* Navigation Bar Height */
-    --max-page-width: 1400px;   /* The widest our pages should be */
+    --max-page-width: 1000px;   /* The widest our pages should be */
 }
 
 /* Basics */
@@ -47,12 +47,13 @@
 html {
     height: 100%;
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
 }
 
 body {
     display: flex;
     height: 100dvh;
-    width: 100vw;
+    width: 100%;
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
