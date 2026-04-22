@@ -137,7 +137,7 @@ function renderMapMarkers(events) {
 
 // Get icon based on event type
 function getEventIcon(event) {
-    const type = (event.type).toString().toLowerCase();
+    const type = event.type.toLowerCase();
     const config = CATEGORY_STYLES[type] || CATEGORY_STYLES["club"];
 
     return L.divIcon({
