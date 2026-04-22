@@ -10,6 +10,7 @@
     background: var(--background);
     border-top: 1px solid var(--primary-soft);
     box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.06);
+    gap: clamp(6px, 2vw, 24px);
     z-index: 9999;
 }
 
@@ -21,8 +22,10 @@
     background: transparent;
     border: none;
     position: relative;
-    margin: 6px 40px;
-    transition: background 0.2s ease, transform 0.15s ease;
+    margin: 6px 0;
+    border-radius: 12px;
+    max-width: 250px;
+    transition: background 0.25s ease, transform 0.15s ease;
 }
 
 .nav-button svg {
@@ -41,5 +44,5 @@
 }
 
 .nav-button.active {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.06);
 }
