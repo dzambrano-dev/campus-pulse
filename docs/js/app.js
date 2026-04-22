@@ -5,7 +5,7 @@
 
 
 import { API, checkSession, safeJson, redirect } from "./utils.js";
-import { initEventCreation } from "./eventCreation";
+import { initEventCreation } from "./eventCreation.js";
 
 
 // Data members
@@ -42,8 +42,10 @@ async function initApp() {
 
     // Initialize application
     initSettingsMenu();
-    initEventCreation(currentRole);
     initNavigation();
+    initEventCreation({
+        currentRole, loadEvents
+    });
     initMap();
 
     await loadEvents();
