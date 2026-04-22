@@ -10,6 +10,7 @@ import { API, safeJson } from "./utils.js";
 let map;
 let mapMarkers = [];
 let userMarker;
+let labelsVisible = true;
 
 const academicSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M9 3h2v18H9zm11.71 17.23-3.8-8.15-3.81-8.16-.9.42-.91.43 3.8 8.15 3.81 8.16.9-.42zM6 3h2v18H6zM3 3h2v18H3z"></path></svg>`;
 const alertSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M13 4.5V3h-2v3h2zm6 6.5v2h3v-2zM5 12v-1H2v2h3zm13.72-5.3 1.06-1.06-.71-.71-.71-.71-1.06 1.06-1.06 1.06.71.71.71.71zM6.7 5.28 5.64 4.22l-.71.71-.71.71L5.28 6.7l1.06 1.06.71-.71.71-.71zm9.43 4.36c-.17-.95-1-1.64-1.97-1.64H9.83c-.97 0-1.79.69-1.97 1.64L6.34 18h11.31zM6.17 19H4v2h16v-2z"></path></svg>`;
@@ -37,6 +38,28 @@ export function initMap() {
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors"
     }).addTo(map);
+
+    setTimeout(() => {
+        const button = document.getElementById("toggle-labels-button");
+        if (!button) return;
+
+        button.onclick = () => {
+            labelsVisible = !labelsVisible;
+
+            mapMarkers.forEach(marker => {
+                if (labelsVisible) {
+                    marker.bindTooltip(marker._labelText, {
+                        permanent: true,
+                        direction: "top",
+                        offset: [0, -14],
+                        className: "map-label-tooltip"
+                    });
+                } else {
+                    marker.unbindTooltip();
+                }
+            });
+        }
+    }, 100);
 }
 
 
@@ -85,12 +108,16 @@ function renderMapMarkers(events) {
         ).addTo(map);
 
         // Create a tooltip
-        marker.bindTooltip(event.title, {
-            permanent: true,
-            direction: "top",
-            offset: [0, -10],
-            className: "map-label-tooltip"
-        });
+        marker._labelText = event.title;
+
+        if (labelsVisible) {
+            marker.bindTooltip(event.title, {
+                permanent: true,
+                direction: "top",
+                offset: [0, -14],
+                className: "map-label-tooltip"
+            });
+        }
 
         // Create popups for each pin
         const popupDiv = document.createElement("div");
@@ -125,7 +152,7 @@ function renderMapMarkers(events) {
             marker.bindTooltip(String(event.title), {
                 permanent: true,
                 direction: "top",
-                offset: [0, -10],
+                offset: [0, -16],
                 className: "map-label-tooltip"
             });
         });
@@ -152,8 +179,8 @@ function getEventIcon(event) {
                 </div>
             </div>
         `,
-        iconSize: [40, 40],
-        iconAnchor: [20, 40]
+        iconSize: [52, 52],
+        iconAnchor: [26, 26]
     });
 }
 
