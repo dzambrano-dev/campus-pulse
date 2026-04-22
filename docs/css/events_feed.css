@@ -1,13 +1,9 @@
 /* Events page */
 
-#events-page {
-    padding: 20px;
-}
-
 #events-container {
     max-width: var(--max-page-width);
     margin: 0 auto;
-    padding: 10px;
+    padding: 20px;
     gap: 12px;
 }
 

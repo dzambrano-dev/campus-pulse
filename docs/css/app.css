@@ -1,21 +1,17 @@
 /* App Layout */
 
-.app-body {
-    padding-bottom: var(--nav-height);
-}
-
 .app-container {
-    width: 100%;
-    height: 100%;
+    min-height: 100dvh;
+    padding-bottom: var(--nav-height);
 }
 
 .app-page {
     min-height: calc(100dvh - var(--nav-height));
     display: none;
     opacity: 0;
+    overflow: visible;
     pointer-events: none;
     transition: opacity 0.2s ease;
-    overflow-y: auto;
 }
 
 .app-page.active {

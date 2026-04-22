@@ -2,11 +2,11 @@
 
 #map-page {
     height: calc(100dvh - var(--nav-height));
-    z-index: 105;
 }
 
 #map {
     height: 100%;
+    width: 100%;
 }
 
 /* Map Markers */
