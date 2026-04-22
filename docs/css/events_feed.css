@@ -1,7 +1,7 @@
 /* Variables */
 
 :root {
-    --academic-color: #3b82f6;
+    --academics-color: #3b82f6;
     --alert-color: #ef4444;
     --athletics-color: #22c55e;
     --career-color: #8b5cf6;
@@ -241,8 +241,8 @@ body.compact-ui .event-card {
     color: white;
 }
 
-body.compact-ui .academic-event {
-    background: var(--academic-color);
+body.compact-ui .academics-event {
+    background: var(--academics-color);
 }
 
 body.compact-ui .alert-event {
