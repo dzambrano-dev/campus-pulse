@@ -45,9 +45,9 @@ export function initEventCreation({ currentRole, loadEvents }) {
                     <option value="" disabled selected>Select event type</option>
                     <option value="alert">Alert</option>
                     <option value="academic">Academic</option>
-                    <option value="athletic">Athletic</option>
+                    <option value="athletics">Athletics</option>
                     <option value="career">Career</option>
-                    <option value="organization">Organization</option>
+                    <option value="club">Club</option>
                     <option value="social">Social</option>
                 </select>
 
