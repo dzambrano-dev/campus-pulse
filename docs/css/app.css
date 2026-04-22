@@ -164,7 +164,7 @@ body.dark-mode .secondary-button:hover {
     background: rgba(253, 181, 21, 0.25);
 }
 
-body.dark-mode .event-description {
+body.dark-mode .event-header {
     color: #ffffff;
 }
 
