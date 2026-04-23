@@ -49,7 +49,8 @@ async function initApp() {
     initMap();
 
     await loadEvents();
-    restorePageFromURL();
+    showInitialPage();
+
     window.addEventListener("popstate", () => {
         restorePageFromURL();
     });
@@ -191,3 +192,26 @@ async function logout() {
     redirect("index.html");
 }
 
+
+function showInitialPage() {
+    const pageKey = getPageFromUrl();
+    const pageId = `${pageKey}-page`;
+
+    const pages = document.querySelectorAll(".app-page");
+    const navButtons = document.querySelectorAll(".nav-button");
+
+    pages.forEach(page => {
+        page.classList.remove("active", "fade-out");
+        page.style.display = "none";
+    });
+
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.style.display = "block";
+        targetPage.classList.add("active");
+    }
+
+    navButtons.forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.page === pageId);
+    });
+}

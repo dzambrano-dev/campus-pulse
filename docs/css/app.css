@@ -9,6 +9,7 @@
 }
 
 .app-page {
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -21,6 +22,7 @@
 }
 
 .app-page.active {
+    display: block;
     opacity: 1;
     z-index: 1;
     pointer-events: auto;
@@ -31,10 +33,6 @@
     opacity: 0;
     pointer-events: none;
     z-index: 0;
-}
-
-.app-page.hidden {
-    display: none;
 }
 
 /* Settings Menu Button */
