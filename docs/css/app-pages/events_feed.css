@@ -11,7 +11,7 @@
 
 /* Events Page */
 
-#events-container {
+#event-cards-container {
     max-width: var(--max-page-width);
     width: 100%;
     margin: 0 auto;
@@ -43,11 +43,11 @@
 
 /* Event Card Image */
 
-.event-image-wrapper {
+.event-card-image-wrapper {
     position: relative;
 }
 
-.event-image {
+.event-card-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
@@ -55,7 +55,7 @@
 
 /* Event Date Badge */
 
-.event-date {
+.event-card-date {
     position: absolute;
     top: 14px;
     left: 14px;
@@ -68,14 +68,14 @@
     transition: 0.15s ease;
 }
 
-.event-date .month {
+.event-card-date .month {
     display: block;
     font-size: 14px;
     font-weight: 700;
     color: var(--primary);
 }
 
-.event-date .day {
+.event-card-date .day {
     display: block;
     font-size: 18px;
     font-weight: 900;
@@ -83,41 +83,41 @@
 
 /* Event Card Content */
 
-.event-content {
+.event-card-content {
     padding: 18px 20px;
     display: flex;
     flex-direction: column;
     transition: color 0.15s ease;
 }
 
-.event-title {
+.event-card-title {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 6px;
     color: var(--text);
 }
 
-.event-meta {
+.event-card-meta {
     display: inline-block;
     width: fit-content;
     font-size: 14px;
     color: #777777;
 }
 
-.author-link {
+.event-card-author-link {
     color: var(--primary);
     font-weight: 600;
     cursor: pointer;
 }
 
-.event-description {
+.event-card-description {
     font-size: 14px;
     color: #555555;
     line-height: 1.5;
     margin-top: 12px;
 }
 
-.event-tags {
+.event-card-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
@@ -125,7 +125,7 @@
     margin: 0 auto 0 0;
 }
 
-.tag-bubble {
+.event-card-tag-bubble {
     background: rgba(59, 130, 246, 0.12);
     color: #777;
     border: 1px solid rgba(59, 130, 246, 0.35);
@@ -135,7 +135,7 @@
     font-weight: 500;
 }
 
-.event-actions {
+.event-card-actions {
     display: flex;
     gap: 10px;
     margin-top: 12px;
@@ -149,6 +149,7 @@ body.compact-ui .event-card {
     align-items: stretch;
     padding: 10px;
     overflow: hidden;
+    color: white;
     gap: 12px;
 }
 
@@ -167,7 +168,7 @@ body.compact-ui .event-card > * {
     z-index: 1;
 }
 
-body.compact-ui .event-image-wrapper {
+body.compact-ui .event-card-image-wrapper {
     display: block;
     order: 0;
     width: 100px;
@@ -177,17 +178,17 @@ body.compact-ui .event-image-wrapper {
     overflow: hidden;
 }
 
-body.compact-ui .event-image {
+body.compact-ui .event-card-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-body.compact-ui .event-date {
+body.compact-ui .event-card-date {
     display: none;
 }
 
-body.compact-ui .event-content {
+body.compact-ui .event-card-content {
     flex: 1;
     min-width: 0;
     padding: 0;
@@ -196,49 +197,45 @@ body.compact-ui .event-content {
     justify-content: center;
 }
 
-body.compact-ui .event-title {
+body.compact-ui .event-card-title {
     margin-bottom: 4px;
     color: white;
     font-size: 15px;
     font-weight: 600;
 }
 
-body.compact-ui .event-tags {
+body.compact-ui .event-card-tags {
     display: none;
 }
 
-body.compact-ui #events-container {
+body.compact-ui #event-cards-container {
     gap: 10px;
 }
 
-body.compact-ui .event-meta {
+body.compact-ui .event-card-meta {
     color: rgba(255, 255, 255, 0.85);
     font-size: 13px;
 }
 
-body.compact-ui .author-meta {
+body.compact-ui .event-card-author-meta {
     display: none;
 }
 
-body.compact-ui .event-description {
+body.compact-ui .event-card-description {
     display: none;
 }
 
-body.compact-ui .event-actions {
+body.compact-ui .event-card-actions {
     display: flex;
     gap: 8px;
     margin-top: 8px;
     width: 100%;
 }
 
-body.compact-ui .event-actions button {
+body.compact-ui .event-card-actions button {
     flex: 1;
     font-size: 13px;
     padding: 12px 8px;
-}
-
-body.compact-ui .event-card {
-    color: white;
 }
 
 body.compact-ui .academics-event {

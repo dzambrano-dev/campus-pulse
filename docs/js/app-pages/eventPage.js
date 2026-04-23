@@ -83,23 +83,32 @@ function renderEvent(event) {
     const description = event.description || "No description available.";
 
     container.innerHTML = `
-        <div class="event-detail-card">
-            <img src="${image}" alt="${title}" class="event-detail-image">
-            <div class="event-detail-content">
-                <h1 class="event-title">${title}</h1>
-                <div class="event-meta">
-                    <p><strong>Location:</strong> ${location}</p>
-                    <p><strong>Date:</strong> ${formatDate(event.datetime)}</p>
-                    <p><strong>Posted by:</strong> @${createdBy}</p>
-                </div>
-                <p class="event-description">
-                    ${description}
-                </p>
-
-                ${renderTags(event.tags || [])}
-            </div>
+        <!-- Hero Image -->
+        <div class="event-hero">
+            <img src="${image}" alt="${title}">
         </div>
-    `;
+        
+        <!-- Content -->
+        <div class="event-content-wrapper">
+
+            <h1 class="event-title">${title}</h1>
+            <div class="event-meta">
+                <span class="event-location">${location}</span>
+                <span class="event-dot">•</span>
+                <span class="event-date">${formatDate(event.datetime)}</span>
+            </div>
+
+            <div class="event-author">
+                Posted by <span>@${createdBy}</span>
+            </div>
+
+            <p class="event-description">
+                ${description}
+            </p>
+
+            ${renderTags(event.tags || [])}
+        </div>
+        `;
 }
 
 

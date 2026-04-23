@@ -59,7 +59,7 @@ function createEventCard(event) {
 
     // Event content
     const content = document.createElement("div");
-    content.className = "event-content";
+    content.className = "event-card-content";
     content.append(
         createTitle(event),
         createMeta(event),
@@ -77,10 +77,10 @@ function createEventCard(event) {
 // Generate event card image wrapper
 function createImageSection(event) {
     const wrapper = document.createElement("div");
-    wrapper.className = "event-image-wrapper";
+    wrapper.className = "event-card-image-wrapper";
 
     const img = document.createElement("img");
-    img.className = "event-image";
+    img.className = "event-card-image";
     img.src = event.image || "assets/eventImages/default.png";
     img.alt = event.title;
 
@@ -93,7 +93,7 @@ function createImageSection(event) {
 // Generate event card date badge
 function createDateBadge(event) {
     const dateBadge = document.createElement("div");
-    dateBadge.className = "event-date";
+    dateBadge.className = "event-card-date";
 
     const date = new Date(event.datetime * 1000)
     const month = document.createElement("span");
@@ -112,7 +112,7 @@ function createDateBadge(event) {
 // Generate event card title
 function createTitle(event) {
     const title = document.createElement("h3");
-    title.className = "event-title";
+    title.className = "event-card-title";
     title.textContent = event.title;
     return title;
 }
@@ -121,7 +121,7 @@ function createTitle(event) {
 // Generate event card meta
 function createMeta(event) {
     const meta = document.createElement("div");
-    meta.className = "event-meta";
+    meta.className = "event-card-meta";
     meta.textContent = `${event.location || "Unknown location"} • ${formatDate(event.datetime)}`;
     return meta;
 }
@@ -130,10 +130,10 @@ function createMeta(event) {
 // Generate event card author
 function createAuthor(event) {
     const author = document.createElement("div");
-    author.className = "event-meta author-meta";
-    author.innerHTML = `Posted by <span class="author-link">@${event.createdBy}</span>`;
+    author.className = "event-card-meta";
+    author.innerHTML = `Posted by <span class="event-card-author-link">@${event.createdBy}</span>`;
 
-    const authorLink = author.querySelector(".author-link");
+    const authorLink = author.querySelector(".event-card-author-link");
     authorLink.addEventListener("click", (e) => {
         e.stopPropagation();
         // Navigate to profile
@@ -146,7 +146,7 @@ function createAuthor(event) {
 // Generate event card description
 function createDescription(event) {
     const description = document.createElement("p");
-    description.className = "event-description";
+    description.className = "event-card-description";
     description.textContent = event.description;
     return description;
 }
@@ -155,11 +155,11 @@ function createDescription(event) {
 // Generate event card tags
 function createTags(event) {
     const tags = document.createElement("div");
-    tags.className = "event-tags";
+    tags.className = "event-card-tags";
 
     (event.tags || []).forEach(tag => {
         const bubble = document.createElement("span");
-        bubble.className = "tag-bubble";
+        bubble.className = "event-card-tag-bubble";
         bubble.textContent = toTitleCase(tag);
         tags.appendChild(bubble);
     });
@@ -171,7 +171,7 @@ function createTags(event) {
 // Generate event card buttons
 function createActions(event) {
     const actions = document.createElement("div");
-    actions.className = "event-actions";
+    actions.className = "event-card-actions";
 
     actions.append(
         createDetailsButton(event),
@@ -192,7 +192,7 @@ function createDetailsButton(event) {
         e.stopPropagation();
 
         // Extract id
-        const eventId = event.id || event._id || event.eventId || event.key || event.uuid;
+        const eventId = event.id
         if (!eventId) {
             console.error("No valid event ID found on event:", event);
             return;
