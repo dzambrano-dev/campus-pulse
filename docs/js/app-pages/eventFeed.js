@@ -5,7 +5,7 @@
 
 
 // Load events from API
-import { API, safeJson } from "../utils.js";
+import { API, safeJson, updateURL } from "../utils.js";
 
 
 export async function loadEvents() {
@@ -192,19 +192,13 @@ function createDetailsButton(event) {
         e.stopPropagation();
 
         // Extract id
-        const eventId =
-            event.id ||
-            event._id ||
-            event.eventId ||
-            event.key ||
-            event.uuid;
-
+        const eventId = event.id || event._id || event.eventId || event.key || event.uuid;
         if (!eventId) {
             console.error("No valid event ID found on event:", event);
             return;
         }
 
-        window.location.href = `event.html?id=${eventId}`;
+        updateURL("event", eventId);
     });
 
     return detailsBtn;

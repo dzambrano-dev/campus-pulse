@@ -8,6 +8,7 @@ import { API, checkSession, safeJson, redirect, updateURL, restorePageFromURL, g
 import { initEventCreation } from "./app-pages/eventCreation.js";
 import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
 import { loadEvents } from "./app-pages/eventFeed.js";
+import { loadEventPage } from "./app-pages/eventPage.js";
 
 // Data members
 let currentUser;
@@ -199,8 +200,12 @@ async function logout() {
 
 
 function showInitialPage() {
-    const pageKey = getPageFromUrl();
-    const pageId = `${pageKey}-page`;
+    const { page, id } = getPageFromUrl();
+    const pageId = `${page}-page`;
+
+    if (page === "event" && id) {
+        loadEventPage(id);
+    }
 
     const pages = document.querySelectorAll(".app-page");
     const navButtons = document.querySelectorAll(".nav-button");

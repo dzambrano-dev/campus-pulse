@@ -69,12 +69,14 @@ export async function checkSession() {
 // Get current page from URL
 export function getPageFromUrl() {
     const hash = window.location.hash.replace("#", "");
-    return hash || "events";
+    if (!hash) return { page: "events", id: null };
+    const [page, id] = hash.split("/");
+    return { page, id: id || null };
 }
 
 // Update URL without reload
-export function updateURL(page) {
-    const newHash = `#${page}`;
+export function updateURL(page, id = null) {
+    const newHash = id ? `#${page}/${id}` : `#${page}`;
     if (window.location.hash !== newHash) {
         history.pushState({}, "", newHash);
     }
