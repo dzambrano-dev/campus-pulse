@@ -7,6 +7,17 @@
 	"name": "campus-pulse-worker",
 	"main": "src/index.js",
 	"compatibility_date": "2026-03-01",
+
+	/**
+   	* Environment Variables
+   	* These are public-facing IDs. 
+   	*/
+  	"vars": {
+    	"MS_CLIENT_ID": "6d09abad-0363-4dbf-b260-6dd103d85e0c",
+    	"MS_TENANT_ID": "d175679b-acd3-4644-be82-af041982977a",
+    	"MS_REDIRECT_URI": "https://campus-pulse-worker.vindictivity.workers.dev/api/auth/callback"
+  	},
+
 	"observability": {
 		"enabled": true
 	},
