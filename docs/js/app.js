@@ -4,7 +4,7 @@
  */
 
 
-import { API, checkSession, safeJson, redirect } from "./utils.js";
+import {API, checkSession, safeJson, redirect, updateURL, restorePageFromURL, getPageFromUrl} from "./utils.js";
 import { initEventCreation } from "./app-pages/eventCreation.js";
 import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
 import { loadEvents } from "./app-pages/eventFeed.js";
@@ -49,6 +49,10 @@ async function initApp() {
     initMap();
 
     await loadEvents();
+    restorePageFromURL();
+    window.addEventListener("popstate", () => {
+        restorePageFromURL();
+    });
 }
 
 
@@ -78,9 +82,17 @@ function initNavigation() {
             const targetPage = button.dataset.page;
             if (!targetPage) return;
 
+            const pageKey = targetPage.replace("-page", "");
+
             const currentPage = document.querySelector(".app-page.active");
             const nextPage = document.getElementById(targetPage);
             if (!nextPage || currentPage === nextPage) return;
+
+            // Update URL
+            const currentPageKey = getPageFromUrl();
+            if (currentPageKey !== pageKey) {
+                updateURL(pageKey);
+            }
 
             // Update nav buttons
             navButtons.forEach((btn) => btn.classList.remove("active"));
@@ -178,3 +190,4 @@ async function logout() {
 
     redirect("index.html");
 }
+

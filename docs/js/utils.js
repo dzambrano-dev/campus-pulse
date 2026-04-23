@@ -65,3 +65,29 @@ export async function checkSession() {
         return false;
     }
 }
+
+// Get current page from URL
+export function getPageFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("page") || "event-feed";
+}
+
+// Update URL without reload
+export function updateURL(page) {
+    const url = new URL(window.location);
+    url.searchParams.set("page", page);
+    window.history.pushState({}, "", url);
+}
+
+// Reopen app page from URL
+export function restorePageFromURL() {
+    const page = getPageFromUrl();
+    const pageId = `${page}-page`;
+    const targetButton = document.querySelector(`[data-page="${pageId}"]`);
+
+    if (targetButton) {
+        targetButton.click();
+    } else {
+        updateURL("event-feed");
+    }
+}
