@@ -4,7 +4,7 @@
  */
 
 
-import {API, checkSession, safeJson, redirect, updateURL, restorePageFromURL, getPageFromUrl} from "./utils.js";
+import { API, checkSession, safeJson, redirect, updateURL, restorePageFromURL, getPageFromUrl } from "./utils.js";
 import { initEventCreation } from "./app-pages/eventCreation.js";
 import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
 import { loadEvents } from "./app-pages/eventFeed.js";
@@ -51,6 +51,10 @@ async function initApp() {
     window.addEventListener("popstate", () => {
         restorePageFromURL();
     });
+
+    if (!window.location.hash) {
+        updateURL("events");
+    }
 
     showInitialPage();
     await loadEvents();

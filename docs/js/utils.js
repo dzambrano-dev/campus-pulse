@@ -68,15 +68,16 @@ export async function checkSession() {
 
 // Get current page from URL
 export function getPageFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("page") || "event-feed";
+    const hash = window.location.hash.replace("#", "");
+    return hash || "events";
 }
 
 // Update URL without reload
 export function updateURL(page) {
-    const url = new URL(window.location);
-    url.searchParams.set("page", page);
-    window.history.pushState({}, "", url);
+    const newHash = `#${page}`;
+    if (window.location.hash !== newHash) {
+        history.pushState({}, "", newHash);
+    }
 }
 
 // Reopen app page from URL
@@ -88,6 +89,6 @@ export function restorePageFromURL() {
     if (targetButton) {
         targetButton.click();
     } else {
-        updateURL("event-feed");
+        updateURL("events");
     }
 }
