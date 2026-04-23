@@ -1,3 +1,8 @@
+/**
+ * eventFeed.js
+ * Handles loading event feed
+ */
+
 
 // Load events from API
 import { API, safeJson } from "../utils";
@@ -40,6 +45,7 @@ export async function loadEvents() {
     }
 }
 
+
 // Create an event card
 function createEventCard(event) {
     const card = document.createElement("div");
@@ -54,7 +60,6 @@ function createEventCard(event) {
     // Event content
     const content = document.createElement("div");
     content.className = "event-content";
-
     content.append(
         createTitle(event),
         createMeta(event),
@@ -69,6 +74,7 @@ function createEventCard(event) {
 }
 
 
+// Generate event card image wrapper
 function createImageSection(event) {
     const wrapper = document.createElement("div");
     wrapper.className = "event-image-wrapper";
@@ -84,6 +90,7 @@ function createImageSection(event) {
 }
 
 
+// Generate event card date badge
 function createDateBadge(event) {
     const dateBadge = document.createElement("div");
     dateBadge.className = "event-date";
@@ -102,6 +109,7 @@ function createDateBadge(event) {
 }
 
 
+// Generate event card title
 function createTitle(event) {
     const title = document.createElement("h3");
     title.className = "event-title";
@@ -110,6 +118,7 @@ function createTitle(event) {
 }
 
 
+// Generate event card meta
 function createMeta(event) {
     const meta = document.createElement("div");
     meta.className = "event-meta";
@@ -118,6 +127,7 @@ function createMeta(event) {
 }
 
 
+// Generate event card author
 function createAuthor(event) {
     const author = document.createElement("div");
     author.className = "event-meta author-meta";
@@ -133,6 +143,7 @@ function createAuthor(event) {
 }
 
 
+// Generate event card description
 function createDescription(event) {
     const description = document.createElement("p");
     description.className = "event-description";
@@ -141,6 +152,7 @@ function createDescription(event) {
 }
 
 
+// Generate event card tags
 function createTags(event) {
     const tags = document.createElement("div");
     tags.className = "event-tags";
@@ -156,6 +168,7 @@ function createTags(event) {
 }
 
 
+// Generate event card buttons
 function createActions(event) {
     const actions = document.createElement("div");
     actions.className = "event-actions";
@@ -169,6 +182,7 @@ function createActions(event) {
 }
 
 
+// Generate event card details button
 function createDetailsButton(event) {
     const detailsBtn = document.createElement("button");
     detailsBtn.className = "primary-button";
@@ -197,6 +211,7 @@ function createDetailsButton(event) {
 }
 
 
+// Generate event card map button
 function createMapButton(event) {
     const mapBtn = document.createElement("button");
     mapBtn.className = "tertiary-button";
