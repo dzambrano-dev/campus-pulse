@@ -41,12 +41,12 @@ async function initApp() {
 
     // Initialize application
     initSettingsMenu();
-    initMap();
-    initNavigation();
     initEventCreation({
         currentRole,
         loadEvents
     });
+    initNavigation();
+    initMap();
 
     await loadEvents();
 }
