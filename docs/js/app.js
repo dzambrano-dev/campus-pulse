@@ -210,9 +210,8 @@ function showInitialPage() {
     if (!targetPage) return;
 
     targetPage.style.display = "block";
-    requestAnimationFrame(() => {
-        targetPage.classList.add("active");
-    });
+    targetPage.getBoundingClientRect();
+    targetPage.classList.add("active");
 
     navButtons.forEach(btn => {
         btn.classList.toggle("active", btn.dataset.page === pageId);
