@@ -217,10 +217,11 @@ function showInitialPage() {
     // Ensure visibility
     targetPage.style.display = "block";
 
-    // Register initial hidden state
-    requestAnimationFrame(() => {
-        targetPage.classList.add("active");
-    });
+    // Force layout
+    targetPage.getBoundingClientRect();
+
+    // Fade in page
+    targetPage.classList.add("active");
 
     navButtons.forEach(btn => {
         btn.classList.toggle("active", btn.dataset.page === pageId);
