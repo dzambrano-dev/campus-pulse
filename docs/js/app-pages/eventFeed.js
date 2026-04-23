@@ -5,7 +5,7 @@
 
 
 // Load events from API
-import { API, safeJson } from "../utils";
+import { API, safeJson } from "../utils.js";
 
 
 export async function loadEvents() {
