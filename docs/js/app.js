@@ -41,8 +41,8 @@ async function initApp() {
 
     // Initialize application
     initSettingsMenu();
-    initNavigation();
     initMap();
+    initNavigation();
     initEventCreation({
         currentRole,
         loadEvents
