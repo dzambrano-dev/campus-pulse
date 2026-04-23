@@ -99,9 +99,6 @@ function initNavigation() {
             navButtons.forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
 
-            // Prepare next page
-            nextPage.style.display = "block";
-
             // Fade out current page
             if (currentPage) {
                 currentPage.classList.remove("active");
@@ -117,7 +114,6 @@ function initNavigation() {
             setTimeout(() => {
                 if (currentPage) {
                     currentPage.classList.remove("fade-out");
-                    currentPage.style.display = "none";
                 }
 
                 // Redraw map if map page is open
@@ -202,18 +198,22 @@ function showInitialPage() {
 
     // Hide everything
     pages.forEach(page => {
-        page.style.display = "none";
         page.classList.remove("active", "fade-out");
     });
 
     const targetPage = document.getElementById(pageId);
     if (!targetPage) return;
 
-    targetPage.style.display = "block";
-    targetPage.getBoundingClientRect();
-    targetPage.classList.add("active");
+    // Register initial hidden state
+    requestAnimationFrame(() => {
+        targetPage.classList.add("active");
+    });
 
     navButtons.forEach(btn => {
         btn.classList.toggle("active", btn.dataset.page === pageId);
     });
+
+    if (pageId === "map-page") {
+        setTimeout(() => activateMap(), 50);
+    }
 }

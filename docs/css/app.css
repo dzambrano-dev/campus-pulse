@@ -9,7 +9,6 @@
 }
 
 .app-page {
-    display: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -18,16 +17,15 @@
     opacity: 0;
     pointer-events: none;
     transform: scale(0.98);
-    will-change: opacity, transform;
+    visibility: hidden;
     transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .app-page.active {
-    display: block;
     opacity: 1;
-    z-index: 1;
     pointer-events: auto;
     transform: scale(1);
+    visibility: visible;
 }
 
 .app-page.fade-out {
