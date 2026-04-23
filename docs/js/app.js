@@ -204,6 +204,13 @@ function showInitialPage() {
     const pageId = `${page}-page`;
 
     if (page === "event" && id) {
+        const eventPage = document.getElementById("event-page");
+
+        if (eventPage) {
+            eventPage.style.display = "block";
+            eventPage.classList.add("active");
+        }
+
         loadEventPage(id);
     }
 

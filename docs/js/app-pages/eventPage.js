@@ -9,7 +9,7 @@ import { API, safeJson, showError } from "../utils.js";
 
 // Generate an event from the given id
 export async function loadEventPage(id) {
-    const eventPageError = document.getElementById("eventPageError");
+    const eventPageError = document.getElementById("event-page-error");
     if (!id) {
         showError(eventPageError, "No event ID");
         return;
@@ -47,7 +47,7 @@ export async function loadEventPage(id) {
 
 
 function renderEvent(event) {
-    const container = document.getElementById("event-container");
+    const container = document.getElementById("event-page-container");
     if (!container) return;
 
     const title = event.title || "Untitled Event";
