@@ -18,6 +18,7 @@
     opacity: 0;
     pointer-events: none;
     transform: scale(0.98);
+    will-change: opacity, transform;
     transition: opacity 0.25s ease, transform 0.25s ease;
 }
 

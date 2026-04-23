@@ -48,12 +48,12 @@ async function initApp() {
     initNavigation();
     initMap();
 
-    await loadEvents();
-    showInitialPage();
-
     window.addEventListener("popstate", () => {
         restorePageFromURL();
     });
+
+    showInitialPage();
+    await loadEvents();
 }
 
 
@@ -200,16 +200,19 @@ function showInitialPage() {
     const pages = document.querySelectorAll(".app-page");
     const navButtons = document.querySelectorAll(".nav-button");
 
+    // Hide everything
     pages.forEach(page => {
-        page.classList.remove("active", "fade-out");
         page.style.display = "none";
+        page.classList.remove("active", "fade-out");
     });
 
     const targetPage = document.getElementById(pageId);
-    if (targetPage) {
-        targetPage.style.display = "block";
+    if (!targetPage) return;
+
+    targetPage.style.display = "block";
+    requestAnimationFrame(() => {
         targetPage.classList.add("active");
-    }
+    });
 
     navButtons.forEach(btn => {
         btn.classList.toggle("active", btn.dataset.page === pageId);
