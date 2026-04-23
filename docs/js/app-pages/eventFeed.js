@@ -28,7 +28,7 @@ export async function loadEvents() {
         }
 
         // Clear events container
-        const eventsContainer = document.getElementById("events-container");
+        const eventsContainer = document.getElementById("event-cards-container");
         if (!eventsContainer) return;
 
         eventsContainer.innerHTML = "";
