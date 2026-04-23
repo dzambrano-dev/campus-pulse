@@ -4,13 +4,14 @@
  */
 
 
-import { API, safeJson } from "../utils.js";
+import { API, safeJson, showError } from "../utils.js";
 
 
 // Generate an event from the given id
 export async function loadEventPage(id) {
+    const eventPageError = document.getElementById("eventPageError");
     if (!id) {
-        showError("No event ID");
+        showError(eventPageError, "No event ID");
         return;
     }
 
@@ -26,49 +27,22 @@ export async function loadEventPage(id) {
         });
 
         if (!response.ok) {
-            showError(response.status === 404 ? "Event not found" : "Failed to load event");
+            const message = response.status === 404 ? "Event not found" : "Failed to load event"
+            showError(eventPageError, message);
             return;
         }
 
         const event = await safeJson(response);
         if (!event) {
-            showError("Event not found");
+            showError(eventPageError, "Event not found");
             return;
         }
 
         renderEvent(event);
     } catch (error) {
         console.error("Failed to load event:", error);
-        showError("Failed to load event");
+        showError(eventPageError, "Failed to load event");
     }
-}
-
-
-function formatDate(datetime) {
-    if (!datetime) return "Date not available";
-
-    try {
-        if (typeof datetime === "number") {
-            return new Date(datetime * 1000).toLocaleString();
-        }
-
-        return new Date(datetime).toLocaleString();
-    } catch {
-        return "Date not available";
-    }
-}
-
-
-function renderTags(tags) {
-    if (!Array.isArray(tags) || tags.length === 0) return "";
-
-    return `
-        <div class="event-tags">
-            ${tags.map(tag =>
-                `<span class="tag-bubble">${toTitleCase(tag)}</span>`
-            ).join("")}
-        </div>
-    `;
 }
 
 
@@ -84,25 +58,25 @@ function renderEvent(event) {
 
     container.innerHTML = `
         <!-- Hero Image -->
-        <div class="event-hero">
+        <div class="event-page-hero">
             <img src="${image}" alt="${title}">
         </div>
         
         <!-- Content -->
-        <div class="event-content-wrapper">
+        <div class="event-page-content">
 
-            <h1 class="event-title">${title}</h1>
-            <div class="event-meta">
-                <span class="event-location">${location}</span>
-                <span class="event-dot">•</span>
-                <span class="event-date">${formatDate(event.datetime)}</span>
+            <h1 class="event-page-title">${title}</h1>
+            <div class="event-page-meta">
+                <span class="event-page-location">${location}</span>
+                <span class="event-page-dot">•</span>
+                <span class="event-page-date">${formatDate(event.datetime)}</span>
             </div>
 
-            <div class="event-author">
+            <div class="event-page-author">
                 Posted by <span>@${createdBy}</span>
             </div>
 
-            <p class="event-description">
+            <p class="event-page-description">
                 ${description}
             </p>
 
@@ -112,16 +86,32 @@ function renderEvent(event) {
 }
 
 
-function showError(message) {
-    const container = document.getElementById("event-container");
 
-    if (!container) return;
+function renderTags(tags) {
+    if (!Array.isArray(tags) || tags.length === 0) return "";
 
-    container.innerHTML = `
-        <div class="event-error">
-            <h2>${message}</h2>
+    return `
+        <div class="event-page-tags">
+            ${tags.map(tag =>
+        `<span class="event-page-tag-bubble">${toTitleCase(tag)}</span>`
+    ).join("")}
         </div>
     `;
+}
+
+
+function formatDate(datetime) {
+    if (!datetime) return "Date not available";
+
+    try {
+        if (typeof datetime === "number") {
+            return new Date(datetime * 1000).toLocaleString();
+        }
+
+        return new Date(datetime).toLocaleString();
+    } catch {
+        return "Date not available";
+    }
 }
 
 
