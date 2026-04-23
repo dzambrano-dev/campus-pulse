@@ -7,12 +7,13 @@
 import { API, checkSession, safeJson, redirect } from "./utils.js";
 import { initEventCreation } from "./app-pages/eventCreation.js";
 import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
-
+import { loadEvents } from "./app-pages/eventFeed.js";
 
 // Data members
 let currentUser;
 let currentRole;
 
+// Icons
 const moonSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 13.51c-.78.23-1.58.35-2.38.35-4.52 0-8.2-3.68-8.2-8.2 0-.8.12-1.6.35-2.38a1.002 1.002 0 0 0-1.25-1.25A10.17 10.17 0 0 0 2 11.8C2 17.42 6.58 22 12.2 22c4.53 0 8.45-2.91 9.76-7.24a1.002 1.002 0 0 0-1.25-1.25"></path><path d="m16 8 .94-2.06L19 5l-2.06-.94L16 2l-.94 2.06L13 5l2.06.94zm4.25-.5-.55 1.2-1.2.55 1.2.55.55 1.2.55-1.2 1.2-.55-1.2-.55z"></path></svg>`;
 const sunSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M12 6.99a5.01 5.01 0 1 0 0 10.02 5.01 5.01 0 1 0 0-10.02M13 19h-2v3h2zm0-17h-2v3h2zM2 11h3v2H2zm17 0h3v2h-3zM4.22 18.36l.71.71.71.71 1.06-1.06 1.06-1.06-.71-.71-.71-.71-1.06 1.06zM19.78 5.64l-.71-.71-.71-.71-1.06 1.06-1.06 1.06.71.71.71.71 1.06-1.06zm-12.02.7L6.7 5.28 5.64 4.22l-.71.71-.71.71L5.28 6.7l1.06 1.06.71-.71zm8.48 11.32 1.06 1.06 1.06 1.06.71-.71.71-.71-1.06-1.06-1.06-1.06-.71.71z"></path></svg>`;
 
@@ -40,11 +41,12 @@ async function initApp() {
 
     // Initialize application
     initSettingsMenu();
-    initEventCreation({
-        currentRole, loadEvents
-    });
     initNavigation();
     initMap();
+    initEventCreation({
+        currentRole,
+        loadEvents
+    });
 
     await loadEvents();
 }
@@ -60,8 +62,7 @@ async function loadUser() {
 
         if (!response.ok) return null;
         return await safeJson(response);
-    } catch (err) {
-        console.error("User fetch failed:", err);
+    } catch {
         return null;
     }
 }
@@ -70,25 +71,22 @@ async function loadUser() {
 // Initialize navigation bar
 function initNavigation() {
     const navButtons = document.querySelectorAll(".nav-button");
-    const pages = document.querySelectorAll(".app-page");
 
     // Set up buttons
     navButtons.forEach(button => {
         button.addEventListener("click", () => {
-            // Page belonging to current button
             const targetPage = button.dataset.page;
             if (!targetPage) return;
 
             const currentPage = document.querySelector(".app-page.active");
             const nextPage = document.getElementById(targetPage);
-            if (currentPage === nextPage) return;
+            if (!nextPage || currentPage === nextPage) return;
 
             // Update nav buttons
             navButtons.forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
 
             // Prepare next page
-            nextPage.classList.remove("hidden");
             nextPage.style.display = "block";
 
             // Fade out current page
@@ -102,11 +100,10 @@ function initNavigation() {
                 nextPage.classList.add("active");
             });
 
-            // Wait for animation, then hide old page
+            // Animation clean up
             setTimeout(() => {
                 if (currentPage) {
                     currentPage.classList.remove("fade-out");
-                    currentPage.classList.add("hidden");
                     currentPage.style.display = "none";
                 }
 
@@ -117,161 +114,6 @@ function initNavigation() {
             }, 250);
         });
     });
-}
-
-
-// Load events from API
-async function loadEvents() {
-    try {
-        // Fetch list of events the user is interested in
-        const eventsEndpoint = `${API}/get-events`
-        const eventsResponse = await fetch(eventsEndpoint, {
-            credentials: "include"
-        });
-
-        // If no events are found, return
-        if (!eventsResponse.ok) return;
-
-       const data = await safeJson(eventsResponse);
-       const events = data.events || data;
-
-
-       if (!Array.isArray(events)) {
-            console.error("Events is not an array:", events);
-            return;
-        }
-
-        // Clear events container
-        const eventsContainer = document.getElementById("events-container");
-        eventsContainer.innerHTML = "";
-
-        // Create a card for each event
-        events.forEach((event)=> {
-            const card = createEventCard(event);
-            eventsContainer.appendChild(card);
-        });
-    } catch (err) {
-        console.error("Failed to load events:", err);
-    }
-}
-
-// Create an event card
-function createEventCard(event) {
-    const card = document.createElement("div");
-    card.className = "event-card";
-
-    const type = (event.type || "club").toLowerCase();
-    card.classList.add(`${type}-event`);
-
-    const imageWrapper = document.createElement("div");
-    imageWrapper.className = "event-image-wrapper";
-
-    const img = document.createElement("img");
-    img.className = "event-image";
-    img.src = event.image || "assets/eventImages/default.png";
-    img.alt = event.title;
-
-    const dateBadge = document.createElement("div");
-    dateBadge.className = "event-date";
-
-    const eventTime = new Date(event.datetime * 1000)
-    const month = document.createElement("span");
-    month.className = "month";
-    month.textContent = eventTime.toLocaleString("default", { month: "short" }).toUpperCase();
-
-    const day = document.createElement("span");
-    day.className = "day";
-    day.textContent = `${eventTime.getDate()}`;
-
-    dateBadge.append(month, day);
-    imageWrapper.append(img, dateBadge);
-
-    const content = document.createElement("div");
-    content.className = "event-content";
-
-    const title = document.createElement("h3");
-    title.className = "event-title";
-    title.textContent = event.title;
-
-    const location = document.createElement("div");
-    location.className = "event-meta";
-    location.textContent = event.location;
-
-    const time = document.createElement("div");
-    time.className = "event-meta";
-    time.textContent = formatEventTime(event.datetime);
-
-    const author = document.createElement("div");
-    author.className = "event-meta author-meta";
-    author.innerHTML = `Posted by <span class="author-link" data-user="${event.createdBy}">@${event.createdBy}</span>`;
-
-    const authorLink = author.querySelector(".author-link");
-    authorLink.addEventListener("click", (event) => {
-        event.stopPropagation();
-        // Navigate to profile
-    });
-
-    const description = document.createElement("p");
-    description.className = "event-description";
-    description.textContent = event.description;
-
-    const tags = document.createElement("div");
-    tags.className = "event-tags";
-
-    (event.tags || []).forEach(tag => {
-        const bubble = document.createElement("span");
-        bubble.className = "tag-bubble";
-        bubble.textContent = toTitleCase(tag);
-        tags.appendChild(bubble);
-    });
-
-    const actions = document.createElement("div");
-    actions.className = "event-actions";
-
-    const clubBtn = document.createElement("button");
-    clubBtn.className = "primary-button";
-    clubBtn.textContent = "See Details";
-
-    clubBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-
-        // extract real ID from Cloudflare event object
-        const eventId =
-            event.id ||
-            event._id ||
-            event.eventId ||
-            event.key ||
-            event.uuid;
-
-        if (!eventId) {
-            console.error("No valid event ID found on event:", event);
-            return;
-        }
-        window.location.href = `event.html?id=${eventId}`;
-    });
-
-    const mapBtn = document.createElement("button");
-    mapBtn.className = "tertiary-button";
-    mapBtn.textContent = "Show on Map";
-
-    // Add map button listeners
-    mapBtn.addEventListener("click", () => {
-        // Switch to map
-        document.querySelector('[data-page="map-page"]').click();
-
-        setTimeout(() => {
-            map.invalidateSize();
-            const latlng = [event.lat, event.lng];
-            const marker = L.marker(latlng).addTo(map);
-            map.setView(latlng, 17);
-            marker.bindPopup(`<strong>${event.title}</strong><br>${event.location}<br>${formatEventTime(event.datetime)}`).openPopup();
-        }, 150);
-    });
-
-    actions.append(clubBtn, mapBtn);
-    content.append(title, location, time, author, description, tags, actions);
-    card.append(imageWrapper, content);
-    return card;
 }
 
 
@@ -287,28 +129,26 @@ function initSettingsMenu () {
     const button = document.getElementById("settings-button");
     if (!button || !menu) return;
 
+    // Attach button listeners
     document.getElementById("go-to-profile").addEventListener("click", goToProfile);
-
-    document.addEventListener("click", (event) => {
-        const clickedButton = button.contains(event.target);
-        const clickedMenu = menu.contains(event.target);
-
-        if (clickedButton) {
-            menu.classList.toggle("open");
-        } else if (!clickedMenu) {
-            menu.classList.remove("open");
-        }
-    });
-
     document.getElementById("toggle-theme").addEventListener("click", toggleDarkMode);
     document.getElementById("toggle-ui").addEventListener("click", toggleCompactUI);
     document.getElementById("logout-button").addEventListener("click", logout);
+
+    // Click outside to close
+    document.addEventListener("click", (event) => {
+        if (button.contains(event.target)) {
+            menu.classList.toggle("open");
+        } else if (!menu.contains(event.target)) {
+            menu.classList.remove("open");
+        }
+    });
 }
 
 
 // Send to user profile
 function goToProfile(){
-    window.location.href = "profile.html";
+    redirect("profile.html");
 }
 
 
@@ -337,26 +177,4 @@ async function logout() {
     } catch {}
 
     redirect("index.html");
-}
-
-
-// Uppercase the first letter of each word
-function toTitleCase(str) {
-    return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
-}
-
-
-// Format event datetime
-function formatEventTime(timestamp) {
-    const date = new Date(timestamp * 1000); // assuming UNIX timestamp
-
-    const month = date.toLocaleString("default", { month: "long" });
-    const day = date.getDate();
-    const time = date.toLocaleString("default", {
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true
-    });
-
-    return `${month} ${day}, ${time}`;
 }
