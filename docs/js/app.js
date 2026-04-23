@@ -208,6 +208,7 @@ function showInitialPage() {
     // Hide everything
     pages.forEach(page => {
         page.classList.remove("active", "fade-out");
+        page.style.display = "none";
     });
 
     const targetPage = document.getElementById(pageId);
