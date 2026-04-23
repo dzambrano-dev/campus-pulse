@@ -103,6 +103,9 @@ function initNavigation() {
             navButtons.forEach((btn) => btn.classList.remove("active"));
             button.classList.add("active");
 
+            // Prepare next page
+            nextPage.style.display = "block";
+
             // Fade out current page
             if (currentPage) {
                 currentPage.classList.remove("active");
@@ -117,7 +120,9 @@ function initNavigation() {
             // Animation clean up
             setTimeout(() => {
                 if (currentPage) {
+                    currentPage.style.display = "none";
                     currentPage.classList.remove("fade-out");
+                    currentPage.classList.remove("active");
                 }
 
                 // Redraw map if map page is open
@@ -207,6 +212,9 @@ function showInitialPage() {
 
     const targetPage = document.getElementById(pageId);
     if (!targetPage) return;
+
+    // Ensure visibility
+    targetPage.style.display = "block";
 
     // Register initial hidden state
     requestAnimationFrame(() => {
