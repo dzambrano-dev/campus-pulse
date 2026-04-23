@@ -16,7 +16,7 @@ export async function outlookCallback(request, env) {
             code: code,
             grant_type: "authorization_code",
             redirect_uri: env.MS_REDIRECT_URI,
-        }),
+        }).toString(),
     });
 
     const tokens = await tokenResponse.json();
