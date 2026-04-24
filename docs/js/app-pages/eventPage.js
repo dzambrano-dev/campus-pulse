@@ -65,7 +65,7 @@ function renderEvent(event, currentUser, currentRole) {
 
     const canDelete = currentRole === "admin" || currentUser === event.CreatedBy;
     const deleteButtonHTML = canDelete ? `
-        <div class="event-delete-container">
+        <div class="event-page-delete-button-container">
             <button class="danger-button" id="delete-event-button">
                 Delete Event
             </button>
@@ -73,8 +73,6 @@ function renderEvent(event, currentUser, currentRole) {
     ` : "";
 
     container.innerHTML = `
-        ${deleteButtonHTML}
-
         <!-- Hero Image -->
         <div class="event-page-hero">
             <img src="${image}" alt="${title}">
@@ -105,7 +103,10 @@ function renderEvent(event, currentUser, currentRole) {
                 ${createMapButtonHTML()}
             </div>
         </div>
+        
+           ${deleteButtonHTML}
         `;
+
     attachEventPageButtons(event);
     if (canDelete) {
         const deleteBtn = document.getElementById("delete-event-button");
@@ -134,7 +135,6 @@ function renderEvent(event, currentUser, currentRole) {
         });
     }
 }
-
 
 
 function renderTags(tags) {

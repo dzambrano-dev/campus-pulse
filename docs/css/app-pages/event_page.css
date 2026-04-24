@@ -158,11 +158,14 @@
     flex: 1;
 }
 
-.event-delete-container {
-    position: absolute;
+.event-page-delete-button-container {
+    position: relative;
+    max-width: min(720px, 90vw);
+    animation: fadeUp 1.0s ease;
+}
+
+#delete-event-button {
     width: 125px;
-    z-index: 2;
-    top: 200px;
 }
 
 /* Animation */
