@@ -4,7 +4,7 @@
  */
 
 
-import { API, safeJson } from "../utils.js";
+import { API, safeJson, updateURL } from "../utils.js";
 
 
 let map;
@@ -156,7 +156,10 @@ function renderMapMarkers(events) {
                 console.error("No valid event ID found.");
                 return;
             }
-            window.location.href = `event.html?id=${eventId}`;
+
+            map.closePopup();
+            updateURL("event", eventId);
+            document.querySelector('[data-page="event-page"]')?.click();
         })
         popupDiv.append(title, location, brk, time, button);
 
