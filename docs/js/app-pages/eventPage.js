@@ -33,6 +33,7 @@ export async function loadEventPage(id) {
         }
 
         const event = await safeJson(response);
+        console.log("Event", event);
         if (!event) {
             showError(eventPageError, "Event not found");
             return;
