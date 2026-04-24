@@ -115,9 +115,6 @@ export function initEventCreation({ currentRole, loadEvents }) {
     actionSelect.addEventListener("change", () => {
         const value = actionSelect.value;
 
-        // Reset
-        actionContainer.classList.remove("active");
-
         actionInput.value = "";
         actionLabel.value = "";
 
@@ -131,9 +128,6 @@ export function initEventCreation({ currentRole, loadEvents }) {
         if (!value || value === "rsvp") {
             return;
         }
-
-        // Show container
-        actionContainer.classList.add("active");
 
         // Show link input for all except RSVP
         actionInput.style.display = "block";
@@ -204,8 +198,6 @@ export function initEventCreation({ currentRole, loadEvents }) {
         const actionLabel = creationPage.querySelector("#event-action-label");
 
         actionSelect.value = "";
-        actionContainer.classList.remove("active");
-        actionContainer.style.display = "none";
         actionInput.style.display = "none";
         actionLabel.style.display = "none";
         actionInput.required = false;
