@@ -185,6 +185,10 @@
 
 /* Compact UI */
 
+body.compact-ui #event-cards-container {
+    gap: 10px;
+}
+
 body.compact-ui .event-card {
     position: relative;
     display: flex;
@@ -246,31 +250,32 @@ body.compact-ui .event-card-title {
     font-weight: 600;
 }
 
-body.compact-ui .event-card-tags {
-    display: none;
-}
-
-body.compact-ui #event-cards-container {
-    gap: 10px;
-}
-
 body.compact-ui .event-card-meta {
     color: rgba(255, 255, 255, 0.85);
     font-size: 13px;
 }
 
-body.compact-ui .event-card-author-meta {
+body.compact-ui br {
     display: none;
 }
 
+body.compact-ui .event-card-author {
+    margin: 0;
+}
+
+
 body.compact-ui .event-card-description {
+    display: none;
+}
+
+body.compact-ui .event-card-tags {
     display: none;
 }
 
 body.compact-ui .event-card-actions {
     display: flex;
     gap: 8px;
-    margin-top: 8px;
+    margin-top: 4px;
     width: 100%;
 }
 
