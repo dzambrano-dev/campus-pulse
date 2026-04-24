@@ -35,8 +35,11 @@ export async function loadEvents() {
 
         // Create a card for each event
         const fragment = document.createDocumentFragment();
-        events.forEach(event => {
-            fragment.appendChild(createEventCard(event));
+        events.forEach((event, index) => {
+            const card = createEventCard(event);
+            const delay = index * 0.5;
+            card.style.animationDelay = `${delay}s`;
+            fragment.appendChild(card);
         });
 
         eventsContainer.appendChild(fragment);
