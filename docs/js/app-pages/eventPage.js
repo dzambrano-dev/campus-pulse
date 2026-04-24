@@ -57,13 +57,16 @@ function renderEvent(event, currentUser, currentRole) {
     const container = document.getElementById("event-page-container");
     if (!container) return;
 
+    console.log(currentUser);
+    console.log(currentRole);
+
     const title = event.title || "Untitled Event";
     const image = event.image || event.imageUrl || "assets/eventImages/default.png";
     const location = event.location || "Unknown";
     const createdBy = event.createdBy || "unknown";
     const description = event.description || "No description available.";
 
-    const canDelete = currentRole === "admin" || currentUser === event.CreatedBy;
+    const canDelete = currentRole === "admin" || currentUser === event.createdBy;
     const deleteButtonHTML = canDelete ? `
         <div class="event-page-delete-button-container">
             <button class="danger-button" id="delete-event-button">
@@ -128,7 +131,6 @@ function renderEvent(event, currentUser, currentRole) {
 
                 // Go back to feed
                 document.querySelector('[data-page="events-page"]')?.click();
-
             } catch {
                 alert("Network error");
             }
