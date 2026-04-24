@@ -68,7 +68,17 @@ select {
 }
 
 #call-to-action-input-container {
+    display: flex;
+    flex-direction: column;
     gap: 12px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#call-to-action-input-container.active {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 select:focus {

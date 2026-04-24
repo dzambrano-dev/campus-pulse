@@ -127,6 +127,7 @@ export function initEventCreation({ currentRole, loadEvents }) {
 
         // Show container
         actionContainer.style.display = "block";
+        actionContainer.classList.add("active");
 
         // Show link input for all except RSVP
         actionInput.style.display = "block";
