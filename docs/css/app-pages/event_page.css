@@ -16,17 +16,21 @@
 .event-page-hero::after {
     content: "";
     position: absolute;
-    height: 60px;
-    bottom: 0;
-    left: 0;
-    background: linear-gradient(to bottom, transparent, var(--background));
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+            to bottom,
+            transparent 50%,
+            rgba(0,0,0,0.15) 70%,
+            var(--background) 100%
+    );
 }
 
 .event-page-content {
     position: relative;
-    max-width: 720px;
+    max-width: max(720px, 90vw);
     z-index: 2;
-    margin: -60px auto 0;
+    margin: -100px auto 0;
     padding: 24px 20px 80px 20px;
     background: var(--card);
     border: 1px solid var(--border);
