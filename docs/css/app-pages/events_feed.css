@@ -23,6 +23,9 @@
 
 .event-card {
     background: var(--card);
+    transform: translateY(12px);
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards;
     color: var(--text);
     border-radius: 18px;
     border: 1px solid var(--border);
@@ -45,6 +48,8 @@
 
 .event-card-image-wrapper {
     position: relative;
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards;
 }
 
 .event-card-image {
@@ -91,6 +96,20 @@
     -webkit-font-smoothing: antialiased;
     transition: color 0.15s ease;
 }
+
+.event-card-content > * {
+    opacity: 0;
+    transform: translateY(6px);
+    animation: fadeItem 0.35s ease forwards;
+}
+
+.event-card-content > *:nth-child(1) { animation-delay: 0.3s; }
+.event-card-content > *:nth-child(2) { animation-delay: 0.35s; }
+.event-card-content > *:nth-child(3) { animation-delay: 0.4s; }
+.event-card-content > *:nth-child(4) { animation-delay: 0.45s; }
+.event-card-content > *:nth-child(5) { animation-delay: 0.5s; }
+.event-card-content > *:nth-child(6) { animation-delay: 0.55s; }
+.event-card-content > *:nth-child(7) { animation-delay: 0.6s; }
 
 .event-card-title {
     font-size: 20px;
@@ -278,4 +297,24 @@ body.compact-ui .club-event {
 
 body.compact-ui .social-event {
     background: var(--social-color);
+}
+
+/* Animation */
+
+@keyframes fadeItem {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
