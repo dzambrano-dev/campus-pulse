@@ -4,6 +4,7 @@
     position: relative;
     height: 260px;
     overflow: hidden;
+    z-index: 0;
 }
 
 .event-page-hero img {
@@ -20,10 +21,14 @@
 }
 
 .event-page-content {
+    position: relative;
     max-width: 720px;
+    z-index: 2;
     margin: -60px auto 0;
     padding: 24px 20px 80px 20px;
     background: var(--card);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(6px);
     border-radius: 18px;
     box-shadow:
         0 20px 40px rgba(0, 0, 0, 0.12),
