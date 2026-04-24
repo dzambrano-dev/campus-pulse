@@ -12,6 +12,7 @@ let mapMarkers = [];
 let userMarker;
 let labelsVisible = false;
 
+const happySVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10 10-4.49 10-10S17.51 2 12 2M8 8c1.65 0 3 1.35 3 3H9c0-.55-.45-1-1-1s-1 .45-1 1H5c0-1.65 1.35-3 3-3m4 10c-4 0-5-4-5-4h10s-1 4-5 4m5-7c0-.55-.45-1-1-1s-1 .45-1 1h-2c0-1.65 1.35-3 3-3s3 1.35 3 3z"></path></svg>`;
 const academicsSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M9 3h2v18H9zm11.71 17.23-3.8-8.15-3.81-8.16-.9.42-.91.43 3.8 8.15 3.81 8.16.9-.42zM6 3h2v18H6zM3 3h2v18H3z"></path></svg>`;
 const alertSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M13 4.5V3h-2v3h2zm6 6.5v2h3v-2zM5 12v-1H2v2h3zm13.72-5.3 1.06-1.06-.71-.71-.71-.71-1.06 1.06-1.06 1.06.71.71.71.71zM6.7 5.28 5.64 4.22l-.71.71-.71.71L5.28 6.7l1.06 1.06.71-.71.71-.71zm9.43 4.36c-.17-.95-1-1.64-1.97-1.64H9.83c-.97 0-1.79.69-1.97 1.64L6.34 18h11.31zM6.17 19H4v2h16v-2z"></path></svg>`;
 const careerSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M20 6h-3V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2M9 4h6v2H9zm0 16H7V8h2zm8 0h-2V8h2z"></path></svg>`;
@@ -150,6 +151,25 @@ function renderMapMarkers(events) {
 }
 
 
+// Get user icon
+function getUserIcon() {
+    return L.divIcon({
+        className: "map-marker-wrapper",
+        html: `
+            <div class="map-pin user-pin">
+                <div class="map-pin-inner" style="...">
+                    <div class="map-pin-icon">
+                        ${happySVG}
+                    </div>
+                </div>
+            </div>
+        `,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+    });
+}
+
+
 // Get icon based on event type
 function getEventIcon(event) {
     const rawType = event.type || "club";
@@ -182,13 +202,10 @@ function locateUser() {
         if (userMarker) map.removeLayer(userMarker);
 
         // Create blue user marker
-        userMarker = L.circleMarker([latitude, longitude], {
-            radius: 8,
-            color: "#2563eb",
-            fillColor: "#3b82f6",
-            fillOpacity: 1,
-            weight: 2
-        }).addTo(map);
+        userMarker = L.marker(
+            [latitude, longitude],
+            { icon: getUserIcon() }
+        ).addTo(map);
     });
 }
 
