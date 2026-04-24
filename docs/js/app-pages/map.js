@@ -66,6 +66,16 @@ export function activateMap() {
                     className: "map-label-tooltip"
                 });
             });
+
+            if (userMarker) {
+                userMarker.unbindTooltip();
+                userMarker.bindTooltip("You", {
+                    permanent: labelsVisible,
+                    direction: "top",
+                    offset: [0, -12],
+                    className: "map-label-tooltip"
+                });
+            }
         }
     }, 100);
 }
@@ -206,6 +216,15 @@ function locateUser() {
             [latitude, longitude],
             { icon: getUserIcon() }
         ).addTo(map);
+
+        userMarker._labelText = "You";
+
+        userMarker.bindTooltip("You", {
+            permanent: labelsVisible,
+            direction: "top",
+            offset: [0, -12],
+            className: "map-label-tooltip"
+        });
     });
 }
 
