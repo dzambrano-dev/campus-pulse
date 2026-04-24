@@ -76,8 +76,8 @@ export function initEventCreation({ currentRole, loadEvents }) {
                 </select>
                 
                 <!-- Dynamically shown -->
-                <div id="call-to-action-input-container" style="display: none;">
-                    <input id="event-action-label" placeholder="Button text (e.g. Learn More)" style="display: none">
+                <div id="call-to-action-input-container">
+                    <input id="event-action-label" placeholder="Button text (e.g. Learn More)">
                     <input id="event-action-input" placeholder="">
                 </div>
                 
@@ -116,9 +116,14 @@ export function initEventCreation({ currentRole, loadEvents }) {
 
         actionInput.value = "";
         actionLabel.value = "";
+
         actionInput.required = false;
         actionLabel.required = false
 
+        actionInput.style.display = "none";
+        actionLabel.style.display = "none";
+
+        // None and RSVP show no extra fields
         if (!value || value === "rsvp") {
             return;
         }
@@ -138,7 +143,7 @@ export function initEventCreation({ currentRole, loadEvents }) {
         } else if (value === "instagram") {
             actionInput.placeholder = "Instagram link";
         } else {
-            actionInput.placeholder = "https://example.com";
+            actionInput.placeholder = "Website link";
         }
 
         // Custom button gets a label
