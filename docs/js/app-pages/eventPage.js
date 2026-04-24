@@ -16,6 +16,7 @@ export async function loadEventPage(id) {
     }
 
     const container = document.getElementById("event-page-container");
+    console.log(container)
     if (!container) return;
     container.innerHTML = "";
 
@@ -26,6 +27,7 @@ export async function loadEventPage(id) {
             credentials: "include"
         });
 
+        console.log(response)
         if (!response.ok) {
             const message = response.status === 404 ? "Event not found" : "Failed to load event"
             showError(eventPageError, message);
