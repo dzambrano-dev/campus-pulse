@@ -7,8 +7,8 @@
     z-index: 0;
     opacity: 0;
     transform: translateY(8px);
-    animation-delay: 0.5s;
-    animation: fadeItem 0.3s ease forwards;
+    animation: fadeItem 0.4s ease forwards;
+    animation-delay: 0.2s;
 }
 
 .event-page-hero img {
@@ -51,7 +51,7 @@
         0 10px 30px rgba(0, 0, 0, 0.08),
         0 2px 8px rgba(0, 0, 0, 0.04);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
-    animation: fadeUp 0.3s ease;
+    animation: fadeUp 0.35s ease;
 }
 
 .event-page-content:hover {
@@ -62,15 +62,15 @@
 
 .event-page-content > * {
     opacity: 0;
-    transform: none;
-    animation: fadeItem 0.3s ease forwards;
+    transform: translateY(6px);
+    animation: fadeItem 0.35s ease forwards;
 }
 
-.event-page-content > *:nth-child(1) { animation-delay: 0.6s; }
-.event-page-content > *:nth-child(2) { animation-delay: 0.7s; }
-.event-page-content > *:nth-child(3) { animation-delay: 0.8s; }
-.event-page-content > *:nth-child(4) { animation-delay: 0.9s; }
-.event-page-content > *:nth-child(5) { animation-delay: 1s; }
+.event-page-content > *:nth-child(1) { animation-delay: 0.25s; }
+.event-page-content > *:nth-child(2) { animation-delay: 0.3s; }
+.event-page-content > *:nth-child(3) { animation-delay: 0.35s; }
+.event-page-content > *:nth-child(4) { animation-delay: 0.4s; }
+.event-page-content > *:nth-child(5) { animation-delay: 0.45s; }
 
 .event-page-content > * + * {
     margin-top: 10px;
