@@ -77,8 +77,8 @@ export function initEventCreation({ currentRole, loadEvents }) {
                 
                 <!-- Dynamically shown -->
                 <div id="call-to-action-input-container">
-                    <input id="event-action-label" placeholder="Button text (e.g. Learn More)">
-                    <input id="event-action-input" placeholder="">
+                    <input id="event-action-label" placeholder="Button text (e.g. Learn More)" style="display: none">
+                    <input id="event-action-input" placeholder="" style="display: none">
                 </div>
                 
                 <!-- Map pin -->
