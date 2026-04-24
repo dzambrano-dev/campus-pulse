@@ -161,6 +161,9 @@
 .event-page-delete-button-container {
     position: relative;
     max-width: min(720px, 90vw);
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
     animation: fadeUp 1.0s ease;
 }
 
