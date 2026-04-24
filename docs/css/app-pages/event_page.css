@@ -159,10 +159,10 @@
 }
 
 .event-delete-container {
-    max-width: min(720px, 90vw);
-    margin: 0 auto 20px;
-    display: flex;
-    justify-content: flex-start;
+    position: absolute;
+    width: 125px;
+    z-index: 2;
+    top: 200px;
 }
 
 /* Animation */
