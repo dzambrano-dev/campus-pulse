@@ -25,7 +25,7 @@ import { user } from "./endpoints/user.js";
 
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "https://dzambrano-dev.github.io",
-	"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+	"Access-Control-Allow-Methods": "DELETE, GET, POST, OPTIONS",
 	"Access-Control-Allow-Headers": "Content-Type",
 	"Access-Control-Allow-Credentials": "true"
 }
