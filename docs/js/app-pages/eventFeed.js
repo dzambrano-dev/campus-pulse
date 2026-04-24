@@ -4,8 +4,8 @@
  */
 
 
-// Load events from API
 import { API, safeJson, updateURL } from "../utils.js";
+import { loadEventPage } from "./eventPage.js";
 
 
 export async function loadEvents() {
@@ -199,6 +199,7 @@ function createDetailsButton(event) {
         }
 
         updateURL("event", eventId);
+        loadEventPage(eventId);
         document.querySelectorAll(".nav-button").forEach(btn => btn.classList.remove("active"));
 
         // Trigger page change animation
