@@ -37,7 +37,7 @@ export async function loadEvents() {
         const fragment = document.createDocumentFragment();
         events.forEach((event, index) => {
             const card = createEventCard(event);
-            const baseDelay = index * 0.6;
+            const baseDelay = index * 0.225;
             card.style.animationDelay = `${baseDelay}s`;
             card.style.setProperty("--card-delay", `${baseDelay}s`);
             fragment.appendChild(card);
