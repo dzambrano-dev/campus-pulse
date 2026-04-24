@@ -215,7 +215,6 @@ body.compact-ui .event-card > * {
 }
 
 body.compact-ui .event-card-image-wrapper {
-    display: flex;
     width: clamp(80px, 25vw, 120px);
     aspect-ratio: 1 / 1;
     flex-shrink: 0;
