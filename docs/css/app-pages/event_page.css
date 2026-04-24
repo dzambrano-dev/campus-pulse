@@ -158,6 +158,13 @@
     flex: 1;
 }
 
+.event-delete-container {
+    max-width: min(720px, 90vw);
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
 /* Animation */
 
 @keyframes fadeItem {

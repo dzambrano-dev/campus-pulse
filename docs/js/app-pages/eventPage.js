@@ -38,7 +38,14 @@ export async function loadEventPage(id) {
             return;
         }
 
-        renderEvent(event);
+        // Fetch user info
+        const userRes = await fetch(`${API}/user`, { credentials: "include" });
+        const userData = await safeJson(userRes);
+        const currentUser = userData.username;
+        const currentRole = userData.role;
+
+        // Display event
+        renderEvent(event, currentUser, currentRole);
     } catch (error) {
         console.error("Failed to load event:", error);
         showError(eventPageError, "Failed to load event");
@@ -56,7 +63,18 @@ function renderEvent(event) {
     const createdBy = event.createdBy || "unknown";
     const description = event.description || "No description available.";
 
+    const canDelete = currentRole === "admin" || currentUser === event.CreatedBy;
+    const deleteButtonHTML = canDelete ? `
+        <div class="event-delete-container">
+            <button class="danger-button" id="delete-event-button">
+                Delete Event
+            </button>
+        </div>
+    ` : "";
+
     container.innerHTML = `
+        ${deleteButtonHTML}
+
         <!-- Hero Image -->
         <div class="event-page-hero">
             <img src="${image}" alt="${title}">
@@ -89,6 +107,32 @@ function renderEvent(event) {
         </div>
         `;
     attachEventPageButtons(event);
+    if (canDelete) {
+        const deleteBtn = document.getElementById("delete-event-button");
+        deleteBtn.addEventListener("click", async () => {
+            if (!confirm("Are you sure you want to delete this event?")) return;
+
+            try {
+                const res = await fetch(`${API}/delete-event?id=${event.id}`, {
+                    method: "DELETE",
+                    credentials: "include"
+                });
+
+                const result = await safeJson(res);
+
+                if (!res.ok) {
+                    alert(result.error || "Failed to delete event");
+                    return;
+                }
+
+                // Go back to feed
+                document.querySelector('[data-page="events-page"]')?.click();
+
+            } catch {
+                alert("Network error");
+            }
+        });
+    }
 }
 
 

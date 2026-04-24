@@ -11,6 +11,7 @@
  */
 
 import { createEvent } from "./endpoints/createEvent.js";
+import { deleteEvent } from "./endpoints/deleteEvent.js";
 import { getEvent } from "./endpoints/getEvent.js";
 import { getEvents } from "./endpoints/getEvents.js";
 import { getInterests } from "./endpoints/getInterests.js";
@@ -44,6 +45,7 @@ export default {
 		// Unknown routes return 404
 		switch (url.pathname) {
 			case "/api/create-event": return addCors(await createEvent(request, env));
+			case "/api/delete-event": return addCors(await deleteEvent(request, env));
 			case "/api/get-event": return addCors(await getEvent(request, env));
 			case "/api/get-events": return addCors(await getEvents(request, env));
 			case "/api/get-interests": return addCors(await getInterests(request, env));
