@@ -87,9 +87,6 @@
     position: relative;
     padding: 18px 20px;
     display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    width: fit-content;
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
     transition: color 0.15s ease;
