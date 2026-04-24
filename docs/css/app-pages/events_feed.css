@@ -118,7 +118,7 @@
     width: fit-content;
     align-self: flex-start;
     font-size: 14px;
-    margin-bottom: 8px;
+    margin: 8px 0;
     color: var(--text);
 }
 
