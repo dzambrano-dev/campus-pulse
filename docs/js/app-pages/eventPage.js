@@ -81,8 +81,14 @@ function renderEvent(event) {
             </p>
 
             ${renderTags(event.tags || [])}
+            
+            <div class="event-page-actions">
+                ${renderActionButtonHTML(event)}
+                ${createMapButtonHTML()}
+            </div>
         </div>
         `;
+    attachEventPageButtons(event);
 }
 
 
@@ -97,6 +103,102 @@ function renderTags(tags) {
     ).join("")}
         </div>
     `;
+}
+
+
+function renderActionButtonHTML(event) {
+    const { action } = event;
+
+    if (!action) return `<div class="event-page-action-spacer"></div>`;
+
+    let label = "";
+    let color = "";
+
+    switch (action) {
+        case "discord":
+            label = "Discord";
+            color = "#5865F2";
+            break;
+        case "instagram":
+            label = "Instagram";
+            color = "#22d3ee";
+            break;
+        case "contact":
+            label = "Contact";
+            color = "#22c55e";
+            break;
+        case "custom":
+            label = event.actionLabel || "Website";
+            color = "#1e3a8a";
+            break;
+        case "rsvp":
+            label = "RSVP";
+            color = "#f97316";
+            break;
+    }
+
+    const actionBtn = `
+        <button class="primary-button event-page-action-button" data-action="${action}" style="background:${color}">
+            ${label}
+        </button>
+    `;
+
+    return actionBtn;
+}
+
+
+// Generate event card map button
+function createMapButtonHTML() {
+    const mapBtn = `
+        <button class="tertiary-button event-map-button">Show on Map</button>
+    `
+    return mapBtn;
+}
+
+
+function attachEventPageButtons(event) {
+    // Map button
+    const mapBtn = document.querySelector(".event-map-button");
+    if (mapBtn) {
+        mapBtn.addEventListener("click", () => {
+            document.querySelector('[data-page="map-page"]')?.click();
+
+            setTimeout(() => {
+                if (!window.map) return;
+
+                const latlng = [event.lat, event.lng];
+                window.map.invalidateSize();
+                window.map.setView(latlng, 17);
+
+                const marker = L.marker(latlng).addTo(window.map);
+                marker.bindPopup(
+                    `<strong>${event.title}</strong><br>
+                    ${event.location}<br>
+                    ${formatDate(event.datetime)}`
+                ).openPopup();
+            }, 150);
+        });
+    }
+
+    // ACTION BUTTON
+    const actionBtn = document.querySelector(".event-page-action-button");
+    if (actionBtn) {
+        actionBtn.addEventListener("click", () => {
+            const action = actionBtn.dataset.action;
+
+            if (action === "rsvp") return;
+
+            let link = event.actionLink;
+
+            if (action === "contact") {
+                link = `mailto:${link}`;
+            }
+
+            if (link) {
+                window.open(link, "_blank");
+            }
+        });
+    }
 }
 
 
