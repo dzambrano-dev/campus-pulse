@@ -63,6 +63,7 @@ function createEventCard(event) {
     content.append(
         createTitle(event),
         createMeta(event),
+        createBreak(),
         createAuthor(event),
         createDescription(event),
         createTags(event),
@@ -122,23 +123,26 @@ function createTitle(event) {
 function createMeta(event) {
     const meta = document.createElement("div");
     meta.className = "event-card-meta";
-    meta.textContent = `${event.location || "Unknown location"} • ${formatDate(event.datetime)}`;
+    meta.innerHTML = `
+        <span class="event-card-location">${event.location || "Unknown location"}</span>
+        <span class="event-card-dot">•</span>
+        <span class="event-card-date">${formatDate(event.datetime)}</span>
+    `;
     return meta;
+}
+
+
+// Generate event card break
+function createBreak() {
+    return document.createElement("br");
 }
 
 
 // Generate event card author
 function createAuthor(event) {
     const author = document.createElement("div");
-    author.className = "event-card-meta";
-    author.innerHTML = `Posted by <span class="event-card-author-link">@${event.createdBy}</span>`;
-
-    const authorLink = author.querySelector(".event-card-author-link");
-    authorLink.addEventListener("click", (e) => {
-        e.stopPropagation();
-        // Navigate to profile
-    });
-
+    author.className = "event-card-author";
+    author.innerHTML = `Posted by <span>@${event.createdBy}</span>`;
     return author;
 }
 

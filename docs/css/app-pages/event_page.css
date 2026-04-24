@@ -100,19 +100,19 @@
 .event-page-author {
     display: inline-block;
     font-size: 14px;
-    margin-bottom: 18px;
+    margin-bottom: 24px;
     color: var(--text);
 }
 
 .event-page-author span {
     font-weight: 600;
     color: var(--primary);
+    cursor: pointer;
 }
 
 .event-page-description {
     font-size: 16px;
     line-height: 1.7;
-    margin-top: 12px;
     color: var(--text);
     border-top: 1px solid var(--border);
     padding-top: 16px;
