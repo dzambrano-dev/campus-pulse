@@ -24,7 +24,7 @@
 .event-card {
     background: var(--card);
     opacity: 0;
-    animation: fadeUp 0.30s ease forwards;
+    animation: fadeUp 0.40s ease forwards;
     color: var(--text);
     border-radius: 18px;
     border: 1px solid var(--border);
@@ -47,7 +47,7 @@
 .event-card-image-wrapper {
     position: relative;
     opacity: 0;
-    animation: fadeUp 0.30s ease forwards;
+    animation: fadeUp 0.40s ease forwards;
     animation-delay: var(--card-delay);
 }
 
@@ -72,8 +72,8 @@
     transition: 0.15s ease;
     opacity: 0;
     transform: translateY(6px);
-    animation: fadeUp 0.30s ease forwards;
-    animation-delay: calc(var(--card-delay) + 0.05);
+    animation: fadeUp 0.40s ease forwards;
+    animation-delay: calc(var(--card-delay) + 0.040);
 }
 
 .event-card-date .month {
@@ -103,16 +103,16 @@
 .event-card-content > * {
     opacity: 0;
     transform: translateY(6px);
-    animation: fadeItem 0.30s ease forwards;
+    animation: fadeItem 0.40s ease forwards;
 }
 
-.event-card-content > *:nth-child(1) { animation-delay: calc(var(--card-delay) + 0.10s); }
-.event-card-content > *:nth-child(2) { animation-delay: calc(var(--card-delay) + 0.15s); }
-.event-card-content > *:nth-child(3) { animation-delay: calc(var(--card-delay) + 0.20s); }
-.event-card-content > *:nth-child(4) { animation-delay: calc(var(--card-delay) + 0.25s); }
-.event-card-content > *:nth-child(5) { animation-delay: calc(var(--card-delay) + 0.30s); }
-.event-card-content > *:nth-child(6) { animation-delay: calc(var(--card-delay) + 0.35s); }
-.event-card-content > *:nth-child(7) { animation-delay: calc(var(--card-delay) + 0.40s); }
+.event-card-content > *:nth-child(1) { animation-delay: calc(var(--card-delay) + 0.080s); }
+.event-card-content > *:nth-child(2) { animation-delay: calc(var(--card-delay) + 0.120s); }
+.event-card-content > *:nth-child(3) { animation-delay: calc(var(--card-delay) + 0.160s); }
+.event-card-content > *:nth-child(4) { animation-delay: calc(var(--card-delay) + 0.200s); }
+.event-card-content > *:nth-child(5) { animation-delay: calc(var(--card-delay) + 0.240s); }
+.event-card-content > *:nth-child(6) { animation-delay: calc(var(--card-delay) + 0.280s); }
+.event-card-content > *:nth-child(7) { animation-delay: calc(var(--card-delay) + 0.320s); }
 
 .event-card-title {
     font-size: 20px;
