@@ -39,6 +39,7 @@ function init() {
     skipBtn.addEventListener("click", skip);
 }
 
+
 // Generate interest buttons
 async function loadInterests() {
     clearErrors(interestsError);
@@ -104,6 +105,7 @@ async function loadInterests() {
     }
 }
 
+
 // Interests form submission
 async function submit(event) {
     event.preventDefault();
@@ -147,6 +149,7 @@ async function submit(event) {
     }
 }
 
+
 // Skip interest selection
 function skip() {
     // Smooth exit
@@ -156,6 +159,7 @@ function skip() {
         redirect("app.html");
     }, 300);
 }
+
 
 // Uppercase the first letter of each word
 function toTitleCase(str) {

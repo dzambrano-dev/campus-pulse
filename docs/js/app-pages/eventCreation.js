@@ -51,10 +51,6 @@ export function initEventCreation({ currentRole, loadEvents }) {
                     <option value="social">Social</option>
                 </select>
 
-                <label>Tags</label>
-                <!-- Tags injected by JS -->
-                <div id="event-tags" class="tag-container"></div>
-
                 <!-- Date -->
                 <label>Date</label>
                 <input type="date" id="event-date" required>
@@ -88,6 +84,11 @@ export function initEventCreation({ currentRole, loadEvents }) {
                 <!-- Upload event image -->
                 <label>Event Image</label>
                 <input type="file" id="event-image" accept="image/*">
+                
+                <!-- Event tags -->
+                <label>Tags</label>
+                <!-- Tags injected by JS -->
+                <div id="event-tags" class="tag-container"></div>
 
                 <!-- Error messages -->
                 <div class="error" id="event-error"></div>
