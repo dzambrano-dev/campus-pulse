@@ -96,7 +96,7 @@
     font-size: 20px;
     font-weight: 600;
     color: var(--text);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     letter-spacing: -0.2px;
 }
 
@@ -106,7 +106,7 @@
     align-self: flex-start;
     color: var(--text);
     font-size: 14px;
-    margin-top: 8px;
+    margin-top: 4px;
 }
 
 .event-card-dot {
@@ -118,7 +118,7 @@
     width: fit-content;
     align-self: flex-start;
     font-size: 14px;
-    margin: 8px 0;
+    margin: 4px 0;
     color: var(--text);
 }
 
