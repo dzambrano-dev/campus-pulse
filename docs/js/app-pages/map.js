@@ -5,7 +5,7 @@
 
 
 import { API, safeJson, updateURL } from "../utils.js";
-import { loadEventPage } from "../eventPage.js";
+import { loadEventPage } from "./eventPage.js";
 
 
 let map;
