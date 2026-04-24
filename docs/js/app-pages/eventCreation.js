@@ -112,9 +112,7 @@ export function initEventCreation({ currentRole, loadEvents }) {
         const value = actionSelect.value;
 
         // Reset
-        actionContainer.style.display = "none";
-        actionInput.style.display = "none";
-        actionLabel.style.display = "none";
+        actionContainer.classList.remove("active");
 
         actionInput.value = "";
         actionLabel.value = "";
@@ -126,7 +124,6 @@ export function initEventCreation({ currentRole, loadEvents }) {
         }
 
         // Show container
-        actionContainer.style.display = "block";
         actionContainer.classList.add("active");
 
         // Show link input for all except RSVP
@@ -195,6 +192,16 @@ export function initEventCreation({ currentRole, loadEvents }) {
         const submitButton = creationPage.querySelector("#submit-event-button");
         setLoading(submitButton, false);
     });
+}
+
+
+// Refresh components
+export function refreshEventCreationPage(creationPage) {
+    loadTags(creationPage);
+
+    setTimeout(() => {
+        initEventMap(creationPage);
+    }, 50);
 }
 
 

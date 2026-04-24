@@ -5,9 +5,10 @@
 
 
 import { API, checkSession, safeJson, redirect, updateURL, restorePageFromURL, getPageFromUrl } from "./utils.js";
-import { initEventCreation } from "./app-pages/eventCreation.js";
+import { refreshEventCreationPage } from "./app-pages/eventCreation.js";
 import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
 import { loadEvents } from "./app-pages/eventFeed.js";
+import { loadTags } from "./app-pages/eventCreation.js";
 import { loadEventPage } from "./app-pages/eventPage.js";
 
 // Data members
@@ -237,5 +238,10 @@ function showInitialPage() {
     // Activate the map
     if (pageId === "map-page") {
         setTimeout(() => activateMap(), 50);
+    }
+
+    // Activate the event creation
+    if (pageId === "event-creation-page") {
+        refreshEventCreationPage()
     }
 }
