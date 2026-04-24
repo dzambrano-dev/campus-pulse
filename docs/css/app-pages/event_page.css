@@ -71,6 +71,7 @@
 .event-page-content > *:nth-child(3) { animation-delay: 0.35s; }
 .event-page-content > *:nth-child(4) { animation-delay: 0.4s; }
 .event-page-content > *:nth-child(5) { animation-delay: 0.45s; }
+.event-page-content > *:nth-child(6) { animation-delay: 0.5s; }
 
 .event-page-content > * + * {
     margin-top: 10px;
@@ -143,6 +144,9 @@
     display: flex;
     gap: 10px;
     margin-top: 24px;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: fadeItem 0.3s ease forwards;
 }
 
 .event-page-actions button {
