@@ -121,11 +121,11 @@
 
 .leaflet-container .leaflet-control-attribution {
     background: var(--background) !important;
-    color: var(--text) !important;
+    color: var(--muted-text) !important;
 }
 
 .leaflet-container a {
-    color: rgba(255, 255, 255, 0.8) !important;
+    color: var(--muted-text) !important;
 }
 
 .map-popup-card {

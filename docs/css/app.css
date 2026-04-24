@@ -150,9 +150,10 @@
 
 body.dark-mode {
     --background: #1a1a1a;
-    --card: #2a2a2a;
-    --text: #ffffff;
-    --border: #444;
+    --card: #2A2A2A;
+    --text: #FFFFFF;
+    --muted-text: #4B4B4B;
+    --border: #444444;
 }
 
 body.dark-mode .event-date {
