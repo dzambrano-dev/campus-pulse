@@ -9,6 +9,7 @@ import { API, clearErrors, safeJson, setLoading, showError } from "../utils.js";
 
 let eventMap;
 let eventMarker;
+let tileLayer;
 
 const calendarSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.1 0-2 .9-2 2v1h18V6c0-1.1-.9-2-2-2M3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8H3zm5-6h3v-3h2v3h3v2h-3v3h-2v-3H8z"></path></svg>`
 
@@ -257,7 +258,15 @@ function initEventMap(creationPage) {
     if (eventMap) eventMap.remove();
     eventMap = L.map(mapElement).setView([33.7838, -118.1141], 15);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(eventMap);
+    const isDark = document.body.classList.contains("dark-mode");
+
+    const tileUrl = isDark
+        ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+    tileLayer = L.tileLayer(tileUrl, {
+        attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(eventMap);
 
     eventMarker = null;
 
@@ -374,4 +383,19 @@ async function submitEvent(event, creationPage, loadEvents) {
         showError(eventError, message);
         setLoading(submitButton, false);
     }
+}
+
+
+export function setEventCreationMapTheme(isDark) {
+    if (!eventMap || !tileLayer) return;
+
+    eventMap.removeLayer(tileLayer);
+
+    const tileUrl = isDark
+        ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+
+    tileLayer = L.tileLayer(tileUrl, {
+        attribution: "&copy; OpenStreetMap &copy; CARTO"
+    }).addTo(eventMap);
 }
