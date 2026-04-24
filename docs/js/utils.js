@@ -84,9 +84,31 @@ export function updateURL(page, id = null) {
 
 // Reopen app page from URL
 export function restorePageFromURL() {
-    const page = getPageFromUrl();
+    const { page, id } = getPageFromUrl();
     const pageId = `${page}-page`;
     const targetButton = document.querySelector(`[data-page="${pageId}"]`);
+
+    if (page === "event" && id) {
+        // Navigate to unique event page manually
+        const eventPage = document.getElementById("event-page");
+        if (eventPage) {
+            document.querySelectorAll(".app-page").forEach(p => {
+                p.classList.remove("active");
+                p.style.display = "none";
+            });
+
+            eventPage.style.display = "block";
+            requestAnimationFrame(() => {
+                eventPage.classList.add("active");
+            });
+
+            // Load correct event
+            import("./app-pages/eventPage.js").then(({ loadEventPage }) => {
+                loadEventPage(id);
+            });
+        }
+        return;
+    }
 
     if (targetButton) {
         targetButton.click();
