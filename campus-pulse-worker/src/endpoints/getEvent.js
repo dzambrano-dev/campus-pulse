@@ -1,5 +1,5 @@
 /**
- * event.js
+ * getEvent.js
  * API call for fetching a single event
  */
 

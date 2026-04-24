@@ -16,7 +16,6 @@ export async function loadEventPage(id) {
     }
 
     const container = document.getElementById("event-page-container");
-    console.log(container)
     if (!container) return;
     container.innerHTML = "";
 
