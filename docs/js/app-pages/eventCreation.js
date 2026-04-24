@@ -196,6 +196,22 @@ export function initEventCreation({ currentRole, loadEvents }) {
             eventMap.setView([33.7838, -118.1141], 15);
         }
 
+        // Reset call to action
+        const actionSelect = creationPage.querySelector("#call-to-action");
+        const actionContainer = creationPage.querySelector("#call-to-action-input-container");
+        const actionInput = creationPage.querySelector("#event-action-input");
+        const actionLabel = creationPage.querySelector("#event-action-label");
+
+        actionSelect.value = "";
+        actionContainer.classList.remove("active");
+        actionContainer.style.display = "none";
+        actionInput.style.display = "none";
+        actionLabel.style.display = "none";
+        actionInput.required = false;
+        actionLabel.required = false;
+        actionInput.value = "";
+        actionLabel.value = "";
+
         // Reset loading state
         const submitButton = creationPage.querySelector("#submit-event-button");
         setLoading(submitButton, false);
