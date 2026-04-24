@@ -67,6 +67,10 @@ select {
     appearance: none;
 }
 
+#call-to-action-input-container {
+    gap: 12px;
+}
+
 select:focus {
     outline: none;
     border-color: var(--primary);
