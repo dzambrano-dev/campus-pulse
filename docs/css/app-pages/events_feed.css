@@ -84,9 +84,11 @@
 /* Event Card Content */
 
 .event-card-content {
+    position: relative;
     padding: 18px 20px;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
     transition: color 0.15s ease;
 }
 
@@ -101,7 +103,6 @@
 .event-card-meta {
     display: inline-block;
     align-items: center;
-    gap: 8px;
     color: var(--text);
     font-size: 14px;
 }

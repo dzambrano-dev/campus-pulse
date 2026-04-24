@@ -88,7 +88,6 @@
 .event-page-meta {
     display: inline-block;
     align-items: center;
-    gap: 8px;
     color: var(--text);
     font-size: 14px;
 }
