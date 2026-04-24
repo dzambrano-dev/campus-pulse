@@ -5,6 +5,9 @@
     height: 360px;
     overflow: hidden;
     z-index: 0;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeItem 0.35s ease forwards;
 }
 
 .event-page-hero img {
@@ -26,8 +29,8 @@
     pointer-events: none;
     background: linear-gradient(
             to bottom,
-            transparent 50%,
-            rgba(0,0,0,0.15) 70%,
+            transparent 55%,
+            rgba(0,0,0,0.15) 75%,
             var(--background) 100%
     );
 }
@@ -47,16 +50,19 @@
         0 2px 8px rgba(0, 0, 0, 0.04);
     animation: fadeUp 0.35s ease;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
+    -webkit-font-smoothing: antialiased;
 }
 
 .event-page-content:hover {
-    transform: translateY(-2px);
+    box-shadow:
+            0 16px 40px rgba(0, 0, 0, 0.10),
+            0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .event-page-content > * {
     opacity: 0;
-    transform: translateY(8px);
-    animation: fadeItem 0.4s ease forwards;
+    transform: none;
+    animation: fadeItem 0.35s ease forwards;
 }
 
 .event-page-content > *:nth-child(1) { animation-delay: 0.1s; }
@@ -64,13 +70,6 @@
 .event-page-content > *:nth-child(3) { animation-delay: 0.3s; }
 .event-page-content > *:nth-child(4) { animation-delay: 0.4s; }
 .event-page-content > *:nth-child(5) { animation-delay: 0.5s; }
-
-@keyframes fadeItem {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 .event-page-content > * + * {
     margin-top: 10px;
@@ -113,6 +112,8 @@
     line-height: 1.7;
     margin-top: 12px;
     color: var(--text);
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
 }
 .event-page-tags {
     display: flex;
@@ -129,9 +130,22 @@
     border-radius: 20px;
     font-size: 13px;
     font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.event-page-tag-bubble:hover {
+    transform: translateY(-1px);
+    background: rgba(59, 130, 246, 0.18);
 }
 
 /* Animation */
+
+@keyframes fadeItem {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 @keyframes fadeUp {
     from {
