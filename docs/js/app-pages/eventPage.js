@@ -20,7 +20,7 @@ export async function loadEventPage(id) {
     container.innerHTML = "";
 
     try {
-        const endpoint = `${API}/event?id=${id}`;
+        const endpoint = `${API}/get-event?id=${id}`;
         const response = await fetch(endpoint, {
             method: "GET",
             credentials: "include"
