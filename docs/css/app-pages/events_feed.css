@@ -215,11 +215,11 @@ body.compact-ui .event-card > * {
 }
 
 body.compact-ui .event-card-image-wrapper {
-    display: block;
+    display: flex;
+    width: clamp(80px, 25vw, 120px);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
     order: 0;
-    width: 120px;
-    min-width: 120px;
-    height: 120px;
     border-radius: 12px;
     overflow: hidden;
 }
