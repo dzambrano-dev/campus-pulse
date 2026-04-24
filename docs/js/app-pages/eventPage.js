@@ -71,7 +71,7 @@ function renderEvent(event) {
                 <span class="event-page-dot">•</span>
                 <span class="event-page-date">${formatDate(event.datetime)}</span>
             </div>
-
+            <br>
             <div class="event-page-author">
                 Posted by <span>@${createdBy}</span>
             </div>
