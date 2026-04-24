@@ -8,7 +8,6 @@ import { API, checkSession, safeJson, redirect, updateURL, restorePageFromURL, g
 import { initEventCreation, refreshEventCreationPage } from "./app-pages/eventCreation.js";
 import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
 import { loadEvents } from "./app-pages/eventFeed.js";
-import { loadTags } from "./app-pages/eventCreation.js";
 import { loadEventPage } from "./app-pages/eventPage.js";
 
 // Data members
