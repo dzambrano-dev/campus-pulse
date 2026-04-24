@@ -38,13 +38,6 @@
     color: var(--text);
 }
 
-.marker {
-    width: 24px;
-    height: 24px;
-    border: 2px solid #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,.22);
-}
-
 .map-pin {
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -57,18 +50,27 @@
 .user-pin {
     width: 28px;
     height: 28px;
-    border-width: 2px;
-    background: var(--background);
+    border: 2px solid var(--primary-soft);
 }
 
 .user-pin .map-pin-inner {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-pin .map-pin-icon svg {
     width: 22px;
     height: 22px;
 }
 
-.user-pin .map-pin-icon svg {
-    width: 18px;
-    height: 18px;
+.marker {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,.22);
 }
 
 /* Marker Tooltips */
