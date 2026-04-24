@@ -120,8 +120,12 @@
 }
 
 .leaflet-control-attribution .leaflet-control {
-    background: var(--background);
-    color: var(--text);
+    background: var(--background) !important;
+    color: var(--text) !important;
+}
+
+.leaflet-control-attribution .leaflet-control a {
+    color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .map-popup-card {

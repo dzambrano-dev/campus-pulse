@@ -396,6 +396,6 @@ export function setEventCreationMapTheme(isDark) {
         : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 
     tileLayer = L.tileLayer(tileUrl, {
-        attribution: "&copy; OpenStreetMap &copy;"
+        attribution: "&copy; OpenStreetMap"
     }).addTo(eventMap);
 }
