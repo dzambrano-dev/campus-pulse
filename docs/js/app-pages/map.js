@@ -10,7 +10,7 @@ import { API, safeJson } from "../utils.js";
 let map;
 let mapMarkers = [];
 let userMarker;
-let labelsVisible = true;
+let labelsVisible = false;
 
 const academicsSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M9 3h2v18H9zm11.71 17.23-3.8-8.15-3.81-8.16-.9.42-.91.43 3.8 8.15 3.81 8.16.9-.42zM6 3h2v18H6zM3 3h2v18H3z"></path></svg>`;
 const alertSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M13 4.5V3h-2v3h2zm6 6.5v2h3v-2zM5 12v-1H2v2h3zm13.72-5.3 1.06-1.06-.71-.71-.71-.71-1.06 1.06-1.06 1.06.71.71.71.71zM6.7 5.28 5.64 4.22l-.71.71-.71.71L5.28 6.7l1.06 1.06.71-.71.71-.71zm9.43 4.36c-.17-.95-1-1.64-1.97-1.64H9.83c-.97 0-1.79.69-1.97 1.64L6.34 18h11.31zM6.17 19H4v2h16v-2z"></path></svg>`;
