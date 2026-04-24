@@ -21,6 +21,12 @@
     justify-content: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     border: 2px solid var(--primary-soft);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.map-pin:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
 .map-pin-inner {
@@ -38,40 +44,39 @@
     color: var(--text);
 }
 
-.map-pin {
+.user-pin {
+    width: 28px;
+    height: 28px;
+    background: var(--text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border: 2px solid var(--primary-soft);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.map-pin:hover {
+.user-pin:hover {
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
-.user-pin {
-    width: 28px;
-    height: 28px;
-    border: 2px solid var(--primary-soft);
-}
-
-.user-pin .map-pin-inner {
+.user-pin-inner {
     width: 24px;
     height: 24px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--background);
 }
 
-.user-pin .map-pin-icon svg {
-    width: 22px;
-    height: 22px;
-}
-
-.marker {
-    width: 24px;
-    height: 24px;
-    border: 2px solid #ffffff;
-    box-shadow: 0 4px 10px rgba(0,0,0,.22);
+.user-pin-icon svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+    color: var(--text);
 }
 
 /* Marker Tooltips */

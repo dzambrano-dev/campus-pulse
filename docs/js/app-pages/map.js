@@ -156,9 +156,9 @@ function getUserIcon() {
     return L.divIcon({
         className: "map-marker-wrapper",
         html: `
-            <div class="map-pin user-pin">
-                <div class="map-pin-inner" style="...">
-                    <div class="map-pin-icon">
+            <div class="user-pin">
+                <div class="user-pin-inner" style="...">
+                    <div class="user-pin-icon">
                         ${happySVG}
                     </div>
                 </div>
