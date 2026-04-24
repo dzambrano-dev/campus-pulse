@@ -69,7 +69,7 @@ function renderEvent(event) {
             <div class="event-page-meta">
                 <span class="event-page-location">${location}</span>
                 <span class="event-page-dot">•</span>
-                <span class="event-page-date">${formatDate(event.datetime)}</span>
+                <span class="event-page-meta-date">${formatDate(event.datetime)}</span>
             </div>
             <br>
             <div class="event-page-author">

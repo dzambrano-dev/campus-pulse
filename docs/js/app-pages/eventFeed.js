@@ -126,7 +126,7 @@ function createMeta(event) {
     meta.innerHTML = `
         <span class="event-card-location">${event.location || "Unknown location"}</span>
         <span class="event-card-dot">•</span>
-        <span class="event-card-date">${formatDate(event.datetime)}</span>
+        <span class="event-card-meta-date">${formatDate(event.datetime)}</span>
     `;
     return meta;
 }
