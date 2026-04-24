@@ -119,12 +119,12 @@
     font-weight: 400;
 }
 
-.leaflet-control-attribution .leaflet-control {
+.leaflet-container .leaflet-control-attribution {
     background: var(--background) !important;
     color: var(--text) !important;
 }
 
-.leaflet-control-attribution .leaflet-control a {
+.leaflet-container a {
     color: rgba(255, 255, 255, 0.8) !important;
 }
 
