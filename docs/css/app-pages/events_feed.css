@@ -217,9 +217,9 @@ body.compact-ui .event-card > * {
 body.compact-ui .event-card-image-wrapper {
     display: block;
     order: 0;
-    width: 100px;
-    min-width: 100px;
-    height: 100px;
+    width: 120px;
+    min-width: 120px;
+    height: 120px;
     border-radius: 12px;
     overflow: hidden;
 }
@@ -260,7 +260,8 @@ body.compact-ui br {
 }
 
 body.compact-ui .event-card-author {
-    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 4px 0;
 }
 
 
