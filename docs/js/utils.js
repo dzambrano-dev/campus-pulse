@@ -102,17 +102,23 @@ export function attachMapButton(event, mapBtn) {
 
         setTimeout(() => {
             if (!window.map) return;
+            const tryOpen = () => {
+                const marker = window.mapMarkers?.find(m => m._eventId === event.id);
 
-            const latlng = [event.lat, event.lng];
-            window.map.invalidateSize();
-            window.map.setView(latlng, 17);
+                if (!marker) {
+                    // Try next frame
+                    requestAnimationFrame(tryOpen);
+                    return;
+                }
 
-            const marker = window.mapMarkers?.find(m => m._eventId === event.id);
-            if (!marker) return;
+                // Center map and open popup
+                const latlng = [event.lat, event.lng];
+                window.map.invalidateSize();
+                window.map.setView(latlng, 17);
+                marker.openPopup();
+            }
 
-            // Center map
-            window.map.setView([event.lat, event.lng], 17);
-            marker.openPopup();
-        }, 150);
+            tryOpen();
+        }, 100);
     });
 }
