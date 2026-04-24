@@ -59,6 +59,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: var(--background);
 }
 
 .user-pin .map-pin-icon svg {
