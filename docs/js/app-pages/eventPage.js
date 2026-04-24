@@ -26,7 +26,6 @@ export async function loadEventPage(id) {
             credentials: "include"
         });
 
-        console.log(response)
         if (!response.ok) {
             const message = response.status === 404 ? "Event not found" : "Failed to load event"
             showError(eventPageError, message);
@@ -34,7 +33,6 @@ export async function loadEventPage(id) {
         }
 
         const event = await safeJson(response);
-        console.log("Event", event);
         if (!event) {
             showError(eventPageError, "Event not found");
             return;
