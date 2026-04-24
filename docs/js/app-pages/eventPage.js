@@ -4,7 +4,8 @@
  */
 
 
-import { API, attachMapButton, safeJson, showError } from "../utils.js";
+import { loadEvents } from "./eventFeed.js";
+import {API, attachMapButton, safeJson, showError, updateURL} from "../utils.js";
 
 
 // Generate an event from the given id
@@ -129,8 +130,9 @@ function renderEvent(event, currentUser, currentRole) {
                     return;
                 }
 
-                // Go back to feed
-                document.querySelector('[data-page="events-page"]')?.click();
+                // Go back to feed and reload events
+                updateURL("events");
+                await loadEvents();
             } catch {
                 alert("Network error");
             }

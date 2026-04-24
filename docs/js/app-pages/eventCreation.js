@@ -4,7 +4,7 @@
  */
 
 
-import { API, clearErrors, safeJson, setLoading, showError } from "../utils.js";
+import {API, clearErrors, safeJson, setLoading, showError, updateURL} from "../utils.js";
 
 
 let eventMap;
@@ -366,7 +366,7 @@ async function submitEvent(event, creationPage, loadEvents) {
 
         // Reset form and navigate back to events
         creationPage.querySelector("#event-form").reset();
-        document.querySelector('[data-page="events-page"]').click();
+        updateURL("events");
         await loadEvents();
     } catch (err) {
         fail("Network error, please try again");
