@@ -41,11 +41,8 @@ export async function loadEventPage(id) {
         // Fetch user info
         const userResponse = await fetch(`${API}/user`, { credentials: "include" });
         const userData = await safeJson(userResponse);
-        console.log(userData);
-        const currentUser = userData?.key || null;
+        const currentUser = userData?.username || null;
         const currentRole = userData?.role || null;
-        console.log(currentUser);
-        console.log(currentRole);
 
         // Display event
         renderEvent(event, currentUser, currentRole);
@@ -56,7 +53,7 @@ export async function loadEventPage(id) {
 }
 
 
-function renderEvent(event) {
+function renderEvent(event, currentUser, currentRole) {
     const container = document.getElementById("event-page-container");
     if (!container) return;
 
