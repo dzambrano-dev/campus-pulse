@@ -101,7 +101,7 @@ function initNavigation() {
             }
 
             // Update nav buttons
-            navButtons.forEach((btn) => btn.classList.remove("active"));
+            navButtons.forEach(btn => btn.classList.remove("active"));
             button.classList.add("active");
 
             // Prepare next page
@@ -203,42 +203,38 @@ function showInitialPage() {
     const { page, id } = getPageFromUrl();
     const pageId = `${page}-page`;
 
-    if (page === "event" && id) {
-        const eventPage = document.getElementById("event-page");
-
-        if (eventPage) {
-            eventPage.style.display = "block";
-            eventPage.classList.add("active");
-        }
-
-        loadEventPage(id);
-    }
-
     const pages = document.querySelectorAll(".app-page");
     const navButtons = document.querySelectorAll(".nav-button");
 
     // Hide everything
-    pages.forEach(page => {
-        page.classList.remove("active", "fade-out");
-        page.style.display = "none";
+    pages.forEach(p => {
+        p.classList.remove("active", "fade-out");
+        p.style.display = "none";
     });
 
     const targetPage = document.getElementById(pageId);
     if (!targetPage) return;
 
-    // Ensure visibility
+    // Show target page
     targetPage.style.display = "block";
-
-    // Force layout
     targetPage.getBoundingClientRect();
-
-    // Fade in page
     targetPage.classList.add("active");
 
+    // Handle event page
+    if (page === "event" && id) {
+        loadEventPage(id);
+    }
+
+    // Decide nav button
     navButtons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.page === pageId);
+        if (page === "event") {
+            btn.classList.remove("active");
+        } else {
+            btn.classList.toggle("active", btn.dataset.page === pageId);
+        }
     });
 
+    // Activate the map
     if (pageId === "map-page") {
         setTimeout(() => activateMap(), 50);
     }

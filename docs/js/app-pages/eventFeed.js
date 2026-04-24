@@ -199,6 +199,7 @@ function createDetailsButton(event) {
         }
 
         updateURL("event", eventId);
+        document.querySelectorAll(".nav-button").forEach(btn => btn.classList.remove("active"));
 
         // Trigger page change animation
         const eventPage = document.getElementById("event-page");
