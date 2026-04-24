@@ -3,7 +3,9 @@
  * API call to generate a new event
  */
 
+
 import { requireRole, json, jsonError, getSessionUser } from "../utils.js";
+
 
 export async function createEvent(request, env) {
 	// Require organizer or admin role
@@ -16,7 +18,20 @@ export async function createEvent(request, env) {
 	// User is now authorized
 	try {
 		const body = await request.json();
-		const { title, description, type, tags, datetime, location, lat, lng, image } = body;
+		const {
+			title,
+			description,
+			type,
+			tags,
+			datetime,
+			location,
+			action,
+			actionLink,
+			actionLabel,
+			lat,
+			lng,
+			image
+		} = body;
 
 		// Basic validation
 		if (!title || !description || !type || !tags || !datetime || !location || !lat || !lng) {
@@ -26,6 +41,13 @@ export async function createEvent(request, env) {
 		// Require at least one tag
 		if (!Array.isArray(tags) || tags.length === 0) {
 			return jsonError("Event must include at least one tag", 400);
+		}
+
+		// Validate actions
+		try {
+			validateAction(action, actionLink, actionLabel);
+		} catch (err) {
+			return jsonError(err.message, err.status || 400);
 		}
 
 		// Fetch username
@@ -42,6 +64,9 @@ export async function createEvent(request, env) {
 			tags: tags,
 			datetime: datetime,
 			location: location,
+			action: action || null,
+			actionLink: actionLink || null,
+			actionLabel: action === "custom" ? actionLabel : null,
 			lat: lat,
 			lng: lng,
 			image: image || null,
@@ -67,6 +92,69 @@ export async function createEvent(request, env) {
 		return json({ success: true, event });
 	} catch (err) {
 		console.error("createEvent error:", err);
-		return jsonError("Invalid request body");
+		return jsonError(err.message || "Invalid request body", err.status || 400);
+	}
+}
+
+
+// Validate action
+function validateAction(action, actionLink, actionLabel) {
+	if (!action) return;
+
+	const allowedActions = ["rsvp", "contact", "discord", "instagram", "custom"];
+	if (!allowedActions.includes(action)) {
+		throw { message: "Invalid action type", status: 400 };
+	}
+
+	// RSVP
+	if (action === "rsvp") {
+		if (actionLink || actionLabel) {
+			throw { message: "RSVP should not include link or label", status: 400 };
+		}
+		return;
+	}
+
+	// All other actions require a link
+	if (!actionLink) {
+		throw { message: "Action link is required", status: 400 };
+	}
+
+	// Email validation
+	if (action === "contact") {
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(actionLink)) {
+			throw { message: "Invalid email address", status: 400 };
+		}
+	}
+
+	// URL validation
+	if (["discord", "instagram", "custom"].includes(action)) {
+		let url;
+		try {
+			url = new URL(actionLink);
+		} catch {
+			throw { message: "Invalid URL", status: 400 };
+		}
+
+		// Discord validation
+		if (action === "discord" && !url.hostname.includes("discord")) {
+			throw { message: "Invalid Discord link", status: 400 };
+		}
+
+		// Instagram validation
+		if (action === "instagram" && !url.hostname.includes("instagram")) {
+			throw { message: "Invalid Instagram link", status: 400 };
+		}
+	}
+
+	// Custom validation
+	if (action === "custom") {
+		if (!actionLabel) {
+			throw { message: "Custom button requires a label", status: 400 };
+		}
+
+		if (actionLabel.length > 16) {
+			throw { message: "Custom label too long", status: 400 };
+		}
 	}
 }

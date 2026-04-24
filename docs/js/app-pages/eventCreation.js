@@ -63,7 +63,24 @@ export function initEventCreation({ currentRole, loadEvents }) {
                 <label>Time</label>
                 <input type="time" id="event-time" required>
                 <input id="event-location" placeholder="Location" required>
-
+                
+                <!-- Call-to-action button select -->
+                <label>Call to Action</label>
+                <select id="call-to-action">
+                    <option value="">None</option>
+                    <option value="rsvp">RSVP</option>
+                    <option value="contact">Contact</option>
+                    <option value="discord">Discord</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="custom">Custom Link</option>
+                </select>
+                
+                <!-- Dynamically shown -->
+                <div id="call-to-action-input-container" style="display: none;">
+                    <input id="event-action-label" placeholder="Button text (e.g. Learn More)" style="display: none">
+                    <input id="event-action-input" placeholder="">
+                </div>
+                
                 <!-- Map pin -->
                 <label>Click map to place a pin</label>
                 <div id="event-map" class="event-map"></div>
@@ -85,6 +102,53 @@ export function initEventCreation({ currentRole, loadEvents }) {
     `;
 
     appContainer.insertBefore(creationPage, appContainer.children[1]);
+
+    const actionSelect = creationPage.querySelector("#call-to-action");
+    const actionContainer = creationPage.querySelector("#call-to-action-input-container");
+    const actionInput = creationPage.querySelector("#event-action-input");
+    const actionLabel = creationPage.querySelector("#event-action-label");
+
+    actionSelect.addEventListener("change", () => {
+        const value = actionSelect.value;
+
+        // Reset
+        actionContainer.style.display = "none";
+        actionInput.style.display = "none";
+        actionLabel.style.display = "none";
+
+        actionInput.value = "";
+        actionLabel.value = "";
+        actionInput.required = false;
+        actionLabel.required = false
+
+        if (!value || value === "rsvp") {
+            return;
+        }
+
+        // Show container
+        actionContainer.style.display = "block";
+
+        // Show link input for all except RSVP
+        actionInput.style.display = "block";
+        actionInput.required = true;
+
+        // Placeholder changes
+        if (value === "contact") {
+            actionInput.placeholder = "Email address";
+        } else if (value === "discord") {
+            actionInput.placeholder = "Discord invite link";
+        } else if (value === "instagram") {
+            actionInput.placeholder = "Instagram link";
+        } else {
+            actionInput.placeholder = "https://example.com";
+        }
+
+        // Custom button gets a label
+        if (value === "custom") {
+            actionLabel.style.display = "block";
+            actionLabel.required = true;
+        }
+    });
 
     // Page load
     let mapInitialized = false;
@@ -195,6 +259,9 @@ async function submitEvent(event, creationPage, loadEvents) {
     const date = creationPage.querySelector("#event-date").value;
     const time = creationPage.querySelector("#event-time").value;
     const location = creationPage.querySelector("#event-location").value;
+    const action = creationPage.querySelector("#call-to-action").value;
+    const rawLink = creationPage.querySelector("#event-action-input").value;
+    const rawLabel = creationPage.querySelector("#event-action-label").value;
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
 
     // Validate data
@@ -206,6 +273,27 @@ async function submitEvent(event, creationPage, loadEvents) {
     if (!location) return fail("Please provide a location");
     if (!date || !time) return fail("Date and time are required");
     if (!latlng) return fail("Please place a pin on the map");
+    let actionLink = null; let actionLabel = null;
+    if (action) {
+        if (action !== "rsvp") {
+            if (!rawLink) return fail("Please provide a link");
+            actionLink = rawLink.trim();
+            if (action === "contact" && !actionLink.includes("@")) {
+                return fail("Enter a valid email");
+            }
+
+            if (["discord", "instagram", "custom"].includes(action)) {
+                if (!actionLink.startsWith("http")) {
+                    actionLink = `https://${actionLink}`;
+                }
+            }
+        }
+
+        if (action === "custom") {
+            if (!rawLabel) return fail("Please provide a button label");
+            actionLabel = rawLabel.trim();
+        }
+    }
 
     // Convert datetime
     const timestamp = Math.floor(new Date(`${date}T${time}`).getTime() / 1000);
@@ -218,6 +306,9 @@ async function submitEvent(event, creationPage, loadEvents) {
         tags: tags,
         datetime: timestamp,
         location: location,
+        action: action || null,
+        actionLink: actionLink,
+        actionLabel: action === "custom" ? actionLabel : null,
         lat: latlng.lat,
         lng: latlng.lng,
         image: null,
