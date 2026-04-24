@@ -55,9 +55,11 @@ export function initEventCreation({ currentRole, loadEvents }) {
                 <label>Date</label>
                 <input type="date" id="event-date" required>
 
-                <!-- Time & Location -->
+                <!-- Time -->
                 <label>Time</label>
                 <input type="time" id="event-time" required>
+                
+                <!-- Location -->
                 <input id="event-location" placeholder="Location" required>
                 
                 <!-- Call-to-action button select -->
