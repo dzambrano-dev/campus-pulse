@@ -160,7 +160,6 @@ function renderMapMarkers(events) {
 
             map.closePopup();
             updateURL("event", eventId);
-            loadEventPage(eventId);
             document.querySelector('[data-page="event-page"]')?.click();
         })
         popupDiv.append(title, location, brk, time, button);
