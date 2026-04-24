@@ -193,7 +193,6 @@ export function initEventCreation({ currentRole, loadEvents }) {
 
         // Reset call to action
         const actionSelect = creationPage.querySelector("#call-to-action");
-        const actionContainer = creationPage.querySelector("#call-to-action-input-container");
         const actionInput = creationPage.querySelector("#event-action-input");
         const actionLabel = creationPage.querySelector("#event-action-label");
 
@@ -349,6 +348,8 @@ async function submitEvent(event, creationPage, loadEvents) {
         lng: latlng.lng,
         image: null,
     };
+
+    console.log(actionLink);
 
     try {
         const createEventEndpoint = `${API}/create-event`;
