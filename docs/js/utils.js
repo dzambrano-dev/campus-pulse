@@ -102,7 +102,12 @@ export function attachMapButton(event, mapBtn) {
 
         setTimeout(() => {
             if (!window.map) return;
+
+            let opened = false;
+
             const tryOpen = () => {
+                if (opened) return;
+
                 const marker = window.mapMarkers?.find(m => m._eventId === event.id);
 
                 if (!marker) {
@@ -111,11 +116,15 @@ export function attachMapButton(event, mapBtn) {
                     return;
                 }
 
+                opened = true;
+
                 // Center map and open popup
-                const latlng = [event.lat, event.lng];
+                const latlng = marker.getLatLng();
                 window.map.invalidateSize();
                 window.map.flyTo(latlng, 17, { duration: 0.4 });
-                marker.openPopup();
+                window.map.once("moveend", () => {
+                    marker.openPopup();
+                });
             }
 
             tryOpen();
