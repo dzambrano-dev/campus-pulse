@@ -119,6 +119,11 @@
     font-weight: 400;
 }
 
+.leaflet-control-attribution .leaflet-control {
+    background: var(--background);
+    color: var(--text);
+}
+
 .map-popup-card {
     width: 300px;
     max-width: 85vw;
