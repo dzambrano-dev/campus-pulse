@@ -116,6 +116,10 @@ function initNavigation() {
             // Fade in next page
             requestAnimationFrame(() => {
                 nextPage.classList.add("active");
+
+                // Reset scroll
+                nextPage.scrollTop = 0;
+                window.scrollTo(0, 0);
             });
 
             // Animation clean up
