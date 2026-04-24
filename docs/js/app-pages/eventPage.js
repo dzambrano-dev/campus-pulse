@@ -132,6 +132,7 @@ function renderEvent(event, currentUser, currentRole) {
 
                 // Go back to feed and reload events
                 updateURL("events");
+                document.querySelector('[data-page="events-page"]')?.click();
                 await loadEvents();
             } catch {
                 alert("Network error");

@@ -366,7 +366,7 @@ async function submitEvent(event, creationPage, loadEvents) {
 
         // Reset form and navigate back to events
         creationPage.querySelector("#event-form").reset();
-        updateURL("events");
+        document.querySelector('[data-page="events-page"]').click();
         await loadEvents();
     } catch (err) {
         fail("Network error, please try again");
