@@ -114,7 +114,7 @@ export function attachMapButton(event, mapBtn) {
                 // Center map and open popup
                 const latlng = [event.lat, event.lng];
                 window.map.invalidateSize();
-                window.map.setView(latlng, 17);
+                window.map.flyTo(latlng, 17, { duration: 0.4 });
                 marker.openPopup();
             }
 

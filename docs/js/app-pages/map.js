@@ -11,6 +11,7 @@ let map;
 let mapMarkers = [];
 let userMarker;
 let labelsVisible = false;
+let markersLoaded = false;
 
 const happySVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10 10-4.49 10-10S17.51 2 12 2M8 8c1.65 0 3 1.35 3 3H9c0-.55-.45-1-1-1s-1 .45-1 1H5c0-1.65 1.35-3 3-3m4 10c-4 0-5-4-5-4h10s-1 4-5 4m5-7c0-.55-.45-1-1-1s-1 .45-1 1h-2c0-1.65 1.35-3 3-3s3 1.35 3 3z"></path></svg>`;
 const academicsSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M9 3h2v18H9zm11.71 17.23-3.8-8.15-3.81-8.16-.9.42-.91.43 3.8 8.15 3.81 8.16.9-.42zM6 3h2v18H6zM3 3h2v18H3z"></path></svg>`;
@@ -49,7 +50,11 @@ export function activateMap() {
     setTimeout(() => {
         map.invalidateSize();
         locateUser();
-        loadMapEvents();
+
+        if (!markersLoaded) {
+            loadMapEvents();
+            markersLoaded = true;
+        }
 
         const button = document.getElementById("toggle-labels-button");
         if (!button) return;
