@@ -49,6 +49,8 @@ export async function createEvent(request, env) {
 		} catch (err) {
 			return jsonError(err.message, err.status || 400);
 		}
+		const cleanLink = actionLink ? actionLink.trim() : null;
+		const cleanLabel = actionLabel ? actionLabel.trim() : null;
 
 		// Fetch username
 		const username = await getSessionUser(request, env);
@@ -65,8 +67,8 @@ export async function createEvent(request, env) {
 			datetime: datetime,
 			location: location,
 			action: action || null,
-			actionLink: actionLink || null,
-			actionLabel: action === "custom" ? actionLabel : null,
+			actionLink: cleanLink || null,
+			actionLabel: action === "custom" ? cleanLabel : null,
 			lat: lat,
 			lng: lng,
 			image: image || null,

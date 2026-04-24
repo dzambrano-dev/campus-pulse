@@ -259,7 +259,7 @@ async function submitEvent(event, creationPage, loadEvents) {
     const date = creationPage.querySelector("#event-date").value;
     const time = creationPage.querySelector("#event-time").value;
     const location = creationPage.querySelector("#event-location").value;
-    const action = creationPage.querySelector("#call-to-action").value;
+    const action = creationPage.querySelector("#call-to-action").value || null;
     const rawLink = creationPage.querySelector("#event-action-input").value;
     const rawLabel = creationPage.querySelector("#event-action-label").value;
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
@@ -278,7 +278,9 @@ async function submitEvent(event, creationPage, loadEvents) {
         if (action !== "rsvp") {
             if (!rawLink) return fail("Please provide a link");
             actionLink = rawLink.trim();
-            if (action === "contact" && !actionLink.includes("@")) {
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (action === "contact" && !emailRegex.test(actionLink)) {
                 return fail("Enter a valid email");
             }
 
