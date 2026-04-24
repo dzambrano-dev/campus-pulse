@@ -196,7 +196,8 @@ export function initEventCreation({ currentRole, loadEvents }) {
 
 
 // Refresh components
-export function refreshEventCreationPage(creationPage) {
+export function refreshEventCreationPage() {
+    const creationPage = document.getElementById("event-creation-page");
     loadTags(creationPage);
 
     setTimeout(() => {
