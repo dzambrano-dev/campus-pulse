@@ -35,6 +35,7 @@ export function initMap() {
     if (map) return;
 
     map = L.map("map").setView([33.7838, -118.1141], 16);
+    window.map = map;
 
     const isDark = document.body.classList.contains("dark-mode");
     setMapTheme(isDark);
