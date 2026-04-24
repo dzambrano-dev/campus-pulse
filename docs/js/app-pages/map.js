@@ -160,7 +160,31 @@ function renderMapMarkers(events) {
 
             map.closePopup();
             updateURL("event", eventId);
-            document.querySelector('[data-page="event-page"]')?.click();
+            loadEventPage(eventId);
+
+            // Trigger page change animation
+            const eventPage = document.getElementById("event-page");
+            const currentPage = document.querySelector(".app-page.active");
+
+            if (eventPage && currentPage !== eventPage) {
+                eventPage.style.display = "block";
+
+                if (currentPage) {
+                    currentPage.classList.remove("active");
+                    currentPage.classList.add("fade-out");
+                }
+
+                requestAnimationFrame(() => {
+                    eventPage.classList.add("active");
+                });
+
+                setTimeout(() => {
+                    if (currentPage) {
+                        currentPage.style.display = "none";
+                        currentPage.classList.remove("fade-out");
+                    }
+                }, 250);
+            }
         })
         popupDiv.append(title, location, brk, time, button);
 
