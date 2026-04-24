@@ -1,5 +1,9 @@
 /* Event Page */
 
+#event-page-container {
+    padding: 0 0 calc(20px + var(--nav-height)) 0;
+}
+
 .event-page-hero {
     position: relative;
     height: 360px;
