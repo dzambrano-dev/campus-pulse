@@ -113,6 +113,8 @@ function renderMapMarkers(events) {
             { icon: getEventIcon(event) }
         ).addTo(map);
 
+        marker._eventId = event.id;
+
         // Create a tooltip
         marker._labelText = event.title;
 
@@ -158,6 +160,7 @@ function renderMapMarkers(events) {
         });
 
         mapMarkers.push(marker);
+        window.mapMarkers = mapMarkers;
     });
 }
 

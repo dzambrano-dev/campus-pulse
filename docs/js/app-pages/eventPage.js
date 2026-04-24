@@ -4,7 +4,7 @@
  */
 
 
-import { API, safeJson, showError } from "../utils.js";
+import { API, attachMapButton, safeJson, showError } from "../utils.js";
 
 
 // Generate an event from the given id
@@ -160,24 +160,7 @@ function attachEventPageButtons(event) {
     // Map button
     const mapBtn = document.querySelector(".event-map-button");
     if (mapBtn) {
-        mapBtn.addEventListener("click", () => {
-            document.querySelector('[data-page="map-page"]')?.click();
-
-            setTimeout(() => {
-                if (!window.map) return;
-
-                const latlng = [event.lat, event.lng];
-                window.map.invalidateSize();
-                window.map.setView(latlng, 17);
-
-                const marker = L.marker(latlng).addTo(window.map);
-                marker.bindPopup(
-                    `<strong>${event.title}</strong><br>
-                    ${event.location}<br>
-                    ${formatDate(event.datetime)}`
-                ).openPopup();
-            }, 150);
-        });
+        attachMapButton(event, mapBtn);
     }
 
     // ACTION BUTTON

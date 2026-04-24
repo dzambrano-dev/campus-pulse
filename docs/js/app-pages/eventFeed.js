@@ -4,7 +4,7 @@
  */
 
 
-import { API, safeJson, updateURL } from "../utils.js";
+import { API, attachMapButton, safeJson, updateURL } from "../utils.js";
 import { loadEventPage } from "./eventPage.js";
 
 
@@ -238,23 +238,9 @@ function createMapButton(event) {
     mapBtn.textContent = "Show on Map";
 
     // Add map button listeners
-    mapBtn.addEventListener("click", () => {
-        // Switch to map
-        document.querySelector('[data-page="map-page"]')?.click();
-
-        setTimeout(() => {
-            if (!window.map) return;
-            const latlng = [event.lat, event.lng];
-            window.map.invalidateSize();
-            window.map.setView(latlng, 17);
-            const marker = L.marker(latlng).addTo(window.map);
-            marker.bindPopup(
-                `<strong>${event.title}</strong><br>
-                ${event.location}<br>
-                ${formatDate(event.datetime)}`
-            ).openPopup();
-        }, 150);
-    });
+    if (mapBtn) {
+        attachMapButton(event, mapBtn);
+    }
 
     return mapBtn;
 }

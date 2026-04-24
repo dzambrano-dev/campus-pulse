@@ -94,3 +94,25 @@ export function restorePageFromURL() {
         updateURL("events");
     }
 }
+
+// Attach map button to map
+export function attachMapButton(event, mapBtn) {
+    mapBtn.addEventListener("click", () => {
+        document.querySelector('[data-page="map-page"]')?.click();
+
+        setTimeout(() => {
+            if (!window.map) return;
+
+            const latlng = [event.lat, event.lng];
+            window.map.invalidateSize();
+            window.map.setView(latlng, 17);
+
+            const marker = window.mapMarkers?.find(m => m._eventId === event.id);
+            if (!marker) return;
+
+            // Center map
+            window.map.setView([event.lat, event.lng], 17);
+            marker.openPopup();
+        }, 150);
+    });
+}
