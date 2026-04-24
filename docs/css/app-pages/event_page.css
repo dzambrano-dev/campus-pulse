@@ -28,7 +28,7 @@
 
 .event-page-content {
     position: relative;
-    max-width: max(720px, 90vw);
+    max-width: min(720px, 90vw);
     z-index: 2;
     margin: -100px auto 0;
     padding: 24px 20px 80px 20px;
