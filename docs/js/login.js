@@ -45,7 +45,9 @@ const msalConfig = {
     }
 };
 
+console.log(window.location.url);
 console.log(window.location.pathname);
+console.log(window.location.href);
 
 const msalInstance = new msal.PublicClientApplication(msalConfig);
 
