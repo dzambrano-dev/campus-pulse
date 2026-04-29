@@ -139,11 +139,13 @@ button:disabled {
     background: var(--card);
     color: var(--outlook-color);
     border: 2px solid var(--outlook-color);
+    transform: translateY(0);
 }
 
 .oauth-button:hover {
     background: var(--outlook-color);
     color: var(--card);
+    transform: translateY(-1px);
 }
 
 .oauth-button svg {
