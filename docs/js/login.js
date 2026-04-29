@@ -23,6 +23,7 @@ const loginButton = document.getElementById("login-button");
 const signupButton = document.getElementById("signup-button");
 const signupSubmitButton = document.getElementById("signup-submit-button");
 const backButton = document.getElementById("back-button");
+const outlookButtons = document.querySelectorAll(".outlook-auth");
 
 // Errors
 const loginError = document.getElementById("login-error");
@@ -34,6 +35,21 @@ const passwordInput = document.getElementById("password");
 const signupUsername = document.getElementById("signup-username");
 const signupEmail = document.getElementById("signup-email");
 const signupPassword = document.getElementById("signup-password");
+
+// Outlook
+const msalConfig = {
+    auth: {
+        clientId: "c066d985-9f9b-45b2-b198-8c4b7147f8bb",
+        authority: "https://login.microsoftonline.com/common",
+        redirectUri: window.location.origin
+    }
+};
+
+const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+const loginRequest = {
+    scopes: ["User.Read"]
+};
 
 
 // DOM ready
@@ -68,6 +84,9 @@ function init() {
     // Form handlers
     loginForm.addEventListener("submit", handleLogin);
     signupForm.addEventListener("submit", handleSignup);
+    outlookButtons.forEach(button => {
+        button.addEventListener("click", handleOutlookAuth);
+    });
 }
 
 // Handles login form submission
@@ -164,6 +183,22 @@ async function handleSignup(event) {
         setLoading(signupSubmitButton, false);
         console.error(err);
     }
+}
+
+// Handles Outlook Account Login/Signup
+async function handleOutlookAuth() {
+    msalInstance.loginPopup(loginRequest)
+        .then(response => {
+            console.log("Login success:", response);
+
+            // Get user info
+            const account = response.account;
+            console.log("User:", account.username);
+
+            localStorage.setItem("user", JSON.stringify(account));
+        }).catch(error => {
+            console.error("Login error:", error);
+        });
 }
 
 // Switch UI to signup card

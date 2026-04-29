@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="assets/images/logos/beach_pulse.png">  <!-- Favicon -->
     <link rel="stylesheet" href="css/basic_styles.css">  <!-- CSS -->
     <link rel="stylesheet" href="css/login.css">  <!-- CSS -->
+    <script defer src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>  <!-- MSAL -->
     <script defer type="module" src="js/login.js"></script>  <!-- Login JS -->
 </head>
 <body>
@@ -35,7 +36,7 @@
                     <div class="divider"><span>or sign in with</span></div>
                     <!-- OAuth -->
                     <div class="oauth-buttons">
-                         <button type="button" class="oauth-button">Outlook</button>
+                        <button type="button" class="oauth-button outlook-auth">Outlook</button>
                     </div>
                 </form>
             </div>
@@ -54,10 +55,10 @@
                         <button type="button" class="secondary-button" id="back-button">Back</button>
                     </div>
                     <!-- Divider -->
-                    <div class="divider"><span>or sign up with</span></div>
+                    <div class="divider"><span>or sign in with</span></div>
                     <!-- OAuth -->
                     <div class="oauth-buttons">
-                        <button type="button" class="oauth-button">Outlook</button>
+                        <button type="button" class="oauth-button outlook-auth">Outlook</button>
                     </div>
                 </form>
             </div>
