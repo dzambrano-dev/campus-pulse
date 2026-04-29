@@ -147,9 +147,10 @@ button:disabled {
 }
 
 .oauth-button svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
+    fill: currentColor;
 }
 
 .tertiary-button {
