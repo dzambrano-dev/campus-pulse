@@ -54,6 +54,23 @@ const loginRequest = {
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
+    // Handle Microsoft Redirect
+    try {
+        const response = await msalInstance.handleRedirectPromise();
+
+        if (response) {
+            console.log("Login success:", response);
+            const account = response.account;
+            console.log("User:", account.username);
+            localStorage.setItem("user", JSON.stringify(account));
+            document.body.classList.add("fade-out");
+            setTimeout(() => redirect("app.html"), 300);
+            return;
+        }
+    } catch (error) {
+        console.error("Redirect error:", error);
+    }
+
     const isLoggedIn = await checkSession();
 
     if (isLoggedIn) {
