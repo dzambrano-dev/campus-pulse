@@ -5,6 +5,7 @@
     --primary-dark: #E5A100;    /* Dark Gold */
     --primary-soft: #FDB51526;  /* CSULB Gold transparent */
     --outlook-color: #2563EB;   /* Outlook blue */
+    --outlook-soft: #759bf6;    /* Outlook blue */
     --error-color: #dc2626;     /* Error color */
     --background: #f4f4f4;      /* Light Gray */
     --card: #ffffff;            /* Card Background */
@@ -115,7 +116,7 @@ button:disabled {
 
 .primary-button {
     background: var(--primary);
-    color: white;
+    color: var(--card);
 }
 
 .primary-button:hover {
@@ -145,8 +146,7 @@ button:disabled {
 }
 
 .oauth-button:hover {
-    background: var(--outlook-color);
-    color: var(--card);
+    background: var(--outlook-soft);
     transform: translateY(-1px);
 }
 
