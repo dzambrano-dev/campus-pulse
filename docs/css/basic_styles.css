@@ -4,6 +4,7 @@
     --primary: #FDB515;         /* CSULB Gold */
     --primary-dark: #E5A100;    /* Dark Gold */
     --primary-soft: #FDB51526;  /* CSULB Gold transparent */
+    --outlook-color: #2563EB;   /* Outlook blue */
     --error-color: #dc2626;     /* Error color */
     --background: #f4f4f4;      /* Light Gray */
     --card: #ffffff;            /* Card Background */
@@ -131,13 +132,24 @@ button:disabled {
 }
 
 .oauth-button {
-    background: transparent;
-    color: deepskyblue;
-    border: 2px solid deepskyblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--card);
+    color: var(--outlook-color);
+    border: 2px solid var(--outlook-color);
 }
 
 .oauth-button:hover {
-    background: skyblue;
+    background: var(--outlook-color);
+    color: var(--card);
+}
+
+.oauth-button svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
 }
 
 .tertiary-button {
