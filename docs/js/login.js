@@ -187,18 +187,7 @@ async function handleSignup(event) {
 
 // Handles Outlook Account Login/Signup
 async function handleOutlookAuth() {
-    msalInstance.loginPopup(loginRequest)
-        .then(response => {
-            console.log("Login success:", response);
-
-            // Get user info
-            const account = response.account;
-            console.log("User:", account.username);
-
-            localStorage.setItem("user", JSON.stringify(account));
-        }).catch(error => {
-            console.error("Login error:", error);
-        });
+    msalInstance.loginRedirect(loginRequest);
 }
 
 // Switch UI to signup card
