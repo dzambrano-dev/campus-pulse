@@ -150,6 +150,10 @@ button:disabled {
     transform: translateY(-1px);
 }
 
+.oauth-button:active {
+    transform: scale(0.97);
+}
+
 .oauth-button svg {
     width: 20px;
     height: 20px;
