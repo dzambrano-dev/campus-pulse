@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             const account = response.account;
             console.log("User:", account.username);
             localStorage.setItem("user", JSON.stringify(account));
-            document.body.classList.add("fade-out");
-            setTimeout(() => redirect("app.html"), 300);
+            // document.body.classList.add("fade-out");
+            // setTimeout(() => redirect("app.html"), 300);
             return;
         }
     } catch (error) {
