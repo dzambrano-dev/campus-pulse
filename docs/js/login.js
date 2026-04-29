@@ -40,7 +40,7 @@ const signupPassword = document.getElementById("signup-password");
 const msalConfig = {
     auth: {
         clientId: "c066d985-9f9b-45b2-b198-8c4b7147f8bb",
-        authority: "https://login.microsoftonline.com/common",
+        authority: "https://login.microsoftonline.com/d175679b-acd3-4644-be82-af041982977a",
         redirectUri: window.location.origin
     }
 };
