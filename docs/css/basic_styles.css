@@ -77,6 +77,7 @@ button {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
+    transform: translateY(0);
     transition: background 0.2s, color 0.2s, transform 0.05s;
 }
 
@@ -140,6 +141,7 @@ button:disabled {
     color: var(--outlook-color);
     border: 2px solid var(--outlook-color);
     transform: translateY(0);
+    transition: background 0.2s, color 0.2s, transform 0.05s;
 }
 
 .oauth-button:hover {
