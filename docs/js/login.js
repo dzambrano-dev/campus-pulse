@@ -40,14 +40,6 @@ const msalInstance = new msal.PublicClientApplication(msalConfig);
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
-    document.body.classList.add("preload");
-
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            document.body.classList.remove("preload");
-        });
-    });
-
     // Attach listeners
     init();
 
@@ -63,6 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Redirect error:", error);
     }
 
+    // Normal session check
     const isLoggedIn = await checkSession();
 
     // Smooth exit
@@ -72,15 +65,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    const res = await fetch(`${API}/user`, {
-        credentials: "include"
-    });
-
-    const data = await safeJson(res);
-
-    if (data?.onboarding) {
-        loginWrapper.classList.add("flipped");
-    }
+    // Show login page
+    showCard();
 });
 
 // Initialize UI
@@ -159,12 +145,10 @@ async function handleMicrosoftUser(response) {
         }
 
         if (data.status === "complete") {
-            document.body.classList.add("fade-out");
+            hideCard();
             setTimeout(() => redirect("app.html"), 300);
         } else if (data.status === "needs_username") {
-            loginWrapper.classList.add("flipped");
-        } else {
-            showError(authError, "Unexpected login state");
+            showSignup();
         }
     } catch (error) {
         console.error(error);
@@ -249,4 +233,22 @@ async function handleSignupSubmit() {
         setLoading(signupSubmitButton, false);
         showError(signupError, "Network error");
     }
+}
+
+function showLogin() {
+    loginWrapper.dataset.mode = "login";
+    showCard();
+}
+
+function showSignup() {
+    loginWrapper.dataset.mode = "signup";
+    showCard();
+}
+
+function showCard() {
+    loginWrapper.classList.add("visible");
+}
+
+function hideCard() {
+    loginWrapper.classList.add("fade-out");
 }
