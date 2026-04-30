@@ -88,7 +88,7 @@ function init() {
     });
 }
 
-async function handleMicrosoftUser(response) {
+async function handleOutlookAuth(response) {
     const account = response.account;
     const email = account.username;
     const name = account.name;
