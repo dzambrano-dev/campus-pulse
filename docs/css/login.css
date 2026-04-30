@@ -149,6 +149,7 @@
 }
 
 .avatar-picker {
+    position: relative;
     width: 96px;
     height: 96px;
     cursor: pointer;
@@ -171,7 +172,6 @@
 }
 
 .avatar-picker-inner {
-    position: relative;
     width: 96px;
     height: 96px;
     border-radius: 50%;
