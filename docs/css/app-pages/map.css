@@ -76,6 +76,10 @@
     animation: ripple 2.2s ease-out infinite;
 }
 
+.user-pin.dark-mode::after {
+    background: white;
+}
+
 .user-pin-inner {
     width: 24px;
     height: 24px;
