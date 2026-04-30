@@ -46,15 +46,18 @@
 
 .event-card-image-wrapper {
     position: relative;
+    width: 100%;
     opacity: 0;
+    overflow: hidden;
     animation: fadeUp 0.40s ease forwards;
     animation-delay: var(--card-delay);
 }
 
 .event-card-image {
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
+    display: block;
 }
 
 /* Event Date Badge */
