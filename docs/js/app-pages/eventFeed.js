@@ -161,7 +161,7 @@ function createDescription(event) {
     const description = document.createElement("p");
     description.className = "event-card-description";
     const text = event.description || "";
-    const maxLength = 100;
+    const maxLength = 200;
     if (text.length > maxLength) {
         description.textContent = text.slice(0, maxLength).trim() + "...";
     } else {
