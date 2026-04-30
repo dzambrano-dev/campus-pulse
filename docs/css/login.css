@@ -17,21 +17,6 @@
     max-width: 90vw;
     height: 440px;
     max-height: 90dvh;
-    opacity: 0;
-    transform: translateY(8px);
-    animation: fadeIn 1.0s ease;
-    transition: opacity 0.3s ease, width 0.2s ease;
-}
-
-.login-wrapper.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.login-wrapper.fade-out {
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
 }
 
 .login-container {
@@ -48,12 +33,28 @@
     backface-visibility: hidden;
     transform-style: preserve-3d;
     overflow: hidden;
-    transition:
-            transform 0.6s cubic-bezier(0.22, 1.0, 0.36, 1.0),
-            opacity 0.3s;
     box-shadow:
             0 20px 40px rgba(0, 0, 0, 0.08),
             0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+#login-card,
+#signup-card {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    pointer-events: none;
+    transition:
+            opacity 0.3s ease,
+            transform 0.3s ease;
+}
+
+#login-card.active,
+#signup-card.active {
+    opacity: 1;
+    transform: translate(0) scale(1);
+    pointer-events: auto;
 }
 
 .card-content {
@@ -222,25 +223,6 @@ input:focus {
     border: 1px solid var(--primary);
     background: white;
     box-shadow: 0 0 0 3px var(--primary-soft);
-}
-
-#login-card,
-#signup-card {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-}
-
-.login-wrapper[data-mode="login"] #login-card {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.login-wrapper[data-mode="signup"] #signup-card {
-    opacity: 1;
-    pointer-events: auto;
 }
 
 /* Animations */
