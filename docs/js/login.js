@@ -40,6 +40,9 @@ const msalInstance = new msal.PublicClientApplication(msalConfig);
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
+    // Attach listeners
+    init();
+
     // Handle Microsoft Redirect
     try {
         const response = await msalInstance.handleRedirectPromise();
@@ -70,9 +73,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (data?.onboarding) {
         loginWrapper.classList.add("flipped");
     }
-
-    // Attach listeners
-    init();
 });
 
 // Initialize UI
