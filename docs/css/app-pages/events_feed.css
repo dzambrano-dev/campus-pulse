@@ -47,8 +47,9 @@
 .event-card-image-wrapper {
     position: relative;
     width: 100%;
-    opacity: 0;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
+    opacity: 0;
     animation: fadeUp 0.40s ease forwards;
     animation-delay: var(--card-delay);
 }
