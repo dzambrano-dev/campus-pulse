@@ -155,11 +155,16 @@
     cursor: pointer;
 }
 
+.avatar-picker:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
 .avatar-picker::after {
     content: "+";
     position: absolute;
-    bottom: -4px;
-    right: -4px;
+    bottom: 0;
+    right: 0;
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -179,11 +184,6 @@
     border: 2px solid var(--primary);
     background: var(--card);
     transition: transform 0.15s ease, box-shadow 0.2s ease;
-}
-
-.avatar-picker-inner:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
 .avatar-picker-inner img {
