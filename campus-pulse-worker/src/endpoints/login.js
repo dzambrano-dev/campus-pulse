@@ -16,13 +16,13 @@ export async function login(request, env) {
 		const normalizedEmail = email.trim().toLowerCase();
 
 		// Check if user exists
-		const existingUser = await env.EMAILS.get(normalizedEmail);
+		const userId = await env.EMAILS.get(normalizedEmail);
 
 		// Existing user
-		if (existingUser) {
+		if (userId) {
 			const token = crypto.randomUUID();
 			const maxAge = 60 * 60 * 24 * 7;
-			await env.SESSIONS.put(token, existingUser, { expirationTtl: maxAge });
+			await env.SESSIONS.put(token, userId, { expirationTtl: maxAge });
 			return withSessionCookie({ status: "complete" }, token, maxAge);
 		}
 

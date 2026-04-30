@@ -153,3 +153,27 @@ export function attachMapButton(event, mapBtn) {
         }, 100);
     });
 }
+
+// Convert image to webP
+export async function convertToWebP(file) {
+    const img = new Image();
+    const reader = new FileReader();
+
+    return new Promise((resolve) => {
+        reader.onload = () => {
+            img.src = reader.result;
+        };
+
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const size = 256;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, size, size);
+            resolve(canvas.toDataURL("image/webp", 0.8));
+        }
+
+        reader.readAsDataURL(file);
+    });
+}

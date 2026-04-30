@@ -10,11 +10,11 @@ export async function user(request, env) {
 	if (request.method !== "GET") return jsonError("Method not allowed", 405);
 
 	// Authenticate user using session token
-	const username = await getSessionUser(request, env);
-	if (!username) return jsonError("Invalid session", 401);
+	const userId = await getSessionUser(request, env);
+	if (!userId) return jsonError("Invalid session", 401);
 
 	// Retrieve user record
-	const storedUser = await env.USERS.get(username);
+	const storedUser = await env.USERS.get(userId);
 	if (!storedUser) return jsonError("User not found", 404);
 
 	const user = JSON.parse(storedUser);
@@ -23,6 +23,7 @@ export async function user(request, env) {
 	return json({
 		username: username,
 		role: user.role || "user",
-		interests: user.interests || []
+		interests: user.interests || [],
+		avatar: user.avatar
 	});
 }

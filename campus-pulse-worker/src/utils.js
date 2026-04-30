@@ -63,10 +63,10 @@ export function withSessionCookie(responseBody, token, maxAge) {
 
 // Validate user role
 export async function requireRole(request, env, allowedRoles) {
-	const username = await getSessionUser(request, env);
-	if (!username) return { error: "Unauthorized", status: 401 };
+	const userId = await getSessionUser(request, env);
+	if (!userId) return { error: "Unauthorized", status: 401 };
 
-	const storedUser = await env.USERS.get(username);
+	const storedUser = await env.USERS.get(userId);
 	if (!storedUser) return { error: "User not found", status: 404 };
 
 	const user = JSON.parse(storedUser);
@@ -76,4 +76,16 @@ export async function requireRole(request, env, allowedRoles) {
 	}
 
 	return user;
+}
+
+// Convert base64 to buffer
+export function base64ToArrayBuffer(base64) {
+	const binary = atob(base64.split(",")[1]);
+	const bytes = new Uint8Array(binary.length);
+
+	for (let i = 0; i < binary.length; i++) {
+		bytes[i] = binary.charCodeAt(i);
+	}
+
+	return bytes;
 }

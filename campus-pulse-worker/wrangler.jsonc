@@ -41,6 +41,16 @@
 		{
 			"binding": "SECURITY",
 			"id": "93c0509f821f42aaa859d17a4059711e"
+		},
+		{
+			"binding": "USERNAMES",
+			"id": "5fa258e5099e42a1a188d76e58ea55ff"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "ASSETS",
+			"bucket_name": "assets"
 		}
 	]
 }

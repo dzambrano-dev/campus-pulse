@@ -8,11 +8,8 @@
  */
 
 
-import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoading } from "./utils.js";
+import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoading, convertToWebP } from "./utils.js";
 
-
-// Wrapper
-const loginWrapper = document.querySelector(".login-wrapper");
 
 // Cards
 const loginCard = document.getElementById("login-card");
@@ -97,16 +94,13 @@ function init() {
         avatarInput.click();
     });
 
-    avatarInput.addEventListener("change", () => {
+    avatarInput.addEventListener("change", async () => {
         const file = avatarInput.files[0];
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            avatarPreview.src = reader.result;
-            window.selectedAvatar = reader.result; // store for signup
-        };
-        reader.readAsDataURL(file);
+        const webp = await convertToWebP(file);
+        avatarPreview.src = webp;
+        window.selectedAvatar = webp;
     });
 }
 
@@ -178,19 +172,11 @@ async function set_outlook_avatar(response) {
         );
 
         if (!photoRes.ok) return;
-
         const blob = await photoRes.blob();
-
-        return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                avatarPreview.src = reader.result;
-                window.selectedAvatar = reader.result;
-                resolve();
-            };
-
-            reader.readAsDataURL(blob);
-        });
+        const file = new File([blob], "avatar", { type: blob.type });
+        const webp = await convertToWebP(file);
+        avatarPreview.src = webp;
+        window.selectedAvatar = webp;
     } catch (err) {
         console.warn("No profile photo found");
     }
