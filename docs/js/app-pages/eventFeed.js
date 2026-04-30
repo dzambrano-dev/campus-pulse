@@ -151,7 +151,7 @@ function createBreak() {
 function createAuthor(event) {
     const author = document.createElement("div");
     author.className = "event-card-author";
-    author.innerHTML = `Posted by <span>@${event.createdBy}</span>`;
+    author.innerHTML = `Posted by <span>@${event.createdByUsername}</span>`;
     return author;
 }
 

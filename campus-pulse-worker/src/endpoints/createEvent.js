@@ -93,6 +93,7 @@ export async function createEvent(request, env) {
 			lng: lng,
 			image: imageKey,
 			createdBy: userId,
+			createdByUsername: user.username,
 			createdAt: Math.floor(Date.now() / 1000)
 		};
 

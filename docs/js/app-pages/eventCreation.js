@@ -354,8 +354,6 @@ async function submitEvent(event, creationPage, loadEvents) {
         image: imageBase64
     };
 
-    console.log(actionLink);
-
     try {
         const createEventEndpoint = `${API}/create-event`;
         const response = await fetch(createEventEndpoint, {
