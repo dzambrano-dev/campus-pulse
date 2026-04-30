@@ -154,6 +154,7 @@ body.dark-mode {
     --text: #FFFFFF;
     --muted-text: #4B4B4B;
     --border: #444444;
+    --pin-color: white;
 }
 
 body.dark-mode .event-date {

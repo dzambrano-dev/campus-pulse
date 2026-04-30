@@ -10,8 +10,9 @@
     --background: #f4f4f4;      /* Light Gray */
     --card: #ffffff;            /* Card Background */
     --text: #2B2B2B;            /* CSULB Dark Gray */
-    --muted-text: #6B6B6B;            /* CSULB Dark Gray */
+    --muted-text: #6B6B6B;      /* CSULB Dark Gray */
     --border: #d6d6d6;          /* Border Color */
+    --pin-color: teal;          /* User map pin */
     --nav-height: 65px;         /* Navigation Bar Height */
     --max-page-width: 1000px;   /* The widest our pages should be */
 }
