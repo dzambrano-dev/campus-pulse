@@ -23,6 +23,7 @@ const authError = document.getElementById("auth-error");
 const signupError = document.getElementById("signup-error");
 
 // Inputs
+const avatarPreview = document.getElementById("avatar-preview");
 const usernameInput = document.getElementById("username-input");
 
 // Outlook
@@ -86,6 +87,26 @@ function init() {
     outlookButtons.forEach(button => {
         button.addEventListener("click", handleOutlookAuth);
     });
+
+    // Add avatar interaction
+    const avatarPreview = document.getElementById("avatar-preview");
+    const avatarInput = document.getElementById("avatar-input");
+
+    document.querySelector(".avatar-picker").addEventListener("click", () => {
+        avatarInput.click();
+    });
+
+    avatarInput.addEventListener("change", () => {
+        const file = avatarInput.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            avatarPreview.src = reader.result;
+            window.selectedAvatar = reader.result; // store for signup
+        };
+        reader.readAsDataURL(file);
+    });
 }
 
 async function handleOutlookAuth(event) {
@@ -106,6 +127,12 @@ async function handleMicrosoftUser(response) {
 
     const email = account.username;
     const name = account.name;
+    let avatarUrl = null;
+    window.tempAvatar = avatarUrl;
+
+    if (avatarPreview && window.tempAvatar) {
+        avatarPreview.src = window.tempAvatar;
+    }
 
     try {
         const endpoint = `${API}/login`;

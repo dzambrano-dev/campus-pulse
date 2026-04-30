@@ -148,6 +148,45 @@
     margin-top: 6px;
 }
 
+.avatar-picker {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid var(--primary);
+    background: var(--card);
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.avatar-picker:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.avatar-picker::after {
+    content: "+";
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-picker img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 /* Card Flip */
 
 #login-card {

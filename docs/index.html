@@ -54,9 +54,13 @@
                     </div>
 
                     <div class="card-middle">
-                        <!-- Inputs -->
-                        <h2>Choose a username</h2>
-                        <p class="login-subtext">This will be visible</p>
+                        <!-- Avatar -->
+                        <div class="avatar-picker">
+                            <img id="avatar-preview" src="" alt="Avatar">
+                            <input type="file" id="avatar-input" accept="image/*" hidden>
+                        </div>
+
+                        <!-- Username -->
                         <input id="username-input" type="text" placeholder="Username" autocomplete="username">
                         <div class="error" id="signup-error"></div>
                     </div>
