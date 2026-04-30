@@ -90,12 +90,12 @@
 }
 
 .app-logo {
-    width: clamp(50px, 8vh, 120px);
+    width: clamp(36px, 8vh, 93px);
     height: auto;
 }
 
 .university-brand {
-    width: clamp(130px, 8vh, 300px);
+    width: clamp(116px, 8vh, 273px);
     height: auto;
 }
 
