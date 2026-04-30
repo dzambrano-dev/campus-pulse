@@ -152,7 +152,9 @@
     position: relative;
     width: 96px;
     height: 96px;
+    border-radius: 50%;
     cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .avatar-picker:hover {
@@ -183,7 +185,6 @@
     overflow: hidden;
     border: 2px solid var(--primary);
     background: var(--card);
-    transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .avatar-picker-inner img {
