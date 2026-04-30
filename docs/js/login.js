@@ -127,12 +127,7 @@ async function handleMicrosoftUser(response) {
 
     const email = account.username;
     const name = account.name;
-    let avatarUrl = null;
-    window.tempAvatar = avatarUrl;
-
-    if (avatarPreview && window.tempAvatar) {
-        avatarPreview.src = window.tempAvatar;
-    }
+    await set_outlook_avatar(response);
 
     try {
         const endpoint = `${API}/login`;
@@ -164,11 +159,50 @@ async function handleMicrosoftUser(response) {
     }
 }
 
+async function set_outlook_avatar(response) {
+    if (!response?.accessToken) return;
+
+    try {
+        const photoRes = await fetch(
+            "https://graph.microsoft.com/v1.0/me/photo/$value",
+            {
+                headers: {
+                    Authorization: `Bearer ${response.accessToken}`
+                }
+            }
+        );
+
+        if (!photoRes.ok) return;
+
+        const blob = await photoRes.blob();
+
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                avatarPreview.src = reader.result;
+                window.selectedAvatar = reader.result;
+                resolve();
+            };
+
+            reader.readAsDataURL(blob);
+        });
+    } catch (err) {
+        console.warn("No profile photo found");
+    }
+}
+
 async function handleSignupSubmit() {
     const username = usernameInput.value.trim();
 
     if (!username) {
         showError(signupError, "Enter a username");
+        return;
+    }
+
+    const avatar = window.selectedAvatar;
+
+    if (!avatar) {
+        showError(signupError, "Choose a profile picture");
         return;
     }
 
