@@ -41,6 +41,9 @@ export default {
 		// Parse the request URL to find the route
 		const url = new URL(request.url);
 
+		// Serve R2 assets
+		if (url.pathname.startsWith("/assets/")) return handleAsset(request, env);
+
 		// Route each request to the appropriate handler
 		// Unknown routes return 404
 		switch (url.pathname) {
@@ -56,6 +59,7 @@ export default {
 			case "/api/user": return addCors(await user(request, env));
 			case "/api/update-interests": return addCors(await updateInterests(request, env));
 			case "/api/health": return addCors(Response.json({ status: "OK" }));  // Used to check if API is alive
+
 			default: return new Response("Not Found", { status: 404, headers: corsHeaders });
 		}
 	},
@@ -74,5 +78,23 @@ function addCors(response) {
 	return new Response(response.body, {
 		status: response.status,
 		headers: headers
+	});
+}
+
+// Fetch an asset
+async function handleAsset(request, env) {
+	const url = new URL(request.url);
+	const key = url.pathname.replace("/assets/", "");
+	const object = await env.ASSETS.get(key);
+
+	if (!object) {
+		return new Response("Not Found", { status: 404 });
+	}
+
+	return new Response(object.body, {
+		headers: {
+			"Content-Type": object.httpMetadata?.contentType || "image/webp",
+			"Cache-Control": "public, max-age=31536000"
+		}
 	});
 }

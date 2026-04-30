@@ -8,6 +8,9 @@ import { API, attachMapButton, safeJson, updateURL } from "../utils.js";
 import { animateEventPage, loadEventPage } from "./eventPage.js";
 
 
+const ASSET_BASE = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
+
+
 export async function loadEvents() {
     try {
         // Fetch list of events the user is interested in
@@ -86,7 +89,9 @@ function createImageSection(event) {
 
     const img = document.createElement("img");
     img.className = "event-card-image";
-    img.src = event.image || "assets/eventImages/default.png";
+    img.src = event.image
+        ? `${ASSET_BASE}${event.image}`
+        : "assets/eventImages/default.png";
     img.alt = event.title;
 
     const badge = createDateBadge(event);
