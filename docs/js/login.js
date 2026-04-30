@@ -197,6 +197,7 @@ async function set_outlook_avatar(response) {
 }
 
 async function handleSignupSubmit() {
+    console.log("Signup submitted");
     const username = usernameInput.value.trim();
     const avatar = window.selectedAvatar;
 
