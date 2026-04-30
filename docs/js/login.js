@@ -88,8 +88,22 @@ function init() {
     });
 }
 
-async function handleOutlookAuth(response) {
-    const account = response.account;
+async function handleOutlookAuth(event) {
+    event.currentTarget.disabled = true;
+
+    msalInstance.loginRedirect({
+        scopes: ["User.Read"]
+    });
+}
+
+async function handleMicrosoftUser(response) {
+    const account = response?.account;
+
+    if (!account || !account.username) {
+        showError(authError, "Microsoft login failed");
+        return;
+    }
+
     const email = account.username;
     const name = account.name;
 
