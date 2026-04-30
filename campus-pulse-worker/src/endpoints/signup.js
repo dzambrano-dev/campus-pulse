@@ -22,7 +22,7 @@ export async function signup(request, env) {
 
 		// Get session
 		const cookie = request.headers.get("Cookie") || "";
-		const token = cookie.match(/session=([^;]+)/)?.[1];
+		const token = cookie.match(/sessionToken=([^;]+)/)?.[1];
 		if (!token) return jsonError("Invalid session", 401);
 
 		const sessionData = await env.SESSIONS.get(token);
