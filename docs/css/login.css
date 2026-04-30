@@ -37,7 +37,7 @@
 .login-container {
     position: absolute;
     inset: 0;
-    padding: clamp(24px, 5vw, 40px);
+    padding: 40px;
     border-radius: 18px;
     background: var(--card);
     display: flex;
@@ -56,11 +56,32 @@
 }
 
 .card-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-top {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
+}
+
+.card-middle {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card-bottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .card-branding {
