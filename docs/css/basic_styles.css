@@ -176,6 +176,10 @@ button:disabled {
     pointer-events: none;
 }
 
+.preload {
+    opacity: 0;
+}
+
 /* Animations */
 
 @keyframes spin {

@@ -15,7 +15,7 @@ import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoadi
 const loginWrapper = document.querySelector(".login-wrapper");
 
 // Buttons
-const outlookButtons = document.querySelectorAll(".outlook-auth");
+const outlookButton = document.getElementById("outlook-button");
 const signupSubmitButton = document.getElementById("signup-submit-button");
 
 // Errors
@@ -40,6 +40,14 @@ const msalInstance = new msal.PublicClientApplication(msalConfig);
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
+    document.body.classList.add("preload");
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            document.body.classList.remove("preload");
+        });
+    });
+
     // Attach listeners
     init();
 
@@ -84,9 +92,7 @@ function init() {
 
     // UI navigation
     signupSubmitButton.addEventListener("click", handleSignupSubmit);
-    outlookButtons.forEach(button => {
-        button.addEventListener("click", handleOutlookAuth);
-    });
+    outlookButton.addEventListener("click", handleOutlookAuth);
     usernameInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
             handleSignupSubmit();
@@ -115,11 +121,13 @@ function init() {
 }
 
 async function handleOutlookAuth(event) {
-    event.currentTarget.disabled = true;
-
-    msalInstance.loginRedirect({
-        scopes: ["User.Read"]
-    });
+    setLoading(outlookButton, true);
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+        msalInstance.loginRedirect({
+            scopes: ["User.Read"]
+        });
+    }, 250);
 }
 
 async function handleMicrosoftUser(response) {
