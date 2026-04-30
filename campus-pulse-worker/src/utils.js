@@ -4,9 +4,6 @@
  */
 
 
-import bcrypt from "bcryptjs"
-
-
 // Create a JSON response with content-type header
 export function json(data, status = 200) {
     return new Response(JSON.stringify(data), {
@@ -18,16 +15,6 @@ export function json(data, status = 200) {
 // Create an error response
 export function jsonError(message, status = 400) {
     return json({ error: message }, status);
-}
-
-// Hash a password using bcrypt
-export async function hashPassword(password) {
-    return await bcrypt.hash(password, 10)
-}
-
-// Verify a password against a bcrypt hash
-export async function verifyPassword(password, hash) {
-    return bcrypt.compare(password, hash);
 }
 
 // Retrieve cookies
