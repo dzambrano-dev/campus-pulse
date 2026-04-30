@@ -14,6 +14,10 @@ import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoadi
 // Wrapper
 const loginWrapper = document.querySelector(".login-wrapper");
 
+// Cards
+const loginCard = document.getElementById("login-card");
+const signupCard = document.getElementById("signup-card");
+
 // Buttons
 const outlookButton = document.getElementById("outlook-button");
 const signupSubmitButton = document.getElementById("signup-submit-button");
@@ -66,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Show login page
-    showCard();
+    showLogin();
 });
 
 // Initialize UI
@@ -236,12 +240,14 @@ async function handleSignupSubmit() {
 }
 
 function showLogin() {
-    loginWrapper.dataset.mode = "login";
+    signupCard.classList.remove("active");
+    loginCard.classList.add("active");
     showCard();
 }
 
 function showSignup() {
-    loginWrapper.dataset.mode = "signup";
+    loginCard.classList.remove("active");
+    signupCard.classList.add("active");
     showCard();
 }
 
