@@ -87,6 +87,11 @@ function init() {
     outlookButtons.forEach(button => {
         button.addEventListener("click", handleOutlookAuth);
     });
+    usernameInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            handleSignupSubmit();
+        }
+    })
 
     // Add avatar interaction
     const avatarPreview = document.getElementById("avatar-preview");
@@ -193,15 +198,20 @@ async function set_outlook_avatar(response) {
 
 async function handleSignupSubmit() {
     const username = usernameInput.value.trim();
+    const avatar = window.selectedAvatar;
 
+    clearErrors(signupError);
+    setLoading(signupSubmitButton, true);
+
+    // Validation
     if (!username) {
+        setLoading(signupSubmitButton, false);
         showError(signupError, "Enter a username");
         return;
     }
 
-    const avatar = window.selectedAvatar;
-
     if (!avatar) {
+        setLoading(signupSubmitButton, false);
         showError(signupError, "Choose a profile picture");
         return;
     }
@@ -218,14 +228,17 @@ async function handleSignupSubmit() {
         const data = await safeJson(res);
 
         if (!res.ok) {
-            showError(signupError, data.error || "Failed");
+            setLoading(signupSubmitButton, false);
+            showError(signupError, data.error || "Signup failed");
             return;
         }
 
+        // Success
         document.body.classList.add("fade-out");
         setTimeout(() => redirect("interests.html"), 300);
     } catch (error) {
         console.error(error);
-        showError(signupError, "Failed to save username");
+        setLoading(signupSubmitButton, false);
+        showError(signupError, "Network error");
     }
 }
