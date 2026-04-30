@@ -8,6 +8,9 @@ import { loadEvents } from "./eventFeed.js";
 import {API, attachMapButton, safeJson, showError, updateURL} from "../utils.js";
 
 
+const ASSET_BASE = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
+
+
 // Generate an event from the given id
 export async function loadEventPage(id) {
     const eventPageError = document.getElementById("event-page-error");
@@ -62,9 +65,11 @@ function renderEvent(event, currentUser, currentRole) {
     console.log(currentRole);
 
     const title = event.title || "Untitled Event";
-    const image = event.image || event.imageUrl || "assets/eventImages/default.png";
+    const image = event.image
+        ? `${ASSET_BASE}${event.image}`
+        : "assets/eventImages/default.png";
     const location = event.location || "Unknown";
-    const createdBy = event.createdBy || "unknown";
+    const createdBy = event.createdByUsername || "unknown";
     const description = event.description || "No description available.";
 
     const canDelete = currentRole === "admin" || currentUser === event.createdBy;
