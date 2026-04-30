@@ -3,79 +3,78 @@
  * API call for creating accounts
  */
 
-import { jsonError, hashPassword, withSessionCookie } from "../utils.js"
+import { jsonError, withSessionCookie } from "../utils.js"
 
 export async function signup(request, env) {
 	// Only allow POST requests
 	if (request.method !== "POST") return jsonError("Method not allowed", 405);
 
 	try {
-		// Parse request
-		let { username, email, password } = await request.json();
+		const { avatar, username } = await request.json();
 
-		// Normalize inputs
-		username = username?.trim().toLowerCase();
-		email = email?.trim().toLowerCase();
-		password = password?.trim();
+		const normalizedUsername = username?.trim().toLowerCase();
+		const validationError = validateSignup(avatar, normalizedUsername);
+		if (validationError) return jsonError(validationError);
 
-		// Validate signup data
-		const validation = validateSignup(username, email, password);
-		if (validation) return jsonError(validation);
-
-		// Ensure username is not taken
-		const existingUser = await env.USERS.get(username)
+		// Check username availability
+		const existingUser = await env.USERS.get(normalizedUsername)
 		if (existingUser) return jsonError("This username already exists");
 
-		// Ensure email is not registered
-		const existingEmail = await env.EMAILS.get(email);
-		if (existingEmail) return jsonError("This email is already registered");
+		// Get session
+		const cookie = request.headers.get("Cookie") || "";
+		const token = cookie.match(/session=([^;]+)/)?.[1];
+		if (!token) return jsonError("Invalid session", 401);
 
-		// Hash password before storing
-		const passwordHash = await hashPassword(password);
+		const sessionData = await env.SESSIONS.get(token);
+		if (!sessionData) return jsonError("Session expired", 401);
+
+		let parsed;
+		try {
+			parsed = JSON.parse(sessionData);
+		} catch {
+			return jsonError("Invalid session", 401);
+		}
+
+		if (!parsed.onboarding) return jsonError("Invalid flow", 400);
+
+		const { email, name } = parsed;
+		const normalizedEmail = email.trim().toLowerCase();
 
 		// Create user record
-		const newUser = {
-			email,
-			passwordHash,
+		const user = {
+			email: normalizedEmail,
+			name: name,
+			username: normalizedUsername,
+			avatar: avatar,
 			role: "user",
-			interests: []
+			interests: [],
+			oauth: true
 		};
 
 		// Save username and email in KVs
-		await env.USERS.put(username, JSON.stringify(newUser));
-		await env.EMAILS.put(email, username);
+		await env.USERS.put(normalizedUsername, JSON.stringify(user));
+		await env.EMAILS.put(normalizedEmail, normalizedUsername);
 
-		// Generate and store a session token through cookies
-		const token = crypto.randomUUID();
+		// Upgrade session to permanent
+		await env.SESSIONS.delete(token);
+		const newToken = crypto.randomUUID();
 		const maxAge = 60 * 60 * 24 * 7;
-		await env.SESSIONS.put(token, username, { expirationTtl: maxAge });
-		return withSessionCookie({ success: true }, token, maxAge);
-	} catch (err) {
+		await env.SESSIONS.put(newToken, normalizedUsername, { expirationTtl: maxAge });
+		return withSessionCookie({ success: true }, newToken, maxAge);
+	} catch (error) {
 		// Handle unexpected errors
 		return jsonError("Invalid request");
 	}
 }
 
 // Validate signup and return an error if invalid
-function validateSignup(username, email, password) {
-    if (!username || !email || !password ) return "Missing required fields";
+function validateSignup(avatar, username) {
+    if (!avatar || !username) return "Missing a required field";
     if (!validateUsername(username)) return "Username must be 5-20 characters and contain only letters or numbers";
-    if (!validateEmail(email)) return "Invalid email address";
-    if (!validatePassword(password)) return "Password must be 3-16 characters";
     return null;
 }
 
 // Username must be alphanumeric and between 5 and 20 characters
 function validateUsername(username) {
     return /^[a-zA-Z0-9]{5,20}$/.test(username);
-}
-
-// Basic email format
-function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-// Password must be between 3 and 16 characters
-function validatePassword(password) {
-    return password.length >= 3 && password.length <= 16;
 }
