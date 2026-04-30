@@ -21,7 +21,8 @@ export async function user(request, env) {
 
 	// Return public user info
 	return json({
-		username: username,
+		id: user.id,
+		username: user.username,
 		role: user.role || "user",
 		interests: user.interests || [],
 		avatar: user.avatar
