@@ -85,12 +85,12 @@ function init() {
     outlookButton.addEventListener("click", handleOutlookAuth);
     usernameInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
+            event.preventDefault();
             handleSignupSubmit();
         }
     })
 
     // Add avatar interaction
-    const avatarPreview = document.getElementById("avatar-preview");
     const avatarInput = document.getElementById("avatar-input");
 
     document.querySelector(".avatar-picker").addEventListener("click", () => {
@@ -130,6 +130,10 @@ async function handleMicrosoftUser(response) {
 
     const email = account.username;
     const name = account.name;
+
+    if (name && !usernameInput.value) {
+        usernameInput.value = name.toLowerCase().replace(/\s+/g, "").slice(0, 20);
+    }
     await set_outlook_avatar(response);
 
     try {
@@ -149,7 +153,7 @@ async function handleMicrosoftUser(response) {
         }
 
         if (data.status === "complete") {
-            hideCard();
+            document.body.classList.add("fade-out");
             setTimeout(() => redirect("app.html"), 300);
         } else if (data.status === "needs_username") {
             showSignup();
@@ -242,19 +246,9 @@ async function handleSignupSubmit() {
 function showLogin() {
     signupCard.classList.remove("active");
     loginCard.classList.add("active");
-    showCard();
 }
 
 function showSignup() {
     loginCard.classList.remove("active");
     signupCard.classList.add("active");
-    showCard();
-}
-
-function showCard() {
-    loginWrapper.classList.add("visible");
-}
-
-function hideCard() {
-    loginWrapper.classList.add("fade-out");
 }
