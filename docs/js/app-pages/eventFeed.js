@@ -160,7 +160,13 @@ function createAuthor(event) {
 function createDescription(event) {
     const description = document.createElement("p");
     description.className = "event-card-description";
-    description.textContent = event.description;
+    const text = event.description || "";
+    const maxLength = 100;
+    if (text.length > maxLength) {
+        description.textContent = text.slice(0, maxLength).trim() + "...";
+    } else {
+        description.textContent = text;
+    }
     return description;
 }
 
