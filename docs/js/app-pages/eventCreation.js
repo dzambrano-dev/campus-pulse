@@ -4,7 +4,7 @@
  */
 
 
-import {API, clearErrors, safeJson, setLoading, showError, updateURL} from "../utils.js";
+import { API, clearErrors, safeJson, setLoading, showError, updateURL, convertToWebP } from "../utils.js";
 
 
 let eventMap;
@@ -296,6 +296,7 @@ async function submitEvent(event, creationPage, loadEvents) {
     const rawLink = creationPage.querySelector("#event-action-input").value;
     const rawLabel = creationPage.querySelector("#event-action-label").value;
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
+    const imageFile = creationPage.querySelector("#event-image").files[0];
 
     // Validate data
     if (!title) return fail("Event title is required");
@@ -306,6 +307,7 @@ async function submitEvent(event, creationPage, loadEvents) {
     if (!location) return fail("Please provide a location");
     if (!date || !time) return fail("Date and time are required");
     if (!latlng) return fail("Please place a pin on the map");
+    if (!imageFile) return fail("Event image is required");
     let actionLink = null; let actionLabel = null;
     if (action) {
         if (action !== "rsvp") {
@@ -333,6 +335,9 @@ async function submitEvent(event, creationPage, loadEvents) {
     // Convert datetime
     const timestamp = Math.floor(new Date(`${date}T${time}`).getTime() / 1000);
 
+    // Convert image to WebP
+    const imageBase64 = await convertToWebP(imageFile);
+
     // Build event object
     const eventObject = {
         title: title,
@@ -346,7 +351,7 @@ async function submitEvent(event, creationPage, loadEvents) {
         actionLabel: action === "custom" ? actionLabel : null,
         lat: latlng.lat,
         lng: latlng.lng,
-        image: null,
+        image: imageBase64
     };
 
     console.log(actionLink);

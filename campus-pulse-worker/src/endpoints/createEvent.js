@@ -38,6 +38,9 @@ export async function createEvent(request, env) {
 			return jsonError("Missing required fields", 400);
 		}
 
+		// Require image
+		if (!image) return jsonError("Event image is required", 400);
+
 		// Require at least one tag
 		if (!Array.isArray(tags) || tags.length === 0) {
 			return jsonError("Event must include at least one tag", 400);
@@ -49,15 +52,32 @@ export async function createEvent(request, env) {
 		} catch (err) {
 			return jsonError(err.message, err.status || 400);
 		}
+
 		const cleanLink = actionLink ? actionLink.trim() : null;
 		const cleanLabel = actionLabel ? actionLabel.trim() : null;
 
-		// Fetch username
-		const username = await getSessionUser(request, env);
-		if (!username) return jsonError("Unauthorized", 401);
+		// Fetch userId
+		const userId = await getSessionUser(request, env);
+		if (!userId) return jsonError("Unauthorized", 401);
 
 		// Generate event ID
 		const eventId = crypto.randomUUID();
+
+		// Convert image to buffer
+		const base64Data = image.split(",")[1];
+		const binary = atob(base64Data);
+		const bytes = new Uint8Array(binary.length);
+
+		for (let i = 0; i < binary.length; i++) {
+			bytes[i] = binary.charCodeAt(i);
+		}
+
+		// Upload image to R2
+		const imageKey = `events/${eventId}.webp`;
+		await env.ASSETS.put(imageKey, bytes, {
+			httpMetadata: { contentType: "image/webp" }
+		});
+
 		const event = {
 			id: eventId,
 			title: title,
@@ -71,15 +91,15 @@ export async function createEvent(request, env) {
 			actionLabel: action === "custom" ? cleanLabel : null,
 			lat: lat,
 			lng: lng,
-			image: image || null,
-			createdBy: username,
+			image: imageKey,
+			createdBy: userId,
 			createdAt: Math.floor(Date.now() / 1000)
 		};
 
 		// Store event in EVENTS KV
 		await env.EVENTS.put(eventId, JSON.stringify(event));
 
-		// Update tag indexes
+		// Update indices
 		for (const tag of tags) {
 			const storedIndex = await env.EVENTS_INDEX.get(tag.toLowerCase(), "json") || [];
 
