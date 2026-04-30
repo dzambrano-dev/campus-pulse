@@ -165,12 +165,28 @@ export async function convertToWebP(file) {
         };
 
         img.onload = () => {
+            const maxSize = 512;
+            let width = img.width;
+            let height = img.height;
+
+            // Maintain aspect ratio
+            if (width > height) {
+                if (width > maxSize) {
+                    height *= maxSize / width;
+                    width = maxSize;
+                }
+            } else {
+                if (height > maxSize) {
+                    width *= maxSize / height;
+                    height = maxSize;
+                }
+            }
+
             const canvas = document.createElement("canvas");
-            const size = 256;
-            canvas.width = size;
-            canvas.height = size;
+            canvas.width = width;
+            canvas.height = height;
             const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, size, size);
+            ctx.drawImage(img, 0, 0, width, height);
             resolve(canvas.toDataURL("image/webp", 0.8));
         }
 
