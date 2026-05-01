@@ -12,8 +12,8 @@ import { openProfile } from "./profile.js";
 export function openEvent(eventId) {
     if (!eventId) return;
     updateURL("event", eventId);
-    animateEventPage();
     loadEventPage(eventId);
+    animateEventPage();
 }
 
 

@@ -19,8 +19,8 @@ export async function openProfile(username, userId = null) {
         if (!userId) return;
 
         updateURL("profile", username);
+        await loadProfile(userId);
         animateProfile();
-        loadProfile(userId);
     } catch (err) {
         console.error("Failed to open profile:", err);
     }
