@@ -187,18 +187,20 @@ async function attachProfileActions(user, sessionUser) {
                         body: JSON.stringify({ id: user.id })
                     });
 
+                    const data = await res.json();
+
                     if (!res.ok) {
-                        console.log(res.statusText);
+                        console.log(data.error || "Failed to update role");
                         setLoading(toggleBtn, false);
                         return;
                     }
 
-                    console.log("Toggle Organizer response:", data);
+                    console.log(`User ${data.id} is now ${data.role}`);
 
                     // Reload profile
                     await loadProfile(user.id);
                 } catch {
-                    console.log("Network error");
+                    console.error("Network error:", err);
                     setLoading(toggleBtn, false);
                 }
             });
