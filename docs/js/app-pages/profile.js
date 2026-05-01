@@ -4,7 +4,7 @@
  */
 
 
-import { API, safeJson, showError } from "../utils.js";
+import { API, safeJson, showError, updateURL } from "../utils.js";
 
 
 const ASSET_BASE = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
