@@ -61,6 +61,27 @@
     letter-spacing: -0.3px;
 }
 
+.profile-role {
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 4px;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
+
+/* Role colors */
+.profile-role-user {
+    color: #60a5fa;
+}
+
+.profile-role-organizer {
+    color: #22c55e;
+}
+
+.profile-role-admin {
+    color: var(--primary);
+}
+
 .profile-interests {
     display: flex;
     flex-wrap: wrap;
@@ -101,12 +122,17 @@
 }
 
 #edit-profile-button {
-    background: var(--primary-soft);
-    color: var(--text);
+    background: var(--primary);
+    color: white;
 }
 
-#toggle-role-button {
-    background: var(--primary);
+.toggle-role-button.promote {
+    background: #22c55e;
+    color: white;
+}
+
+.toggle-role-button.demote {
+    background: #60a5fa;
     color: white;
 }
 

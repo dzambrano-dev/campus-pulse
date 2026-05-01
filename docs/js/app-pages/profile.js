@@ -66,6 +66,7 @@ function renderProfile(user, sessionUser) {
 
     const username = user.username || "unknown";
     const interests = user.interests || [];
+    const role = user.role || "user";
 
     container.innerHTML = `
         <div class="profile-card">
@@ -77,6 +78,7 @@ function renderProfile(user, sessionUser) {
             <!-- Header -->
             <div class="profile-header">
                 <h1 class="profile-title">@${username}</h1>
+                <p class="profile-role profile-role-${role}">${role}</p>
                 <div class="profile-interests">
                     ${interests.length > 0
                         ? interests.map(tag => `<span class="profile-interest-bubble">${tag}</span>`).join("")
@@ -137,7 +139,7 @@ function renderProfileActions(isOwner, isAdmin, profileIsAdmin, user) {
         const isOrganizer = user.role === "organizer";
 
         buttons.push(`
-            <button class="secondary-button" id="toggle-role-button">
+            <button class="secondary-button toggle-role-button ${isOrganizer ? "demote" : "promote"}" id="toggle-role-button">
                 ${isOrganizer ? "Remove Organizer" : "Make Organizer"}
             </button>
         `);
