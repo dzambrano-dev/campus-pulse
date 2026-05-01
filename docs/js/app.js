@@ -56,7 +56,9 @@ async function initApp() {
         restorePageFromURL();
     });
 
-    if (!window.location.hash) {
+    const { page } = getPageFromUrl();
+
+    if (!page) {
         updateURL("events");
     }
 
