@@ -64,7 +64,7 @@
     box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
-.user-pin:hover .user-pin::after {
+.user-pin:hover::after {
     animation: none;
 }
 
