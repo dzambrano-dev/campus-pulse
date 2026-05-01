@@ -245,6 +245,11 @@ function showInitialPage() {
         loadEventPage(id);
     }
 
+    // Handle profile page
+    if (page === "user" && id) {
+        loadProfilePage(id);
+    }
+
     // Decide nav button
     navButtons.forEach(btn => {
         if (page === "event") {

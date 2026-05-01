@@ -1,7 +1,7 @@
 // Wait until page fully loads
 
 
-import { safeJson } from "../utils.js";
+import { API, safeJson, showError } from "../utils.js";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -24,15 +24,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* Load Profile Data */
-export async function loadProfilePage() {
+export async function loadProfilePage(userId) {
     const profileContainer = document.getElementById("profile-page-container");
     const profileError = document.getElementById("profile-page-error")
-    if (!profileContainer) return;
+    if (!profileContainer || !userId) return;
     profileContainer.innerHTML = "";
 
     try {
         const endpoint = `${API}/get-user?id=${userId}`;
-        const response = await fetch(endpoing, {
+        const response = await fetch(endpoint, {
             credentials: "include"
         });
 
