@@ -164,7 +164,7 @@ function createAuthor(event) {
     // Attach navigation
     author.querySelector(".clickable-user")?.addEventListener("click", (e) => {
         e.stopPropagation();
-        openProfile(userId);
+        openProfile(userId, username);
     });
 
     return author;

@@ -89,7 +89,10 @@ function renderEvent(event, userData) {
             </div>
             <br>
             <div class="event-page-author">
-                Posted by <span class="clickable-user" data-user-id="${createdBy}">@${createdByUsername}</span>
+                Posted by 
+                <span class="clickable-user" data-user-id="${createdBy}" data-username="${createdByUsername}">
+                @${createdByUsername}
+                </span>
             </div>
 
             <p class="event-page-description">${description}</p>
@@ -195,15 +198,11 @@ function attachEventPageButtons(event, canDelete) {
     if (actionBtn) {
         actionBtn.addEventListener("click", () => {
             const action = actionBtn.dataset.action;
-
             if (action === "rsvp") return;
-
             let link = event.actionLink;
-
             if (action === "contact") {
                 link = `mailto:${link}`;
             }
-
             if (link) {
                 window.open(link, "_blank");
             }
@@ -213,7 +212,9 @@ function attachEventPageButtons(event, canDelete) {
     // Profile click
     document.querySelectorAll(".clickable-user").forEach(el => {
         el.addEventListener("click", () => {
-            openProfile(el.dataset.userId);
+            const userId = el.dataset.userId;
+            const username = el.dataset.username;
+            openProfile(userId, username);
         });
     });
 
