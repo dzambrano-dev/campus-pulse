@@ -247,7 +247,7 @@ async function showInitialPage() {
             return;
         }
 
-        await openProfile(id, userId);
+        openProfile(id, userId);
         return;
     }
 

@@ -162,9 +162,9 @@ function createAuthor(event) {
     `;
 
     // Attach navigation
-    author.querySelector(".clickable-user")?.addEventListener("click", async (e) => {
+    author.querySelector(".clickable-user")?.addEventListener("click", (e) => {
         e.stopPropagation();
-        await openProfile(username, userId);
+        openProfile(username, userId);
     });
 
     return author;

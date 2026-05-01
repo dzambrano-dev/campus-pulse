@@ -8,11 +8,10 @@ import { API, ASSETS, safeJson, setLoading, showError, updateURL } from "../util
 
 
 // External method
-export async function openProfile(username, userId) {
+export function openProfile(username, userId) {
     if (!username || !userId) return;
-
     updateURL("profile", username);
-    await loadProfile(userId);
+    loadProfile(userId);
     animateProfile();
 }
 
