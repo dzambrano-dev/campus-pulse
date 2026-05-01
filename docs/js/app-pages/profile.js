@@ -83,10 +83,10 @@ function renderProfile(user, sessionUser) {
                     }
                 </div>
             </div>
-            
-            ${isOwner ? renderEditButton() : ""}
-            ${isAdmin && !profileIsAdmin ? renderToggleRoleButton(user) : ""}
         </div>
+        
+        ${isOwner ? renderEditButton() : ""}
+        ${isAdmin && !profileIsAdmin ? renderToggleRoleButton(user) : ""}
     `
 
     attachProfileActions(user, sessionUser);
@@ -123,7 +123,7 @@ function animateProfile() {
 // Create an edit profile button
 function renderEditButton() {
     return `
-        <div class="profile-actions">
+        <div class="profile-actions-container">
             <button class="primary-button" id="edit-profile-button">
                 Edit Profile
             </button>
@@ -137,7 +137,7 @@ function renderToggleRoleButton(user) {
     const isOrganizer = user.role === "organizer";
 
     return `
-        <div class="profile-actions">
+        <div class="profile-actions-container">
             <button class="secondary-button" id="toggle-role-button">
                 ${isOrganizer ? "Remove Organizer" : "Make Organizer"}
             </button>
@@ -167,7 +167,7 @@ async function attachProfileActions(user, sessionUser) {
         const toggleBtn = document.getElementById("toggle-role-button");
         if (toggleBtn) {
             toggleBtn.addEventListener("click", async () => {
-                setLoading(toggleBtn.textContent);
+                setLoading(toggleBtn, true);
 
                 try {
                     const res = await fetch(`${API}/toggle-organizer?id=${user.id}`, {

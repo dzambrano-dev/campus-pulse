@@ -85,15 +85,17 @@
     background: rgba(59, 130, 246, 0.18);
 }
 
-.profile-actions {
-    margin-top: 20px;
+.profile-action-container {
+    position: relative;
+    max-width: min(720px, 90vw);
+    margin: 20px auto;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    animation: profileFade 0.6s ease;
 }
 
-.profile-actions button {
-    width: 100%;
-    max-width: 220px;
+.profile-action-container button {
+    width: 160px;
 }
 
 #edit-profile-button {
