@@ -173,7 +173,7 @@ async function attachProfileActions(user, sessionUser) {
     }
 
     // Toggle Organizer
-    if (isAdmin && !profileIsAdmin) {
+    if (isAdmin /* && !profileIsAdmin */) {
         const toggleBtn = document.getElementById("toggle-role-button");
         if (toggleBtn) {
             toggleBtn.addEventListener("click", async () => {
