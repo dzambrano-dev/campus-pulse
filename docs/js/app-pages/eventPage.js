@@ -4,27 +4,31 @@
  */
 
 
-import { loadEvents } from "./eventFeed.js";
 import { API, attachMapButton, safeJson, showError, updateURL } from "../utils.js";
+import { loadEvents } from "./eventFeed.js";
+import { openProfile } from "./profile.js";
 
 
 const ASSET_BASE = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
 
 
-// Generate an event from the given id
-export async function loadEventPage(id) {
-    const eventPageError = document.getElementById("event-page-error");
-    if (!id) {
-        showError(eventPageError, "No event ID");
-        return;
-    }
+export function openEvent(eventId) {
+    if (!eventId) return;
+    updateURL("event", eventId);
+    animateEventPage();
+    loadEventPage(eventId);
+}
 
+
+// Generate an event from the given id
+async function loadEventPage(eventId) {
     const container = document.getElementById("event-page-container");
+    const eventPageError = document.getElementById("event-page-error");
     if (!container) return;
     container.innerHTML = "";
 
     try {
-        const endpoint = `${API}/get-event?id=${id}`;
+        const endpoint = `${API}/get-event?id=${eventId}`;
         const response = await fetch(endpoint, {
             method: "GET",
             credentials: "include"
@@ -45,11 +49,9 @@ export async function loadEventPage(id) {
         // Fetch user info
         const userResponse = await fetch(`${API}/user`, { credentials: "include" });
         const userData = await safeJson(userResponse);
-        const currentUser = userData?.username || null;
-        const currentRole = userData?.role || null;
 
         // Display event
-        renderEvent(event, currentUser, currentRole);
+        renderEvent(event, userData);
     } catch (error) {
         console.error("Failed to load event:", error);
         showError(eventPageError, "Failed to load event");
@@ -57,30 +59,22 @@ export async function loadEventPage(id) {
 }
 
 
-function renderEvent(event, currentUser, currentRole) {
+function renderEvent(event, userData) {
     const container = document.getElementById("event-page-container");
     if (!container) return;
 
-    console.log(currentUser);
-    console.log(currentRole);
+    const currentUser = userData?.username;
+    const currentRole = userData?.role;
 
     const title = event.title || "Untitled Event";
     const image = event.image
         ? `${ASSET_BASE}${event.image}`
         : "assets/eventImages/default.png";
     const location = event.location || "Unknown";
+    const description = event.description || "No description available.";
     const createdBy = event.createdBy;
     const createdByUsername = event.createdByUsername || "unknown";
-    const description = event.description || "No description available.";
-
     const canDelete = currentRole === "admin" || currentUser === event.createdBy;
-    const deleteButtonHTML = canDelete ? `
-        <div class="event-page-delete-button-container">
-            <button class="danger-button" id="delete-event-button">
-                Delete Event
-            </button>
-        </div>
-    ` : "";
 
     container.innerHTML = `
         <!-- Hero Image -->
@@ -90,7 +84,6 @@ function renderEvent(event, currentUser, currentRole) {
         
         <!-- Content -->
         <div class="event-page-content">
-
             <h1 class="event-page-title">${title}</h1>
             <div class="event-page-meta">
                 <span class="event-page-location">${location}</span>
@@ -102,9 +95,7 @@ function renderEvent(event, currentUser, currentRole) {
                 Posted by <span class="clickable-user" data-user-id="${createdBy}">@${createdByUsername}</span>
             </div>
 
-            <p class="event-page-description">
-                ${description}
-            </p>
+            <p class="event-page-description">${description}</p>
 
             ${renderTags(event.tags || [])}
             
@@ -114,37 +105,10 @@ function renderEvent(event, currentUser, currentRole) {
             </div>
         </div>
         
-           ${deleteButtonHTML}
+        ${canDelete ? renderDeleteButton() : ""}
         `;
 
-    attachEventPageButtons(event);
-    if (canDelete) {
-        const deleteBtn = document.getElementById("delete-event-button");
-        deleteBtn.addEventListener("click", async () => {
-            if (!confirm("Are you sure you want to delete this event?")) return;
-
-            try {
-                const res = await fetch(`${API}/delete-event?id=${event.id}`, {
-                    method: "DELETE",
-                    credentials: "include"
-                });
-
-                const result = await safeJson(res);
-
-                if (!res.ok) {
-                    alert(result.error || "Failed to delete event");
-                    return;
-                }
-
-                // Go back to feed and reload events
-                await loadEvents();
-                updateURL("events");
-                document.querySelector('[data-page="events-page"]')?.click();
-            } catch {
-                alert("Network error");
-            }
-        });
-    }
+    attachEventPageButtons(event, canDelete);
 }
 
 
@@ -202,6 +166,17 @@ function renderActionButtonHTML(event) {
 }
 
 
+function renderDeleteButton() {
+    return `
+        <div class="event-page-delete-button-container">
+            <button class="danger-button" id="delete-event-button">
+                Delete Event
+            </button>
+        </div>
+    `;
+}
+
+
 // Generate event card map button
 function createMapButtonHTML() {
     const mapBtn = `
@@ -211,14 +186,14 @@ function createMapButtonHTML() {
 }
 
 
-function attachEventPageButtons(event) {
+function attachEventPageButtons(event, canDelete) {
     // Map button
     const mapBtn = document.querySelector(".event-map-button");
     if (mapBtn) {
         attachMapButton(event, mapBtn);
     }
 
-    // ACTION BUTTON
+    // Action button
     const actionBtn = document.querySelector(".event-page-action-button");
     if (actionBtn) {
         actionBtn.addEventListener("click", () => {
@@ -237,33 +212,67 @@ function attachEventPageButtons(event) {
             }
         });
     }
+
+    // Profile click
+    document.querySelectorAll(".clickable-user").forEach(el => {
+        el.addEventListener("click", () => {
+            openProfile(el.dataset.userId);
+        });
+    });
+
+    // Delete
+    if (canDelete) {
+        const deleteBtn = document.getElementById("delete-event-button");
+        deleteBtn.addEventListener("click", async () => {
+            if (!confirm("Are you sure you want to delete this event?")) return;
+
+            try {
+                const res = await fetch(`${API}/delete-event?id=${event.id}`, {
+                    method: "DELETE",
+                    credentials: "include"
+                });
+
+                if (!res.ok) {
+                    alert("Failed to delete event");
+                    return;
+                }
+
+                // Go back to feed and reload events
+                await loadEvents();
+                updateURL("events");
+                document.querySelector('[data-page="events-page"]')?.click();
+            } catch {
+                alert("Network error");
+            }
+        });
+    }
 }
 
 
 // Trigger page change animation
-export function animateEventPage() {
+function animateEventPage() {
     const eventPage = document.getElementById("event-page");
     const currentPage = document.querySelector(".app-page.active");
 
-    if (eventPage && currentPage !== eventPage) {
-        eventPage.style.display = "block";
+    if (!eventPage || currentPage === eventPage) return;
 
-        if (currentPage) {
-            currentPage.classList.remove("active");
-            currentPage.classList.add("fade-out");
-        }
+    eventPage.style.display = "block";
 
-        requestAnimationFrame(() => {
-            eventPage.classList.add("active");
-        });
-
-        setTimeout(() => {
-            if (currentPage) {
-                currentPage.style.display = "none";
-                currentPage.classList.remove("fade-out");
-            }
-        }, 250);
+    if (currentPage) {
+        currentPage.classList.remove("active");
+        currentPage.classList.add("fade-out");
     }
+
+    requestAnimationFrame(() => {
+        eventPage.classList.add("active");
+    });
+
+    setTimeout(() => {
+        if (currentPage) {
+            currentPage.style.display = "none";
+            currentPage.classList.remove("fade-out");
+        }
+    }, 250);
 }
 
 

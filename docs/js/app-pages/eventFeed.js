@@ -4,8 +4,9 @@
  */
 
 
-import { API, attachMapButton, safeJson, updateURL } from "../utils.js";
-import { animateEventPage, loadEventPage } from "./eventPage.js";
+import { API, attachMapButton, safeJson } from "../utils.js";
+import { openEvent } from "./eventPage.js";
+import { openProfile } from "./profile.js";
 
 
 const ASSET_BASE = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
@@ -151,7 +152,21 @@ function createBreak() {
 function createAuthor(event) {
     const author = document.createElement("div");
     author.className = "event-card-author";
-    author.innerHTML = `Posted by <span class="clickable-user" data-user-id="${event.createdBy}">@${event.createdByUsername}</span>`;
+    const userId = event.createdBy;
+    const username = event.createdByUsername || "unknown";
+    author.innerHTML = `
+        Posted by 
+        <span class="clickable-user" data-user-id="${event.createdBy}">
+            @${username}
+        </span>
+    `;
+
+    // Attach navigation
+    author.querySelector(".clickable-user")?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openProfile(userId);
+    });
+
     return author;
 }
 
@@ -209,18 +224,7 @@ function createDetailsButton(event) {
 
     detailsBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-
-        // Extract id
-        const eventId = event.id
-        if (!eventId) {
-            console.error("No valid event ID found on event:", event);
-            return;
-        }
-
-        updateURL("event", eventId);
-        loadEventPage(eventId);
-        animateEventPage();
-        document.querySelectorAll(".nav-button").forEach(btn => btn.classList.remove("active"));
+        openEvent(event.id);
     });
 
     return detailsBtn;

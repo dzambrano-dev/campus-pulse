@@ -8,8 +8,8 @@ import { API, checkSession, safeJson, redirect, updateURL, restorePageFromURL, g
 import { initEventCreation, refreshEventCreationPage, setEventCreationMapTheme } from "./app-pages/eventCreation.js";
 import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
 import { loadEvents } from "./app-pages/eventFeed.js";
-import { loadEventPage } from "./app-pages/eventPage.js";
-import { loadProfilePage } from "./app-pages/profile.js";
+import { openEvent } from "./app-pages/eventPage.js";
+import { openProfile } from "./app-pages/profile.js";
 
 // Data members
 let currentUserId;
@@ -59,15 +59,6 @@ async function initApp() {
     if (!window.location.hash) {
         updateURL("events");
     }
-
-    document.addEventListener("click", (e) => {
-        const el = e.target.closest(".clickable-user");
-        if (!el) return;
-        const userId = el.dataset.userId;
-        updateURL("user", userId);
-        document.querySelector('[data-page="profile-page"]')?.click();
-        loadProfilePage(userId);
-    });
 
     showInitialPage();
     await loadEvents();
@@ -183,10 +174,7 @@ function initSettingsMenu () {
 
 // Send to user profile
 function goToProfile(){
-    const userId = currentUserId;
-    updateURL("user", userId);
-    document.querySelector('[data-page="profile-page"]')?.click();
-    loadProfilePage(userId);
+    openProfile(currentUserId);
 }
 
 
@@ -242,12 +230,12 @@ function showInitialPage() {
 
     // Handle event page
     if (page === "event" && id) {
-        loadEventPage(id);
+        openEvent(id);
     }
 
     // Handle profile page
-    if (page === "user" && id) {
-        loadProfilePage(id);
+    if (page === "profile" && id) {
+        openProfile(id);
     }
 
     // Decide nav button
