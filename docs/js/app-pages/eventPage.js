@@ -5,7 +5,7 @@
 
 
 import { loadEvents } from "./eventFeed.js";
-import {API, attachMapButton, safeJson, showError, updateURL} from "../utils.js";
+import { API, attachMapButton, safeJson, showError, updateURL } from "../utils.js";
 
 
 const ASSET_BASE = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
@@ -69,7 +69,8 @@ function renderEvent(event, currentUser, currentRole) {
         ? `${ASSET_BASE}${event.image}`
         : "assets/eventImages/default.png";
     const location = event.location || "Unknown";
-    const createdBy = event.createdByUsername || "unknown";
+    const createdBy = event.createdBy;
+    const createdByUsername = event.createdByUsername || "unknown";
     const description = event.description || "No description available.";
 
     const canDelete = currentRole === "admin" || currentUser === event.createdBy;
@@ -98,7 +99,7 @@ function renderEvent(event, currentUser, currentRole) {
             </div>
             <br>
             <div class="event-page-author">
-                Posted by <span>@${createdBy}</span>
+                Posted by <span class="clickable-user" data-user-id="${createdBy}">@${createdByUsername}</span>
             </div>
 
             <p class="event-page-description">

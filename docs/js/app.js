@@ -9,9 +9,11 @@ import { initEventCreation, refreshEventCreationPage, setEventCreationMapTheme }
 import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
 import { loadEvents } from "./app-pages/eventFeed.js";
 import { loadEventPage } from "./app-pages/eventPage.js";
+import { loadProfilePage } from "./app-pages/profile.js";
 
 // Data members
-let currentUser;
+let currentUserId;
+let currentUsername;
 let currentRole;
 
 // Icons
@@ -37,7 +39,8 @@ async function initApp() {
         return;
     }
 
-    currentUser = user.username;
+    currentUserId = user.id;
+    currentUsername = user.username;
     currentRole = user.role;
 
     // Initialize application
@@ -56,6 +59,15 @@ async function initApp() {
     if (!window.location.hash) {
         updateURL("events");
     }
+
+    document.addEventListener("click", (e) => {
+        const el = e.target.closest(".clickable-user");
+        if (!el) return;
+        const userId = el.dataset.userId;
+        updateURL("user", userId);
+        document.querySelector('[data-page="profile-page"]')?.click();
+        loadProfilePage(userId);
+    });
 
     showInitialPage();
     await loadEvents();
@@ -171,7 +183,10 @@ function initSettingsMenu () {
 
 // Send to user profile
 function goToProfile(){
-    redirect("profile.html");
+    const userId = currentUserId;
+    updateURL("user", userId);
+    document.querySelector('[data-page="profile-page"]')?.click();
+    loadProfilePage(userId);
 }
 
 
