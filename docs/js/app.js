@@ -231,16 +231,18 @@ async function showInitialPage() {
     // Handle event page
     if (page === "event" && id) {
         openEvent(id);
+        return;
     }
 
     // Handle profile page
     if (page === "profile" && id) {
-        openProfile(id);
+        await openProfile(id);
+        return;
     }
 
     // Decide nav button
     navButtons.forEach(btn => {
-        if (page === "event") {
+        if (page === "event" || page === "profile") {
             btn.classList.remove("active");
         } else {
             btn.classList.toggle("active", btn.dataset.page === pageId);
