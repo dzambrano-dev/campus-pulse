@@ -180,7 +180,7 @@ async function attachProfileActions(user, sessionUser) {
                 setLoading(toggleBtn, true);
 
                 try {
-                    const res = await fetch(`${API}/toggle-organizer?id=${user.id}`, {
+                    const res = await fetch(`${API}/toggle-organizer`, {
                         method: "POST",
                         credentials: "include",
                         headers: { "Content-Type": "application/json" },
