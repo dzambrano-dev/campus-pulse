@@ -65,7 +65,7 @@
 }
 
 .user-pin:hover::after {
-    animation: none;
+    animation: none !important;
 }
 
 .user-pin::after {
