@@ -119,21 +119,33 @@
 .profile-actions-container button {
     flex: 1;
     max-width: 200px;
+    border: none;
+    color: white;
+    transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 #edit-profile-button {
     background: var(--primary);
-    color: white;
+}
+
+#edit-profile-button:hover {
+    background: var(--primary-dark);
 }
 
 .toggle-role-button.promote {
     background: #22c55e;
-    color: white;
+}
+
+.toggle-role-button.promote:hover {
+    background: #16a34a;
 }
 
 .toggle-role-button.demote {
     background: #60a5fa;
-    color: white;
+}
+
+.toggle-role-button.demote:hover {
+    background: #3b82f6;
 }
 
 /* Animations */
