@@ -237,6 +237,7 @@ async function showInitialPage() {
 
     // Handle profile page
     if (page === "profile" && id) {
+        console.log("ATTEMPTING PROFILE");
         const userId = await fetchUserId(id);
 
         if (!userId) {
@@ -270,6 +271,7 @@ async function showInitialPage() {
 
 
 export async function fetchUserId(username) {
+    console.log("FETCHING ID");
     const res = await fetch(`${API}/get-user-id?username=${encodeURIComponent(username)}`, {
         credentials: "include"
     });
@@ -277,5 +279,6 @@ export async function fetchUserId(username) {
     if (!res.ok) return null;
 
     const data = await res.json();
+    console.log(data);
     return data.userId;
 }
