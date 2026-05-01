@@ -50,6 +50,34 @@ export async function loadProfilePage(userId) {
 }
 
 
+// Render profile page
+function renderProfile(user) {
+    const container = document.getElementById("profile-page-container");
+    if (!container) return;
+
+    const avatar = user.avatar
+        ? `https://campus-pulse-worker.vindictivity.workers.dev/assets/${user.avatar}`
+        : "assets/images/default-avatar.png";
+
+    const username = user.username || "unknown";
+    const interests = user.interests || [];
+
+    container.innerHTML = `
+        <div class="profile-card">
+            <!-- Avatar -->
+            <div class="avatar-section">
+                <img src="${avatar}" class="profile-avatar" alt="Avatar">
+            </div>
+            
+            <!-- Header -->
+            <div class="profile-header">
+                <h1 class="profile-title">@${username}</h1>
+                <p class="profile-note">${interests}</p>
+            </div>
+    `
+}
+
+
 /* Live Image Preview */
 function previewImage(event) {
     const file = event.target.files[0];
