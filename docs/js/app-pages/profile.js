@@ -4,7 +4,7 @@
  */
 
 
-import { API, ASSETS, safeJson, showError, updateURL } from "../utils.js";
+import {API, ASSETS, safeJson, setLoading, showError, updateURL} from "../utils.js";
 
 
 // External method
@@ -35,8 +35,14 @@ async function loadProfile(userId) {
             return;
         }
 
-        const user = await safeJson(response);
-        renderProfile(user);
+        // Fetch current user
+        const sessionRes = await fetch(`${API}/user`, {
+            credentials: "include"
+        });
+
+        const profileUser = await safeJson(response);
+        const sessionUser = await safeJson(sessionRes);
+        renderProfile(profileUser, sessionUser);
     } catch (error) {
         console.error(error);
         showError(profileError, "Failed to load profile");
@@ -45,7 +51,11 @@ async function loadProfile(userId) {
 
 
 // Render profile elements
-function renderProfile(user) {
+function renderProfile(user, sessionUser) {
+    const isOwner = sessionUser?.id === user.id;
+    const isAdmin = sessionUser?.role === "admin";
+    const profileIsAdmin = user.role === "admin";
+
     const container = document.getElementById("profile-page-container");
     if (!container) return;
 
@@ -73,8 +83,13 @@ function renderProfile(user) {
                     }
                 </div>
             </div>
+            
+            ${isOwner ? renderEditButton() : ""}
+            ${isAdmin && !profileIsAdmin ? renderToggleRoleButton(user) : ""}
         </div>
     `
+
+    attachProfileActions(user, sessionUser);
 }
 
 
@@ -102,4 +117,79 @@ function animateProfile() {
             currentPage.classList.remove("fade-out");
         }
     }, 250);
+}
+
+
+// Create an edit profile button
+function renderEditButton() {
+    return `
+        <div class="profile-actions">
+            <button class="primary-button" id="edit-profile-button">
+                Edit Profile
+            </button>
+        </div>
+    `;
+}
+
+
+// Create a promote/demote button
+function renderToggleRoleButton(user) {
+    const isOrganizer = user.role === "organizer";
+
+    return `
+        <div class="profile-actions">
+            <button class="secondary-button" id="toggle-role-button">
+                ${isOrganizer ? "Remove Organizer" : "Make Organizer"}
+            </button>
+        </div>
+    `;
+}
+
+
+// Attach button actions
+async function attachProfileActions(user, sessionUser) {
+    const isOwner = sessionUser?.id === user.id;
+    const isAdmin = sessionUser?.role === "admin";
+    const profileIsAdmin = user.role === "admin";
+
+    // Edit Profile
+    if (isOwner) {
+        const editBtn = document.getElementById("edit-profile-button");
+        if (editBtn) {
+            editBtn.addEventListener("click", () => {
+                alert("Edit profile coming soon");
+            });
+        }
+    }
+
+    // Toggle Organizer
+    if (isAdmin && !profileIsAdmin) {
+        const toggleBtn = document.getElementById("toggle-role-button");
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", async () => {
+                setLoading(toggleBtn.textContent);
+
+                try {
+                    const res = await fetch(`${API}/toggle-organizer?id=${user.id}`, {
+                        method: "POST",
+                        credentials: "include",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ id: user.id })
+                    });
+
+                    if (!res.ok) {
+                        alert("Failed to update role");
+                        setLoading(toggleBtn, false);
+                        return;
+                    }
+
+                    // Reload profile
+                    await loadProfile(user.id);
+                } catch {
+                    alert("Network error");
+                    setLoading(toggleBtn, false);
+                }
+            });
+        }
+    }
 }

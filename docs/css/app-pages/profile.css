@@ -85,6 +85,27 @@
     background: rgba(59, 130, 246, 0.18);
 }
 
+.profile-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-actions button {
+    width: 100%;
+    max-width: 220px;
+}
+
+#edit-profile-button {
+    background: var(--primary-soft);
+    color: var(--text);
+}
+
+#toggle-role-button {
+    background: var(--primary);
+    color: white;
+}
+
 /* Animations */
 @keyframes profileFade {
     to {

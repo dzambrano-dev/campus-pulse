@@ -27,11 +27,11 @@ export async function toggleOrganizer(request, env) {
 		if (admin.role !== "admin") return jsonError("Forbidden", 403);
 
 		// Parse request body
-		const { username } = await request.json();
-		if (!username) return jsonError("Missing username");
+		const { id } = await request.json();
+		if (!id) return jsonError("Missing user id");
 
 		// Retrieve target user
-		const storedUser = await env.USERS.get(username);
+		const storedUser = await env.USERS.get(id);
 		if (!storedUser) return jsonError("User not found", 404);
 
 		const user = JSON.parse(storedUser);
@@ -47,11 +47,11 @@ export async function toggleOrganizer(request, env) {
 		}
 
 		// Save updated user
-		await env.USERS.put(username, JSON.stringify(user));
+		await env.USERS.put(id, JSON.stringify(user));
 
 		return json({
 			success: true,
-			username,
+			id: id,
 			role: user.role
 		});
 	} catch {
