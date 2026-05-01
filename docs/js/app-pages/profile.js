@@ -66,6 +66,12 @@ function renderProfile(user) {
             <!-- Header -->
             <div class="profile-header">
                 <h1 class="profile-title">@${username}</h1>
+                <div class="profile-interests">
+                    ${interests.length > 0
+                        ? interests.map(tag => `<span class="profile-interest-bubble">${tag}</span>`).join("")
+                        : `<span class="profile-note">No interests yet</span>`
+                    }
+                </div>
                 <p class="profile-note"><b>Interests:</b> ${interests.join(", ")}</p>
             </div>
         </div>

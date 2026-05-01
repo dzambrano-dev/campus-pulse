@@ -22,6 +22,12 @@
     animation: profileFade 0.4s ease forwards;
 }
 
+.profile-card:hover {
+    box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.10),
+            0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
 .avatar-section {
     display: flex;
     justify-content: center;
@@ -55,29 +61,28 @@
     letter-spacing: -0.3px;
 }
 
-.profile-note {
-    font-size: 14px;
-    color: var(--muted-text);
-    line-height: 1.5;
-    max-width: 80%;
-    margin: 20px auto 0 auto;
+.profile-interests {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
 }
 
-.profile-note:empty::after {
-    content: "No interests yet";
-    opacity: 0.6;
+.profile-interest-bubble {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-.profile-divider {
-    margin: 20px 0;
-    height: 1px;
-    background: var(--border);
-}
-
-.profile-card:hover {
-    box-shadow:
-            0 20px 50px rgba(0, 0, 0, 0.10),
-            0 6px 18px rgba(0, 0, 0, 0.05);
+.profile-interest-bubble:hover {
+    transform: translateY(-1px);
+    background: rgba(59, 130, 246, 0.18);
 }
 
 /* Animations */
