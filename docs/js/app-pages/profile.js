@@ -188,7 +188,7 @@ async function attachProfileActions(user, sessionUser) {
                     });
 
                     if (!res.ok) {
-                        alert("Failed to update role");
+                        console.log(res.statusText);
                         setLoading(toggleBtn, false);
                         return;
                     }
@@ -198,7 +198,7 @@ async function attachProfileActions(user, sessionUser) {
                     // Reload profile
                     await loadProfile(user.id);
                 } catch {
-                    alert("Network error");
+                    console.log("Network error");
                     setLoading(toggleBtn, false);
                 }
             });
