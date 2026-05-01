@@ -211,10 +211,10 @@ function attachEventPageButtons(event, canDelete) {
 
     // Profile click
     document.querySelectorAll(".clickable-user").forEach(el => {
-        el.addEventListener("click", () => {
+        el.addEventListener("click", async () => {
             const username = el.dataset.username;
             const userId = el.dataset.userId;
-            openProfile(username, userId);
+            await openProfile(username, userId);
         });
     });
 
