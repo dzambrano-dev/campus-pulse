@@ -4,161 +4,86 @@
     padding: 0 0 calc(20px + var(--nav-height)) 0;
 }
 
-.profile-body{
-    min-height:100vh;
-    background:#f4f4f4;
-    padding:24px;
-
-    display:block;
-}
-
-/* Card */
-
-#profile-page {
-    padding: 20px;
-}
-
-.profile-card{
-    width:100%;
-    max-width:460px;
-
-    margin:70px auto 30px auto;
-
-    background:#ffffff;
-    border-radius:22px;
-    padding:30px;
-
+.profile-card {
+    position: relative;
+    max-width: min(720px, 90vw);
+    margin: 100px auto 0;
+    padding: 24px 20px 40px 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(6px);
+    border-radius: 18px;
+    -webkit-font-smoothing: antialiased;
     box-shadow:
-            0 14px 34px rgba(0,0,0,.08),
-            0 6px 14px rgba(0,0,0,.04);
+            0 10px 30px rgba(0, 0, 0, 0.08),
+            0 2px 8px rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: profileFade 0.4s ease forwards;
 }
 
-/* Back button */
-
-.profile-back-button{
-    position:fixed;
-    top:18px;
-    left:18px;
-
-    width:auto;
-    padding:10px 14px;
-    margin:0;
-
-    border:none;
-    border-radius:12px;
-
-    background:#ffffff;
-    color:#222;
-
-    box-shadow:0 6px 16px rgba(0,0,0,.08);
-
-    z-index:100;
+.avatar-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
 }
 
-/* Header */
-
-.profile-title{
-    text-align:center;
-    font-size:32px;
-    margin-bottom:8px;
-    color:#222;
+.profile-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary);
+    background: var(--background);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease;
 }
 
-.profile-note{
-    text-align:center;
-    font-size:14px;
-    color:#666;
-    line-height:1.45;
+.profile-avatar:hover {
+    transform: scale(1.04);
 }
 
-/* Avatar */
-
-.avatar-section{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:14px;
-
-    margin:26px 0;
+.profile-header {
+    text-align: center;
 }
 
-.profile-avatar{
-    width:110px;
-    height:110px;
-
-    border-radius:50%;
-    object-fit:cover;
-
-    border:4px solid #FDB515;
-    background:#ececec;
+.profile-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
 }
 
-/* Upload row */
-
-.upload-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-    justify-content:center;
+.profile-note {
+    font-size: 14px;
+    color: var(--muted-text);
+    line-height: 1.5;
+    max-width: 80%;
+    margin: 0 auto;
 }
 
-.upload-label{
-    width:auto;
-    margin:0;
-    padding:10px 14px;
+.profile-note:empty::after {
+    content: "No interests yet";
+    opacity: 0.6;
 }
 
-#fileNameLabel{
-    font-size:13px;
-    color:#777;
+.profile-divider {
+    margin: 20px 0;
+    height: 1px;
+    background: var(--border);
 }
 
-/* Fields */
-
-.profile-field{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-
-    margin-top:12px;
+.profile-card:hover {
+    box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.10),
+            0 6px 18px rgba(0, 0, 0, 0.05);
 }
 
-.profile-field label{
-    font-weight:700;
-    color:#222;
-}
-
-.profile-field input{
-    margin:0;
-}
-
-/* Info box */
-
-.profile-info{
-    margin:18px 0 20px 0;
-    padding:14px;
-
-    background:#fafafa;
-    border:1px solid #eee;
-    border-radius:14px;
-}
-
-/* Save button */
-
-.profile-card .primary-button{
-    margin-top:10px;
-}
-
-.menu-item {
-    padding: 10px;
-    border: none;
-    background: none;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 8px;
-}
-
-.menu-item:hover {
-    background: #f2f2f2;
+/* Animations */
+@keyframes profileFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

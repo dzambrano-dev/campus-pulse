@@ -4,10 +4,7 @@
  */
 
 
-import { API, safeJson, showError, updateURL } from "../utils.js";
-
-
-const ASSET_BASE = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
+import { API, ASSETS, safeJson, showError, updateURL } from "../utils.js";
 
 
 // External method
@@ -53,7 +50,7 @@ function renderProfile(user) {
     if (!container) return;
 
     const avatar = user.avatar
-        ? `https://campus-pulse-worker.vindictivity.workers.dev/assets/${user.avatar}`
+        ? `${ASSETS}${user.avatar}`
         : "assets/images/default-avatar.png";
 
     const username = user.username || "unknown";

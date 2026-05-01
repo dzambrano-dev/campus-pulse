@@ -7,6 +7,9 @@
 // API
 export const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 
+// Assets url
+export const ASSETS = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
+
 
 // Clear all visible error messages
 export function clearErrors(...elements) {

@@ -4,12 +4,9 @@
  */
 
 
-import { API, attachMapButton, safeJson, showError, updateURL } from "../utils.js";
+import { API, ASSETS, attachMapButton, safeJson, showError, updateURL } from "../utils.js";
 import { loadEvents } from "./eventFeed.js";
 import { openProfile } from "./profile.js";
-
-
-const ASSET_BASE = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
 
 
 export function openEvent(eventId) {
@@ -68,7 +65,7 @@ function renderEvent(event, userData) {
 
     const title = event.title || "Untitled Event";
     const image = event.image
-        ? `${ASSET_BASE}${event.image}`
+        ? `${ASSETS}${event.image}`
         : "assets/eventImages/default.png";
     const location = event.location || "Unknown";
     const description = event.description || "No description available.";
