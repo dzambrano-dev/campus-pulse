@@ -85,8 +85,7 @@ function renderProfile(user, sessionUser) {
             </div>
         </div>
         
-        ${isOwner ? renderEditButton() : ""}
-        ${isAdmin && !profileIsAdmin ? renderToggleRoleButton(user) : ""}
+        ${renderProfileActions(isOwner, isAdmin, profileIsAdmin, user)}
     `
 
     attachProfileActions(user, sessionUser);
@@ -120,27 +119,35 @@ function animateProfile() {
 }
 
 
-// Create an edit profile button
-function renderEditButton() {
-    return `
-        <div class="profile-actions-container">
+function renderProfileActions(isOwner, isAdmin, profileIsAdmin, user) {
+    const buttons = [];
+
+    // Show the edit profile button to the profile owner
+    if (isOwner) {
+        buttons.push(`
             <button class="primary-button" id="edit-profile-button">
                 Edit Profile
             </button>
-        </div>
-    `;
-}
+        `);
+    }
 
+    // Show the toggle organizer button to admins on non-admin profiles
+    if (isAdmin && !profileIsAdmin) {
+        const isOrganizer = user.role === "organizer";
 
-// Create a promote/demote button
-function renderToggleRoleButton(user) {
-    const isOrganizer = user.role === "organizer";
-
-    return `
-        <div class="profile-actions-container">
+        buttons.push(`
             <button class="secondary-button" id="toggle-role-button">
                 ${isOrganizer ? "Remove Organizer" : "Make Organizer"}
             </button>
+        `);
+    }
+
+    // Nothing to show
+    if (buttons.length === 0) return "";
+
+    return `
+        <div class="profile-actions-container">
+            ${buttons.join("")}
         </div>
     `;
 }
