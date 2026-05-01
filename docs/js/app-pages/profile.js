@@ -8,11 +8,38 @@ import {API, ASSETS, safeJson, setLoading, showError, updateURL} from "../utils.
 
 
 // External method
-export function openProfile(userId, username) {
-    if (!userId || !username) return;
-    updateURL("profile", username);
-    animateProfile();
-    loadProfile(userId);
+export function openProfile(username, userId = null) {
+    if (!username) return;
+
+    try {
+        if (!userId) {
+            userId = fetchUserId(username);
+        }
+
+        if (!userId) return;
+
+        updateURL("profile", username);
+        animateProfile();
+        loadProfile(userId);
+    } catch (err) {
+        console.error("Failed to open profile:", err);
+    }
+}
+
+
+async function fetchUserId(username) {
+    const endpoint = `${API}/get-user-id?username=${encodeURIComponent(username)}`
+    const res = await fetch(endpoint, {
+        credentials: "include"
+    });
+
+    if (!res.ok) {
+        console.error("User not found:", username);
+        return null;
+    }
+
+    const data = await res.json();
+    return data.userId;
 }
 
 

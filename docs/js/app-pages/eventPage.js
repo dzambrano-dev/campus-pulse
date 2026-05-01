@@ -212,9 +212,9 @@ function attachEventPageButtons(event, canDelete) {
     // Profile click
     document.querySelectorAll(".clickable-user").forEach(el => {
         el.addEventListener("click", () => {
-            const userId = el.dataset.userId;
             const username = el.dataset.username;
-            openProfile(userId, username);
+            const userId = el.dataset.userId;
+            openProfile(username, userId);
         });
     });
 

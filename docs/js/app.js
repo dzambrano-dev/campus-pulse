@@ -174,7 +174,7 @@ function initSettingsMenu () {
 
 // Send to user profile
 function goToProfile(){
-    openProfile(currentUserId, currentUsername);
+    openProfile(currentUsername, currentUserId);
 }
 
 
@@ -235,24 +235,7 @@ async function showInitialPage() {
 
     // Handle profile page
     if (page === "profile" && id) {
-        const username = id;
-
-        try {
-            const res = await fetch(`${API}/get-user-id?username=${encodeURIComponent(username)}`, {
-                credentials: "include"
-            });
-
-            if (!res.ok) {
-                console.error("User not found");
-                return;
-            }
-
-            const data = await res.json();
-
-            openProfile(data.userId, username);
-        } catch (err) {
-            console.error("Failed to resolve username:", err);
-        }
+        openProfile(id);
     }
 
     // Decide nav button
