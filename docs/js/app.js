@@ -221,6 +221,7 @@ async function showInitialPage() {
     });
 
     const targetPage = document.getElementById(pageId);
+    console.log(targetPage);
     if (!targetPage) return;
 
     // Show target page
@@ -236,6 +237,7 @@ async function showInitialPage() {
 
     // Handle profile page
     if (page === "profile" && id) {
+        console.log("ATTEMPTING TO OPEN PROFILE");
         await openProfile(id);
         return;
     }
