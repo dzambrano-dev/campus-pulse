@@ -174,7 +174,7 @@ function initSettingsMenu () {
 
 // Send to user profile
 function goToProfile(){
-    openProfile(currentUserId);
+    openProfile(currentUserId, currentUsername);
 }
 
 
