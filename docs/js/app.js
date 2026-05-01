@@ -60,7 +60,7 @@ async function initApp() {
         updateURL("events");
     }
 
-    showInitialPage();
+    await showInitialPage();
     await loadEvents();
 }
 
