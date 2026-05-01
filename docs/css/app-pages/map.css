@@ -71,7 +71,7 @@
     height: 100%;
     border-radius: 50%;
     background: var(--pin-color);
-    opacity: 0.75;
+    opacity: 1;
     z-index: -1;
     animation: ripple 2.2s ease-out infinite;
 }
@@ -260,7 +260,7 @@
 @keyframes ripple {
     0% {
         transform: scale(1);
-        opacity: 0.25;
+        opacity: 0.4;
     }
     70% {
         transform: scale(2);
