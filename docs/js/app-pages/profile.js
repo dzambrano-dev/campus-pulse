@@ -10,7 +10,6 @@ import { API, ASSETS, safeJson, setLoading, showError, updateURL } from "../util
 // External method
 export function openProfile(username, userId) {
     if (!username || !userId) return;
-    updateURL("profile", username);
     loadProfile(userId);
     animateProfile();
 }

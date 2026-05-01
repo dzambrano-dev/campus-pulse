@@ -241,12 +241,6 @@ async function showInitialPage() {
     if (page === "profile" && id) {
         console.log("ATTEMPTING PROFILE");
         const userId = await fetchUserId(id);
-
-        if (!userId) {
-            console.error("Profile not found");
-            return;
-        }
-
         openProfile(id, userId);
         return;
     }
