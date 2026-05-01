@@ -66,7 +66,7 @@ function renderProfile(user) {
             <!-- Header -->
             <div class="profile-header">
                 <h1 class="profile-title">@${username}</h1>
-                <p class="profile-note">${interests.join(", ")}</p>
+                <p class="profile-note"><b>Interests:</b> ${interests.join(", ")}</p>
             </div>
         </div>
     `

@@ -60,7 +60,7 @@
     color: var(--muted-text);
     line-height: 1.5;
     max-width: 80%;
-    margin: 0 auto;
+    margin: 20px auto 0 auto;
 }
 
 .profile-note:empty::after {
