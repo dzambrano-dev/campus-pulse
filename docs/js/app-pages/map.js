@@ -5,7 +5,7 @@
 
 
 import { API, safeJson, updateURL } from "../utils.js";
-import { loadEventPage, animateEventPage } from "./eventPage.js";
+import { openEvent } from "./eventPage.js";
 
 
 let map;
@@ -159,9 +159,7 @@ function renderMapMarkers(events) {
             }
 
             map.closePopup();
-            updateURL("event", eventId);
-            loadEventPage(eventId);
-            animateEventPage();
+            openEvent(eventId);
         });
         popupDiv.append(title, location, brk, time, button);
 
