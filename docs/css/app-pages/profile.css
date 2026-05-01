@@ -71,7 +71,7 @@
 
 .profile-interest-bubble {
     background: rgba(59, 130, 246, 0.1);
-    color: var(--primary);
+    color: var(--muted-text);
     border: 1px solid rgba(59, 130, 246, 0.25);
     padding: 6px 12px;
     border-radius: 20px;

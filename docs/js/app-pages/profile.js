@@ -72,7 +72,6 @@ function renderProfile(user) {
                         : `<span class="profile-note">No interests yet</span>`
                     }
                 </div>
-                <p class="profile-note"><b>Interests:</b> ${interests.join(", ")}</p>
             </div>
         </div>
     `
