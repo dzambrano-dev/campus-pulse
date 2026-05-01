@@ -1,5 +1,8 @@
-
 /* Profile Page */
+
+#profile-page-container {
+    padding: 0 0 calc(20px + var(--nav-height)) 0;
+}
 
 .profile-body{
     min-height:100vh;
