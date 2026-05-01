@@ -193,6 +193,8 @@ async function attachProfileActions(user, sessionUser) {
                         return;
                     }
 
+                    console.log("Toggle Organizer response:", data);
+
                     // Reload profile
                     await loadProfile(user.id);
                 } catch {
