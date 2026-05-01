@@ -8,12 +8,12 @@ import {API, ASSETS, safeJson, setLoading, showError, updateURL} from "../utils.
 
 
 // External method
-export function openProfile(username, userId = null) {
+export async function openProfile(username, userId = null) {
     if (!username) return;
 
     try {
         if (!userId) {
-            userId = fetchUserId(username);
+            userId = await fetchUserId(username);
         }
 
         if (!userId) return;
