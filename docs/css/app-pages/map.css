@@ -64,6 +64,10 @@
     box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
+.user-pin:hover .user-pin::after {
+    animation: none;
+}
+
 .user-pin::after {
     content: "";
     position: absolute;
