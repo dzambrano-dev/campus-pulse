@@ -237,8 +237,14 @@ async function showInitialPage() {
 
     // Handle profile page
     if (page === "profile" && id) {
-        console.log("ATTEMPTING TO OPEN PROFILE");
-        await openProfile(id);
+        const userId = await fetchUserId(id);
+
+        if (!userId) {
+            console.error("Profile not found");
+            return;
+        }
+
+        await openProfile(id, userId);
         return;
     }
 
@@ -260,4 +266,16 @@ async function showInitialPage() {
     if (pageId === "event-creation-page") {
         refreshEventCreationPage()
     }
+}
+
+
+export async function fetchUserId(username) {
+    const res = await fetch(`${API}/get-user-id?username=${encodeURIComponent(username)}`, {
+        credentials: "include"
+    });
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return data.userId;
 }

@@ -4,42 +4,16 @@
  */
 
 
-import {API, ASSETS, safeJson, setLoading, showError, updateURL} from "../utils.js";
+import { API, ASSETS, safeJson, setLoading, showError, updateURL } from "../utils.js";
 
 
 // External method
-export async function openProfile(username, userId = null) {
-    if (!username) return;
+export async function openProfile(username, userId) {
+    if (!username || !userId) return;
 
-    try {
-        if (!userId) {
-            userId = await fetchUserId(username);
-        }
-
-        if (!userId) return;
-
-        updateURL("profile", username);
-        await loadProfile(userId);
-        animateProfile();
-    } catch (err) {
-        console.error("Failed to open profile:", err);
-    }
-}
-
-
-async function fetchUserId(username) {
-    const endpoint = `${API}/get-user-id?username=${encodeURIComponent(username)}`
-    const res = await fetch(endpoint, {
-        credentials: "include"
-    });
-
-    if (!res.ok) {
-        console.error("User not found:", username);
-        return null;
-    }
-
-    const data = await res.json();
-    return data.userId;
+    updateURL("profile", username);
+    await loadProfile(userId);
+    animateProfile();
 }
 
 
