@@ -135,7 +135,7 @@ function renderProfileActions(isOwner, isAdmin, profileIsAdmin, user) {
     }
 
     // Show the toggle organizer button to admins on non-admin profiles
-    if (isAdmin && !profileIsAdmin) {
+    if (isAdmin /* && !profileIsAdmin */) {
         const isOrganizer = user.role === "organizer";
 
         buttons.push(`
