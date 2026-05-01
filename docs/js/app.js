@@ -207,7 +207,7 @@ async function logout() {
 }
 
 
-function showInitialPage() {
+async function showInitialPage() {
     const { page, id } = getPageFromUrl();
     const pageId = `${page}-page`;
 
@@ -235,7 +235,24 @@ function showInitialPage() {
 
     // Handle profile page
     if (page === "profile" && id) {
-        openProfile(id);
+        const username = id;
+
+        try {
+            const res = await fetch(`${API}/get-user-id?username=${encodeURIComponent(username)}`, {
+                credentials: "include"
+            });
+
+            if (!res.ok) {
+                console.error("User not found");
+                return;
+            }
+
+            const data = await res.json();
+
+            openProfile(data.userId, username);
+        } catch (err) {
+            console.error("Failed to resolve username:", err);
+        }
     }
 
     // Decide nav button

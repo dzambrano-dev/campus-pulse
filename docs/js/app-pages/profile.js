@@ -22,6 +22,7 @@ async function loadProfile(userId) {
     const profileError = document.getElementById("profile-page-error")
     if (!profileContainer || !userId) return;
     profileContainer.innerHTML = "";
+    profileError.textContent = "";
 
     try {
         const endpoint = `${API}/get-user?id=${userId}`;

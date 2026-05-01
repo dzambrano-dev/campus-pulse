@@ -1,6 +1,6 @@
 /**
  * user.js
- * API call for looking up user info
+ * API call for looking up current user
  */
 
 import { json, jsonError, getSessionUser } from "../utils.js";

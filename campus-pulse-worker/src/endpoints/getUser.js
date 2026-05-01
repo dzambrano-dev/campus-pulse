@@ -1,6 +1,6 @@
 /**
  * getUser.js
- * API call for looking up user info
+ * API call for looking up user info for others
  */
 
 import { json, jsonError } from "../utils.js";

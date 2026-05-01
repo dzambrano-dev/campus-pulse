@@ -16,6 +16,7 @@ import { getEvent } from "./endpoints/getEvent.js";
 import { getEvents } from "./endpoints/getEvents.js";
 import { getInterests } from "./endpoints/getInterests.js";
 import { getUser } from "./endpoints/getUser.js";
+import { getUserId } from "./endpoints/getUserId.js";
 import { login } from "./endpoints/login.js";
 import { logout } from "./endpoints/logout.js";
 import { toggleOrganizer } from "./endpoints/toggleOrganizer.js";
@@ -54,6 +55,7 @@ export default {
 			case "/api/get-events": return addCors(await getEvents(request, env));
 			case "/api/get-interests": return addCors(await getInterests(request, env));
 			case "/api/get-user": return addCors(await getUser(request, env));
+			case "/api/get-user-id": return addCors(await getUserId(request, env));
 			case "/api/login": return addCors(await login(request, env));
 			case "/api/logout": return addCors(await logout(request, env));
 			case "/api/signup": return addCors(await signup(request, env));
