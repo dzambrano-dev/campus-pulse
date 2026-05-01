@@ -113,6 +113,34 @@ export function restorePageFromURL() {
         return;
     }
 
+    if (page === "profile" && id) {
+        // Navigate to unique profile page manually
+        const profilePage = document.getElementById("profile-page");
+        if (profilePage) {
+            document.querySelectorAll(".app-page").forEach(p => {
+                p.classList.remove("active");
+                p.style.display = "none";
+            });
+
+            profilePage.style.display = "block";
+            requestAnimationFrame(() => {
+                profilePage.classList.add("active");
+            });
+
+            // Load profile dynamically
+            import("./app-pages/profile.js").then(async ({ openProfile }) => {
+                const { fetchUserId } = await import("./app.js");
+                const userId = await fetchUserId(id);
+
+                if (userId) {
+                    openProfile(id, userId);
+                }
+            });
+        }
+
+        return;
+    }
+
     if (targetButton) {
         targetButton.click();
     } else {
