@@ -128,7 +128,7 @@ function renderProfileActions(isOwner, isAdmin, profileIsAdmin, user) {
     // Show the edit profile button to the profile owner
     if (isOwner) {
         buttons.push(`
-            <button class="primary-button" id="edit-profile-button">
+            <button id="edit-profile-button">
                 Edit Profile
             </button>
         `);
@@ -139,7 +139,7 @@ function renderProfileActions(isOwner, isAdmin, profileIsAdmin, user) {
         const isOrganizer = user.role === "organizer";
 
         buttons.push(`
-            <button class="secondary-button toggle-role-button ${isOrganizer ? "demote" : "promote"}" id="toggle-role-button">
+            <button class="toggle-role-button ${isOrganizer ? "demote" : "promote"}" id="toggle-role-button">
                 ${isOrganizer ? "Remove Organizer" : "Make Organizer"}
             </button>
         `);
