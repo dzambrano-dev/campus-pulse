@@ -43,7 +43,7 @@
     cursor: pointer;
 }
 
-.profile-avatar-wrapper.editable:hover .profile-avatar {
+.profile-avatar-wrapper.editable:hover {
     transform: scale(1.05);
 }
 
@@ -63,10 +63,6 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-.profile-avatar-wrapper.editable:hover::after {
-    transform: scale(1.05);
 }
 
 .profile-avatar-wrapper::after {
@@ -168,6 +164,10 @@
     transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
+#edit-interests-button {
+    max-width: 300px;
+}
+
 #edit-profile-button {
     background: var(--primary);
 }
@@ -193,7 +193,7 @@
 }
 
 input {
-    width: 100%;
+    max-width: 200px;
     padding: 12px 16px;
     margin: 10px 0;
     border-radius: 8px;
