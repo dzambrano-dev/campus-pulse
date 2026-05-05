@@ -56,6 +56,7 @@ export async function signup(request, env) {
 			email: normalizedEmail,
 			name: name,
 			username: normalizedUsername,
+			previous_usernames: [],
 			avatar: avatarKey,
 			role: "user",
 			interests: [],

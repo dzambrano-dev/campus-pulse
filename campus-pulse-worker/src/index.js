@@ -21,7 +21,9 @@ import { login } from "./endpoints/login.js";
 import { logout } from "./endpoints/logout.js";
 import { toggleOrganizer } from "./endpoints/toggleOrganizer.js";
 import { signup } from "./endpoints/signup.js";
+import { updateAvatar } from "./endpoints/updateAvatar.js";
 import { updateInterests } from "./endpoints/updateInterests.js";
+import { updateUsername } from "./endpoints/updateUsername.js";
 import { user } from "./endpoints/user.js";
 
 
@@ -61,7 +63,9 @@ export default {
 			case "/api/signup": return addCors(await signup(request, env));
 			case "/api/toggle-organizer": return addCors(await toggleOrganizer(request, env));
 			case "/api/user": return addCors(await user(request, env));
+			case "/api/update-avatar": return addCors(await updateAvatar(request, env));
 			case "/api/update-interests": return addCors(await updateInterests(request, env));
+			case "/api/update-username": return addCors(await updateUsername(request, env));
 			case "/api/health": return addCors(Response.json({ status: "OK" }));  // Used to check if API is alive
 
 			default: return new Response("Not Found", { status: 404, headers: corsHeaders });

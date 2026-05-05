@@ -1,6 +1,6 @@
 /**
  * getInterests.js
- * API call for fetching all available interests (tags) on the platform
+ * API call for fetching all available interests (tags) on the platform, not for users
  */
 
 import { json, jsonError } from "../utils.js"

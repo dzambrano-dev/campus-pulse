@@ -11,8 +11,8 @@ export async function getUser(request, env) {
 
 	const url = new URL(request.url);
 	const userId = url.searchParams.get("id");
-
 	if (!userId) return jsonError("Missing user id", 400);
+
 	const storedUser = await env.USERS.get(userId);
 	if (!storedUser) return jsonError("User not found", 404);
 
