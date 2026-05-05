@@ -76,7 +76,9 @@ function renderProfile(user, sessionUser) {
         <div class="profile-card">
             <!-- Avatar -->
             <div class="avatar-section">
+            <div class="profile-avatar-wrapper ${isOwner && isEditing ? "editable" : ""}">
                 <img src="${avatar}" class="profile-avatar" alt="Avatar">
+            </div>
                 ${isOwner && isEditing ? `
                     <input type="file" id="avatar-input" accept = "image/*" hidden>
                 ` : ""}
@@ -85,7 +87,7 @@ function renderProfile(user, sessionUser) {
             <!-- Header -->
             <div class="profile-header">
                 ${isOwner && isEditing
-                    ? `<input id="edit-username" class="profile-input" value="${username}">`
+                    ? `<input id="username-input" class="profile-input" value="${username}">`
                     : `<h1 class="profile-title">@${username}</h1>`
                 }
                 <p class="profile-role profile-role-${role}">${role}</p>
@@ -201,12 +203,12 @@ async function attachProfileActions(user, sessionUser) {
         }
 
         // Avatar upload
+        const avatarWrapper = document.querySelector(".profile-avatar-wrapper");
         const avatarInput = document.getElementById("avatar-input");
         const avatarImg = document.querySelector(".profile-avatar");
 
-        if (avatarInput && avatarImg) {
-            avatarImg.addEventListener("click", () => avatarInput.click());
-
+        if (avatarInput && avatarWrapper) {
+            avatarWrapper.addEventListener("click", () => avatarInput.click());
             avatarInput.addEventListener("change", async e => {
                 const file = e.target.files[0];
                 if (!file) return;

@@ -160,6 +160,10 @@
     margin-top: 6px;
 }
 
+#signup-submit-button {
+    width: 100px;
+}
+
 .avatar-picker {
     position: relative;
     width: 96px;
