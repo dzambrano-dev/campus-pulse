@@ -20,22 +20,25 @@ export async function loadEvents() {
             credentials: "include"
         });
 
-        // If no events are found, return
-        if (!eventsResponse.ok) return;
+        // Clear events container
+        const eventsContainer = document.getElementById("event-cards-container");
+        if (!eventsContainer) return;
+        eventsContainer.innerHTML = "";
+
+        // Error fetching events
+        if (!eventsResponse.ok) {
+            renderEmptyState(eventsContainer, "network");
+            return;
+        }
 
         const data = await safeJson(eventsResponse);
         const events = data.events || data;
 
-        if (!Array.isArray(events)) {
-            console.error("Events is not an array:", events);
+        // No events found
+        if (!Array.isArray(events) || events.length === 0) {
+            renderEmptyState(eventsContainer, "no-events");
             return;
         }
-
-        // Clear events container
-        const eventsContainer = document.getElementById("event-cards-container");
-        if (!eventsContainer) return;
-
-        eventsContainer.innerHTML = "";
 
         // Create a card for each event
         const fragment = document.createDocumentFragment();
@@ -50,6 +53,37 @@ export async function loadEvents() {
         eventsContainer.appendChild(fragment);
     } catch (err) {
         console.error("Failed to load events:", err);
+    }
+}
+
+
+function renderEmptyState(container, type) {
+    const empty = document.createElement("div");
+    empty.className = "event-feed-empty";
+
+    if (type === "network") {
+        empty.innerHTML = `
+            <h3>Couldn't load events</h3>
+            <p>Please check your internet connection and try again.</p>
+        `;
+    } else {
+        empty.innerHTML = `
+            <h3>No events for your interests</h3>
+            <p>Try adding more interests to discover events around you.</p>
+            <button class="primary-button" id="go-to-interests">
+                Update Interests
+            </button>
+        `;
+    }
+
+    container.appendChild(empty);
+
+    // Add navigation for interests
+    const btn = empty.querySelector("#go-to-interests");
+    if (btn) {
+        btn.addEventListener("click", () => {
+            redirect("interests.html");
+        });
     }
 }
 
