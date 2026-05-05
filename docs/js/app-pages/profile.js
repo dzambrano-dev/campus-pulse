@@ -7,6 +7,10 @@
 import { API, ASSETS, safeJson, setLoading, showError, updateURL } from "../utils.js";
 
 
+let isEditing = false;
+let selectedAvatarFile = null;
+
+
 // External method
 export function openProfile(username, userId) {
     if (!username || !userId) return;
@@ -73,16 +77,24 @@ function renderProfile(user, sessionUser) {
             <!-- Avatar -->
             <div class="avatar-section">
                 <img src="${avatar}" class="profile-avatar" alt="Avatar">
+                ${isOwner && isEditing ? `
+                    <input type="file" id="avatar-input" accept = "image/*" hidden>
+                ` : ""}
             </div>
             
             <!-- Header -->
             <div class="profile-header">
-                <h1 class="profile-title">@${username}</h1>
+                ${isOwner && isEditing
+                    ? `<input id="edit-username" class="profile-input" value="${username}">`
+                    : `<h1 class="profile-title">@${username}</h1>`
+                }
                 <p class="profile-role profile-role-${role}">${role}</p>
                 <div class="profile-interests">
-                    ${interests.length > 0
-                        ? interests.map(tag => `<span class="profile-interest-bubble">${tag}</span>`).join("")
-                        : `<span class="profile-note">No interests yet</span>`
+                    ${isOwner && isEditing
+                        ? `<button id=edit-interests-button" class="secondary-button">Update Interests</button>`
+                        : interests.length > 0
+                            ? interests.map(tag => `<span class="profile-interest-bubble">${tag}</span>`).join("")
+                            : `<span class="profile-note">No interests yet</span>`
                     }
                 </div>
             </div>
@@ -129,7 +141,7 @@ function renderProfileActions(isOwner, isAdmin, profileIsAdmin, user) {
     if (isOwner) {
         buttons.push(`
             <button id="edit-profile-button">
-                Edit Profile
+                ${isEditing ? "Save Changes" : "Edit Profile"}
             </button>
         `);
     }
@@ -167,7 +179,16 @@ async function attachProfileActions(user, sessionUser) {
         const editBtn = document.getElementById("edit-profile-button");
         if (editBtn) {
             editBtn.addEventListener("click", () => {
-                alert("Edit profile coming soon");
+                editBtn.addEventListener("click", async () => {
+                    if (!isEditing) {
+                        isEditing = true;
+                        renderProfile(user, sessionUser);
+                        return;
+                    }
+
+                    // Save Profile
+                    await saveProfile(user);
+                });
             });
         }
     }
@@ -206,4 +227,9 @@ async function attachProfileActions(user, sessionUser) {
             });
         }
     }
+}
+
+
+async function saveProfile(user) {
+    alert("Function not implemented");
 }
