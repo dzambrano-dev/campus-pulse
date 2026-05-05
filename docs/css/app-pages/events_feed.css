@@ -62,6 +62,26 @@
     display: block;
 }
 
+.event-feed-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted-text);
+    max-width: 600px;
+    animation: fadeUp 0.4s ease;
+}
+
+.event-feed-empty h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.event-feed-empty p {
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
 /* Event Date Badge */
 
 .event-card-date {
