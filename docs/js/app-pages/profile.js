@@ -4,7 +4,7 @@
  */
 
 
-import { API, ASSETS, safeJson, setLoading, showError, updateURL } from "../utils.js";
+import { API, ASSETS, redirect, safeJson, setLoading, showError, updateURL } from "../utils.js";
 
 
 let isEditing = false;
@@ -91,7 +91,7 @@ function renderProfile(user, sessionUser) {
                 <p class="profile-role profile-role-${role}">${role}</p>
                 <div class="profile-interests">
                     ${isOwner && isEditing
-                        ? `<button id=edit-interests-button" class="secondary-button">Update Interests</button>`
+                        ? `<button id="edit-interests-button" class="secondary-button">Update Interests</button>`
                         : interests.length > 0
                             ? interests.map(tag => `<span class="profile-interest-bubble">${tag}</span>`).join("")
                             : `<span class="profile-note">No interests yet</span>`
@@ -178,18 +178,24 @@ async function attachProfileActions(user, sessionUser) {
     if (isOwner) {
         const editBtn = document.getElementById("edit-profile-button");
         if (editBtn) {
-            editBtn.addEventListener("click", () => {
-                editBtn.addEventListener("click", async () => {
-                    if (!isEditing) {
-                        isEditing = true;
-                        renderProfile(user, sessionUser);
-                        return;
-                    }
+            editBtn.addEventListener("click", async () => {
+                if (!isEditing) {
+                    isEditing = true;
+                    renderProfile(user, sessionUser);
+                    return;
+                }
 
-                    // Save Profile
-                    await saveProfile(user);
-                });
+                // Save Profile
+                await saveProfile(user);
             });
+        }
+
+        const interestsBtn = document.getElementById("edit-interests-button");
+
+        if (interestsBtn) {
+            interestsBtn.addEventListener("click", () => {
+                redirect("interests.html");
+            })
         }
     }
 
