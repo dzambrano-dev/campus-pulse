@@ -176,6 +176,7 @@ async function attachProfileActions(user, sessionUser) {
 
     // Edit Profile
     if (isOwner) {
+        // Edit button
         const editBtn = document.getElementById("edit-profile-button");
         if (editBtn) {
             editBtn.addEventListener("click", async () => {
@@ -190,12 +191,34 @@ async function attachProfileActions(user, sessionUser) {
             });
         }
 
+        // Interests button
         const interestsBtn = document.getElementById("edit-interests-button");
 
         if (interestsBtn) {
             interestsBtn.addEventListener("click", () => {
                 redirect("interests.html");
             })
+        }
+
+        // Avatar upload
+        const avatarInput = document.getElementById("avatar-input");
+        const avatarImg = document.querySelector(".profile-avatar");
+
+        if (avatarInput && avatarImg) {
+            avatarImg.addEventListener("click", () => avatarInput.click());
+
+            avatarInput.addEventListener("change", e => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                selectedAvatarFile = file;
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    avatarImg.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
         }
     }
 
@@ -226,8 +249,8 @@ async function attachProfileActions(user, sessionUser) {
 
                     // Reload profile
                     await loadProfile(user.id);
-                } catch {
-                    console.error("Network error:", err);
+                } catch (error) {
+                    console.error("Network error:", error);
                     setLoading(toggleBtn, false);
                 }
             });
@@ -237,5 +260,61 @@ async function attachProfileActions(user, sessionUser) {
 
 
 async function saveProfile(user) {
-    alert("Function not implemented");
+    const usernameInput = document.getElementById("edit-username");
+    const newUsername = usernameInput?.value.trim();
+
+    try {
+        // Update username if changed
+        if (newUsername && newUsername !== user.username) {
+            const endpoint = `${API}/update-username`;
+            const response = await fetch(endpoint, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: newUsername })
+            });
+
+            const data = await response.json();
+            console.log("Username update:", data);
+
+            if (!response.ok) {
+                console.log(data.error || "Failed to update username");
+                return;
+            }
+
+            user.username = data.username;
+        }
+
+        // Update avatar if changed
+        if (selectedAvatarFile) {
+            const formData = new FormData();
+            formData.append("avatar", selectedAvatarFile);
+
+            const endpoint = `${API}/update-avatar`;
+            const response = await fetch(endpoint, {
+                method: "POST",
+                credentials: "include",
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log("Avatar update:", data);
+
+            if (!response.ok) {
+                console.log(data.error || "Failed to update avatar");
+                return;
+            }
+
+            user.avatar = data.avatar;
+        }
+
+        // Reset state
+        isEditing = false;
+        selectedAvatarFile = null;
+
+        // Reload profile
+        await loadProfile(user.id);
+    } catch (error) {
+        console.error("Error while saving profile:", error);
+    }
 }
