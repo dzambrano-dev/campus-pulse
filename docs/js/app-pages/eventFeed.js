@@ -4,7 +4,7 @@
  */
 
 
-import { API, attachMapButton, safeJson } from "../utils.js";
+import { API, attachMapButton, safeJson, redirect } from "../utils.js";
 import { openEvent } from "./eventPage.js";
 import { openProfile } from "./profile.js";
 
