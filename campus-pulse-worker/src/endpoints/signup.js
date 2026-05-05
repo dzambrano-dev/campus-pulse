@@ -45,9 +45,9 @@ export async function signup(request, env) {
 
 		// Upload avatar to R2
 		const avatarBuffer = base64ToArrayBuffer(avatar);
-		const avatarKey = `avatars/${userId}.jpg`;
+		const avatarKey = `avatars/${userId}.webp`;
 		await env.ASSETS.put(avatarKey, avatarBuffer, {
-			httpMetadata: { contentType: "image/jpeg" }
+			httpMetadata: { contentType: "image/webp" }
 		});
 
 		// Create user record

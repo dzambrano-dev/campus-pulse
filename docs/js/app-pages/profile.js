@@ -4,7 +4,7 @@
  */
 
 
-import { API, ASSETS, redirect, safeJson, setLoading, showError, updateURL } from "../utils.js";
+import {API, ASSETS, convertToWebP, redirect, safeJson, setLoading, showError, updateURL} from "../utils.js";
 
 
 let isEditing = false;
@@ -207,17 +207,13 @@ async function attachProfileActions(user, sessionUser) {
         if (avatarInput && avatarImg) {
             avatarImg.addEventListener("click", () => avatarInput.click());
 
-            avatarInput.addEventListener("change", e => {
+            avatarInput.addEventListener("change", async e => {
                 const file = e.target.files[0];
                 if (!file) return;
 
-                selectedAvatarFile = file;
-
-                const reader = new FileReader();
-                reader.onload = () => {
-                    avatarImg.src = reader.result;
-                };
-                reader.readAsDataURL(file);
+                const webp = await convertToWebP(file);
+                selectedAvatarFile = webp;
+                avatarImg.src = webp;
             });
         }
     }
@@ -287,14 +283,12 @@ async function saveProfile(user) {
 
         // Update avatar if changed
         if (selectedAvatarFile) {
-            const formData = new FormData();
-            formData.append("avatar", selectedAvatarFile);
-
             const endpoint = `${API}/update-avatar`;
             const response = await fetch(endpoint, {
                 method: "POST",
                 credentials: "include",
-                body: formData
+                headers : { "Content-Type": "application/json" },
+                body: JSON.stringify({ avatar: selectedAvatarFile })
             });
 
             const data = await response.json();
