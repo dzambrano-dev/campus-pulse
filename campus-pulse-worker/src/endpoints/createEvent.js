@@ -4,7 +4,7 @@
  */
 
 
-import { requireRole, json, jsonError, getSessionUser } from "../utils.js";
+import { requireRole, json, jsonError, getSessionUser, base64ToArrayBuffer } from "../utils.js";
 
 
 export async function createEvent(request, env) {
@@ -64,13 +64,7 @@ export async function createEvent(request, env) {
 		const eventId = crypto.randomUUID();
 
 		// Convert image to buffer
-		const base64Data = image.split(",")[1];
-		const binary = atob(base64Data);
-		const bytes = new Uint8Array(binary.length);
-
-		for (let i = 0; i < binary.length; i++) {
-			bytes[i] = binary.charCodeAt(i);
-		}
+		const bytes = base64ToArrayBuffer(image);
 
 		// Upload image to R2
 		const imageKey = `events/${eventId}.webp`;
@@ -99,6 +93,14 @@ export async function createEvent(request, env) {
 
 		// Store event in EVENTS KV
 		await env.EVENTS.put(eventId, JSON.stringify(event));
+
+		// Store event in user's created_events
+		const storedUser = await env.USERS.get(userId);
+		if (storedUser) {
+			const userData = JSON.parse(storedUser);
+			userData.createdEvents = [ ...(userData.createdEvents || []), eventId ];
+			await env.USERS.put(userId, JSON.stringify(userData));
+		}
 
 		// Update indices
 		for (const tag of tags) {

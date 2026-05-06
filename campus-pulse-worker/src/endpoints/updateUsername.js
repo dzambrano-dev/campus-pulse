@@ -37,9 +37,9 @@ export async function updateUsername(request, env) {
 		}
 
 		// Store previous usernames
-		user.previous_usernames = [
+		user.previousUsernames = [
 			oldUsername,
-			...(user.previous_usernames || [])
+			...(user.previousUsernames || [])
 		];
 
 		// Update username
@@ -49,6 +49,21 @@ export async function updateUsername(request, env) {
 		await env.USERNAMES.delete(oldUsername.toLowerCase());
 		await env.USERNAMES.put(normalized, userId);
 		await env.USERS.put(userId, JSON.stringify(user));
+
+		// Update any events they've made
+		const eventIds = user.createdEvents || [];
+		for (const eventId of eventIds) {
+			try {
+				const storedEvent = await env.EVENTS.get(eventId);
+				if (!storedEvent) continue;
+
+				const event = JSON.parse(storedEvent);
+				event.createdByUsername = username;
+				await env.EVENTS.put(eventId, JSON.stringify(event));
+			} catch (err) {
+				console.error("Failed to update event username:", eventId, err);
+			}
+		}
 
 		return json({
 			success: true,

@@ -56,10 +56,11 @@ export async function signup(request, env) {
 			email: normalizedEmail,
 			name: name,
 			username: normalizedUsername,
-			previous_usernames: [],
+			previousUsernames: [],
 			avatar: avatarKey,
 			role: "user",
 			interests: [],
+			createdEvents: [],
 			oauth: true
 		};
 

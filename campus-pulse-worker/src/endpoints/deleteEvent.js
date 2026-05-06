@@ -24,7 +24,7 @@ export async function deleteEvent(request, env) {
 		if (!event) return jsonError("Event not found", 404);
 
 		// Only creator or admin
-		if (user.username !== event.createdBy && user.role !== "admin") {
+		if (user.id !== event.createdBy && user.role !== "admin") {
 			return jsonError("Unauthorized", 403);
 		}
 
