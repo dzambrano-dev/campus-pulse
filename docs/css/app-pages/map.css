@@ -23,7 +23,7 @@
     border: 2px solid var(--primary-soft);
     opacity: 0;
     transform: scale(0.85);
-    animation: MarkerFadeIn 0.3s ease forwards;
+    animation: markerFadeIn 0.3s ease forwards;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -60,7 +60,7 @@
     opacity: 0;
     transform: scale(0.85);
     animation:
-            MarkerFadeIn 0.3s ease forwards,
+            markerFadeIn 0.3s ease forwards,
             breathe 2.2s ease-in-out infinite 0.3s;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
