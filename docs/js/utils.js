@@ -196,7 +196,7 @@ export async function convertToWebP(file) {
         };
 
         img.onload = () => {
-            const maxSize = 512;
+            const maxSize = 1600;
             let width = img.width;
             let height = img.height;
 
@@ -218,7 +218,7 @@ export async function convertToWebP(file) {
             canvas.height = height;
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, width, height);
-            resolve(canvas.toDataURL("image/webp", 0.8));
+            resolve(canvas.toDataURL("image/webp", 0.95));
         }
 
         reader.readAsDataURL(file);
