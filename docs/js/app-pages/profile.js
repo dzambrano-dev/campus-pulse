@@ -258,7 +258,7 @@ async function attachProfileActions(user, sessionUser) {
 
 
 async function saveProfile(user) {
-    const usernameInput = document.getElementById("edit-username");
+    const usernameInput = document.getElementById("username-input");
     const newUsername = usernameInput?.value.trim();
 
     try {
@@ -309,6 +309,7 @@ async function saveProfile(user) {
         selectedAvatarFile = null;
 
         // Reload profile
+        updateURL("profile", data.username);
         await loadProfile(user.id);
     } catch (error) {
         console.error("Error while saving profile:", error);
