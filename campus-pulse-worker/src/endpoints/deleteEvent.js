@@ -36,6 +36,11 @@ export async function deleteEvent(request, env) {
 			await env.EVENTS_INDEX.put(key, JSON.stringify(updated));
 		}
 
+		// Delete from R2
+		if (event.image) {
+			await env.ASSETS.delete(event.image);
+		}
+
 		// Delete from events
 		await env.EVENTS.delete(id);
 
