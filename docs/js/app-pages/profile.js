@@ -309,7 +309,7 @@ async function saveProfile(user) {
         selectedAvatarFile = null;
 
         // Reload profile
-        updateURL("profile", data.username);
+        updateURL("profile", user.username);
         await loadProfile(user.id);
     } catch (error) {
         console.error("Error while saving profile:", error);
