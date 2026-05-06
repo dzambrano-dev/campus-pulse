@@ -189,7 +189,13 @@ async function attachProfileActions(user, sessionUser) {
                 }
 
                 // Save Profile
-                await saveProfile(user);
+                setLoading(editBtn, true);
+
+                try {
+                    await saveProfile(user);
+                } finally {
+                    setLoading(editBtn, false);
+                }
             });
         }
 
