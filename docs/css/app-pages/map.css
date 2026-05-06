@@ -23,7 +23,7 @@
     border: 2px solid var(--primary-soft);
     opacity: 0;
     transform: scale(0.85);
-    animation: markerFadeIn 0.3s ease forwards;
+    animation: markerPopIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -60,8 +60,8 @@
     opacity: 0;
     transform: scale(0.85);
     animation:
-            markerFadeIn 0.3s ease forwards,
-            breathe 2.2s ease-in-out infinite 0.3s;
+            markerPopIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+            breathe 2.2s ease-in-out infinite 0.38s;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -282,14 +282,23 @@
     }
 }
 
-@keyframes markerFadeIn {
-     from {
-         opacity: 0;
-         transform: scale(0.85) translateY(6px);
-     }
+@keyframes markerPopIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
 
-     to {
-         opacity: 1;
-         transform: scale(1) translateY(0);
-     }
- }
+    60% {
+        opacity: 1;
+        transform: scale(1.12);
+    }
+
+    80% {
+        transform: scale(0.96);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
