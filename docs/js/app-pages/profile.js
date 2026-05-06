@@ -279,7 +279,6 @@ async function saveProfile(user) {
             });
 
             const data = await response.json();
-            console.log("Username update:", data);
 
             if (!response.ok) {
                 console.log(data.error || "Failed to update username");
@@ -300,7 +299,6 @@ async function saveProfile(user) {
             });
 
             const data = await response.json();
-            console.log("Avatar update:", data);
 
             if (!response.ok) {
                 console.log(data.error || "Failed to update avatar");
