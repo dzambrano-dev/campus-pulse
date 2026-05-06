@@ -196,7 +196,7 @@ export async function convertToWebP(file) {
         };
 
         img.onload = () => {
-            const maxSize = 1600;
+            const maxSize = 2000;
             let width = img.width;
             let height = img.height;
 
