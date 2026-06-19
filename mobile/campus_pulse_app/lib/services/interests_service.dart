@@ -1,71 +1,63 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
-import '../utils/constants.dart';
+import 'api_client.dart';
 
 class InterestsService {
+  InterestsService({
+    ApiClient? apiClient,
+  }) : _apiClient = apiClient ?? ApiClient();
+
+  final ApiClient _apiClient;
+
+  Future<List<String>> fetchInterests() async {
+    try {
+      final data = await _apiClient.get('/get-interests');
+
+      final rawInterests = data is Map<String, dynamic>
+          ? data['interests']
+          : data;
+
+      if (rawInterests is! List) {
+        return demoInterests();
+      }
+
+      return rawInterests.map((interest) => interest.toString()).toList();
+    } catch (_) {
+      return demoInterests();
+    }
+  }
+
+  // Compatibility name used by CreateEventScreen and InterestsScreen.
   Future<List<String>> fetchAvailableInterests() async {
-    final uri = Uri.parse('${AppConstants.apiBaseUrl}/get-interests');
-
-    final response = await http.get(
-      uri,
-      headers: {
-        'Accept': 'application/json',
-      },
-    );
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception('Failed to load interests');
-    }
-
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    final interests = data['interests'];
-
-    if (interests is! List) {
-      return [];
-    }
-
-    return interests.map((item) => item.toString()).toList();
+    return fetchInterests();
   }
 
   Future<void> updateInterests(List<String> interests) async {
-    final uri = Uri.parse('${AppConstants.apiBaseUrl}/update-interests');
-
-    final response = await http.post(
-      uri,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
+    await _apiClient.post(
+      '/update-interests',
+      body: {
         'interests': interests,
-      }),
+      },
     );
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      final data = jsonDecode(response.body);
-      final message = data is Map<String, dynamic>
-          ? data['error']?.toString()
-          : null;
-
-      throw Exception(message ?? 'Failed to update interests');
-    }
   }
 
-  List<String> demoAvailableInterests() {
-    return [
+  List<String> demoInterests() {
+    return const [
       'academics',
       'ai',
-      'computer science',
-      'cybersecurity',
-      'career',
-      'clubs',
-      'social',
       'athletics',
-      'music',
-      'art',
+      'career',
+      'club',
+      'food',
       'gaming',
-      'volunteering',
+      'music',
+      'social',
+      'sports',
+      'study',
+      'technology',
     ];
+  }
+
+  // Compatibility name used by CreateEventScreen and InterestsScreen.
+  List<String> demoAvailableInterests() {
+    return demoInterests();
   }
 }

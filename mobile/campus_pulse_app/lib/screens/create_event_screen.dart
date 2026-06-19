@@ -460,6 +460,48 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     );
   }
 
+  Widget _sectionCard({
+    required BuildContext context,
+    required String title,
+    required IconData icon,
+    required List<Widget> children,
+  }) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 17,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                  child: Icon(
+                    icon,
+                    size: 18,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            ...children,
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final dateLabel = _selectedDate == null
@@ -473,152 +515,231 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     return Form(
       key: _formKey,
       child: ListView(
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.fromLTRB(18, 18, 18, 28),
         children: [
           Text(
-            'Create an Event',
+            'Create Event',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
+          const SizedBox(height: 6),
+          Text(
+            'Add the main details, pick a campus location, and choose how students should respond.',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+          ),
           const SizedBox(height: 18),
-          TextFormField(
-            controller: _titleController,
-            decoration: const InputDecoration(
-              labelText: 'Event Title',
-              border: OutlineInputBorder(),
-            ),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Event title is required';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 14),
-          TextFormField(
-            controller: _descriptionController,
-            maxLength: 500,
-            maxLines: 5,
-            decoration: const InputDecoration(
-              labelText: 'Description',
-              border: OutlineInputBorder(),
-            ),
-            validator: (value) {
-              final text = value?.trim() ?? '';
-              if (text.length < 50) {
-                return 'Description must be at least 50 characters';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 14),
-          DropdownButtonFormField<String>(
-            value: _selectedType,
-            decoration: const InputDecoration(
-              labelText: 'Event Type',
-              border: OutlineInputBorder(),
-            ),
-            items: _eventTypes.map((type) {
-              return DropdownMenuItem(
-                value: type,
-                child: Text(_titleCase(type)),
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                _selectedType = value;
-              });
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please select an event type';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 14),
-          Row(
+
+          // Image Card
+          _sectionCard(
+            context: context,
+            title: 'Event Image',
+            icon: Icons.image,
             children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _pickDate,
-                  icon: const Icon(Icons.calendar_month),
-                  label: Text(dateLabel),
+              OutlinedButton.icon(
+                onPressed: _pickImage,
+                icon: const Icon(Icons.add_photo_alternate),
+                label: Text(
+                  _selectedImage == null
+                      ? 'Choose Event Image'
+                      : _selectedImage!.name,
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _pickTime,
-                  icon: const Icon(Icons.schedule),
-                  label: Text(timeLabel),
+              if (_selectedImage == null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  'Required. Later this will upload as WebP/base64 like the web app.',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                 ),
+              ],
+            ],
+          ),
+
+          // Event Info Card
+          _sectionCard(
+            context: context,
+            title: 'Event Info',
+            icon: Icons.edit_note,
+            children: [
+              TextFormField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  labelText: 'Event Title',
+                  prefixIcon: Icon(Icons.title),
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Event title is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 14),
+              TextFormField(
+                controller: _descriptionController,
+                maxLength: 500,
+                maxLines: 5,
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  alignLabelWithHint: true,
+                  prefixIcon: Icon(Icons.description),
+                ),
+                validator: (value) {
+                  final text = value?.trim() ?? '';
+                  if (text.length < 50) {
+                    return 'Description must be at least 50 characters';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 14),
+              DropdownButtonFormField<String>(
+                value: _selectedType,
+                decoration: const InputDecoration(
+                  labelText: 'Event Type',
+                  prefixIcon: Icon(Icons.category),
+                ),
+                items: _eventTypes.map((type) {
+                  return DropdownMenuItem(
+                    value: type,
+                    child: Text(_titleCase(type)),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedType = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select an event type';
+                  }
+                  return null;
+                },
               ),
             ],
           ),
-          const SizedBox(height: 14),
-          TextFormField(
-            controller: _locationController,
-            decoration: const InputDecoration(
-              labelText: 'Location',
-              border: OutlineInputBorder(),
-            ),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Please provide a location';
-              }
-              return null;
-            },
+
+          // Time and Location Card
+          _sectionCard(
+            context: context,
+            title: 'When & Where',
+            icon: Icons.place,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _pickDate,
+                      icon: const Icon(Icons.calendar_month),
+                      label: Text(dateLabel),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _pickTime,
+                      icon: const Icon(Icons.schedule),
+                      label: Text(timeLabel),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              TextFormField(
+                controller: _locationController,
+                decoration: const InputDecoration(
+                  labelText: 'Location',
+                  prefixIcon: Icon(Icons.location_city),
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please provide a location';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 14),
+              Row(
+                children: [
+                  Icon(
+                    Icons.pin_drop,
+                    size: 18,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      _selectedPin == null
+                          ? 'Tap the map to place a pin'
+                          : 'Pin placed: ${_selectedPin!.latitude.toStringAsFixed(4)}, ${_selectedPin!.longitude.toStringAsFixed(4)}',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              _buildMapPicker(),
+            ],
           ),
-          const SizedBox(height: 14),
-          DropdownButtonFormField<String>(
-            value: _selectedAction,
-            decoration: const InputDecoration(
-              labelText: 'Call to Action',
-              border: OutlineInputBorder(),
-            ),
-            items: _actions.map((action) {
-              return DropdownMenuItem(
-                value: action,
-                child: Text(_actionLabel(action)),
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                _selectedAction = value;
-                _actionLinkController.clear();
-                _actionLabelController.clear();
-              });
-            },
+
+          // Tags Card
+          _sectionCard(
+            context: context,
+            title: 'Tags',
+            icon: Icons.sell,
+            children: [
+              Text(
+                'Choose 1–3 tags',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+              const SizedBox(height: 10),
+              _buildTagPicker(),
+            ],
           ),
-          const SizedBox(height: 14),
-          _buildActionFields(),
-          const SizedBox(height: 18),
-          Text(
-            'Click map to place a pin',
-            style: Theme.of(context).textTheme.titleMedium,
+
+          // Action Card
+          _sectionCard(
+            context: context,
+            title: 'Action Button',
+            icon: Icons.touch_app,
+            children: [
+              DropdownButtonFormField<String>(
+                value: _selectedAction,
+                decoration: const InputDecoration(
+                  labelText: 'Call to Action',
+                  prefixIcon: Icon(Icons.ads_click),
+                ),
+                items: _actions.map((action) {
+                  return DropdownMenuItem(
+                    value: action,
+                    child: Text(_actionLabel(action)),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedAction = value;
+                    _actionLinkController.clear();
+                    _actionLabelController.clear();
+                  });
+                },
+              ),
+              const SizedBox(height: 14),
+              _buildActionFields(),
+            ],
           ),
-          const SizedBox(height: 8),
-          _buildMapPicker(),
-          const SizedBox(height: 18),
-          OutlinedButton.icon(
-            onPressed: _pickImage,
-            icon: const Icon(Icons.image),
-            label: Text(
-              _selectedImage == null
-                  ? 'Choose Event Image'
-                  : _selectedImage!.name,
-            ),
-          ),
-          const SizedBox(height: 18),
-          Text(
-            'Tags',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 8),
-          _buildTagPicker(),
-          const SizedBox(height: 24),
+
+          const SizedBox(height: 4),
+
+          // Bottom Actions
           Row(
             children: [
               Expanded(
@@ -629,9 +750,17 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: FilledButton(
+                flex: 2,
+                child: FilledButton.icon(
                   onPressed: _isSubmitting ? null : _submitEvent,
-                  child: Text(_isSubmitting ? 'Creating...' : 'Create'),
+                  icon: _isSubmitting
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.add),
+                  label: Text(_isSubmitting ? 'Creating...' : 'Create Event'),
                 ),
               ),
             ],

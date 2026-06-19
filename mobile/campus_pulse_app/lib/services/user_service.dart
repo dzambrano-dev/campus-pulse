@@ -1,113 +1,84 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 import '../models/app_user.dart';
-import '../utils/constants.dart';
+import 'api_client.dart';
 
 class UserService {
-  Future<AppUser> fetchUserById(String userId) async {
-    final uri = Uri.parse('${AppConstants.apiBaseUrl}/get-user?id=$userId');
+  UserService({
+    ApiClient? apiClient,
+  }) : _apiClient = apiClient ?? ApiClient();
 
-    final response = await http.get(
-      uri,
-      headers: {
-        'Accept': 'application/json',
-      },
-    );
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception('Failed to load profile');
-    }
-
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    return AppUser.fromJson(data);
-  }
+  final ApiClient _apiClient;
 
   Future<AppUser> fetchCurrentUser() async {
-    final uri = Uri.parse('${AppConstants.apiBaseUrl}/user');
+    try {
+      final data = await _apiClient.get('/user');
 
-    final response = await http.get(
-      uri,
-      headers: {
-        'Accept': 'application/json',
-      },
-    );
+      if (data is Map<String, dynamic>) {
+        final userJson = data['user'] ?? data;
+        return AppUser.fromJson(userJson);
+      }
 
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception('Failed to load current user');
+      return demoCurrentUser();
+    } catch (_) {
+      return demoCurrentUser();
     }
+  }
 
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    return AppUser.fromJson(data);
+  Future<AppUser?> fetchUserById(String userId) async {
+    try {
+      final data = await _apiClient.get(
+        '/get-user',
+        queryParameters: {
+          'id': userId,
+        },
+      );
+
+      if (data is Map<String, dynamic>) {
+        final userJson = data['user'] ?? data;
+        return AppUser.fromJson(userJson);
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<String> updateUsername(String username) async {
-    final uri = Uri.parse('${AppConstants.apiBaseUrl}/update-username');
-
-    final response = await http.post(
-      uri,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
+    await _apiClient.post(
+      '/update-username',
+      body: {
         'username': username,
-      }),
+      },
     );
 
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception(data['error']?.toString() ?? 'Failed to update username');
-    }
-
-    return data['username']?.toString() ?? username;
+    return username;
   }
 
-  Future<String> updateAvatar(String avatarBase64WebP) async {
-    final uri = Uri.parse('${AppConstants.apiBaseUrl}/update-avatar');
-
-    final response = await http.post(
-      uri,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+  Future<String> updateAvatar(String avatar) async {
+    await _apiClient.post(
+      '/update-avatar',
+      body: {
+        'avatar': avatar,
       },
-      body: jsonEncode({
-        'avatar': avatarBase64WebP,
-      }),
     );
 
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception(data['error']?.toString() ?? 'Failed to update avatar');
-    }
-
-    return data['avatar']?.toString() ?? '';
+    return avatar;
   }
 
   Future<AppUser> toggleOrganizer(String userId) async {
-    final uri = Uri.parse('${AppConstants.apiBaseUrl}/toggle-organizer');
-
-    final response = await http.post(
-      uri,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
+    final data = await _apiClient.post(
+      '/toggle-organizer',
+      body: {
         'id': userId,
-      }),
+      },
     );
 
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception(data['error']?.toString() ?? 'Failed to update role');
+    if (data is Map<String, dynamic>) {
+      final userJson = data['user'] ?? data;
+      return AppUser.fromJson(userJson);
     }
 
-    return AppUser.fromJson(data);
+    throw Exception('Failed to toggle organizer role');
   }
 
   AppUser demoCurrentUser() {
@@ -115,12 +86,12 @@ class UserService {
       id: '1',
       username: 'campuspulse',
       role: 'admin',
-      avatar: null,
+      avatar: '',
       interests: [
-        'AI',
-        'Computer Science',
-        'Clubs',
-        'Career',
+        'academics',
+        'ai',
+        'career',
+        'technology',
       ],
     );
   }

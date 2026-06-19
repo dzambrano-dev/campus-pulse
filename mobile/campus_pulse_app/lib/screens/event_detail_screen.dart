@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/event.dart';
 import '../utils/constants.dart';
+import '../utils/link_utils.dart';
 
 class EventDetailScreen extends StatelessWidget {
   final CampusEvent event;
@@ -43,27 +44,21 @@ class EventDetailScreen extends StatelessWidget {
   }
 
   String? get actionButtonText {
-    switch (event.action) {
-      case 'discord':
-        return 'Discord';
-      case 'instagram':
-        return 'Instagram';
-      case 'contact':
-        return 'Contact';
-      case 'custom':
-        return event.actionLabel ?? 'Website';
-      case 'rsvp':
-        return 'RSVP';
-      default:
-        return null;
+    if (event.action == null || event.action!.trim().isEmpty) {
+      return null;
     }
+
+    return LinkUtils.actionButtonText(
+      action: event.action,
+      actionLabel: event.actionLabel,
+    );
   }
 
   void _handleAction(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${actionButtonText ?? "Action"} support coming next'),
-      ),
+    LinkUtils.openEventAction(
+      context: context,
+      action: event.action,
+      actionLink: event.actionLink,
     );
   }
 
