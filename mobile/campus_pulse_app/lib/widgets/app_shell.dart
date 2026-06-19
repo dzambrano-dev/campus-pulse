@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/event.dart';
 import '../screens/create_event_screen.dart';
 import '../screens/events_screen.dart';
 import '../screens/map_screen.dart';
@@ -23,23 +24,7 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int _selectedIndex = 0;
-
-  late final List<Widget> _screens = [
-    EventsScreen(
-      onShowOnMap: (event) {
-        setState(() {
-          _selectedIndex = 1;
-        });
-      },
-    ),
-    MapScreen(isDarkMode: widget.isDarkMode),
-    CreateEventScreen(isDarkMode: widget.isDarkMode),
-    ProfileScreen(
-      onLogout: widget.onLogout,
-      onToggleTheme: widget.onToggleTheme,
-      isDarkMode: widget.isDarkMode,
-    ),
-  ];
+  CampusEvent? _selectedMapEvent;
 
   final List<String> _titles = const [
     'Events',
@@ -51,28 +36,51 @@ class _AppShellState extends State<AppShell> {
   void _selectScreen(int index) {
     setState(() {
       _selectedIndex = index;
+
+      // If user manually taps away from Map, clear the selected map target.
+      if (index != 1) {
+        _selectedMapEvent = null;
+      }
     });
   }
 
-  @override
-  void didUpdateWidget(covariant AppShell oldWidget) {
-    super.didUpdateWidget(oldWidget);
+  void _showEventOnMap(CampusEvent event) {
+    setState(() {
+      _selectedMapEvent = event;
+      _selectedIndex = 1;
+    });
+  }
 
-    _screens[3] = ProfileScreen(
-      onLogout: widget.onLogout,
-      onToggleTheme: widget.onToggleTheme,
-      isDarkMode: widget.isDarkMode,
-    );
+  List<Widget> get _screens {
+    return [
+      EventsScreen(
+        onShowOnMap: _showEventOnMap,
+      ),
+      MapScreen(
+        isDarkMode: widget.isDarkMode,
+        selectedEvent: _selectedMapEvent,
+      ),
+      CreateEventScreen(
+        isDarkMode: widget.isDarkMode,
+      ),
+      ProfileScreen(
+        onLogout: widget.onLogout,
+        onToggleTheme: widget.onToggleTheme,
+        isDarkMode: widget.isDarkMode,
+      ),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
+    final screens = _screens;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_titles[_selectedIndex]),
         centerTitle: true,
       ),
-      body: _screens[_selectedIndex],
+      body: screens[_selectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _selectScreen,

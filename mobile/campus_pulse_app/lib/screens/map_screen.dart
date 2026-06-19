@@ -9,10 +9,12 @@ import 'event_detail_screen.dart';
 
 class MapScreen extends StatefulWidget {
   final bool isDarkMode;
+  final CampusEvent? selectedEvent;
 
   const MapScreen({
     super.key,
     required this.isDarkMode,
+    this.selectedEvent,
   });
 
   @override
@@ -21,6 +23,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final EventService _eventService = EventService();
+  final MapController _mapController = MapController();
 
   late Future<List<CampusEvent>> _eventsFuture;
 
@@ -34,6 +37,15 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _eventsFuture = _loadEvents();
     _locateUser();
+  }
+
+  @override
+  void didUpdateWidget(covariant MapScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.selectedEvent?.id != oldWidget.selectedEvent?.id) {
+      _centerOnSelectedEvent();
+    }
   }
 
   Future<List<CampusEvent>> _loadEvents() async {
@@ -277,11 +289,28 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
+  void _centerOnSelectedEvent() {
+  final event = widget.selectedEvent;
+
+  if (event == null || event.lat == null || event.lng == null) {
+    return;
+  }
+
+  final point = LatLng(event.lat!, event.lng!);
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (!mounted) return;
+
+    _mapController.move(point, 17);
+    _showEventPopup(event);
+  });
+}
+
   @override
   Widget build(BuildContext context) {
     final tileUrl = widget.isDarkMode
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+      : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 
     return Stack(
       children: [
@@ -303,6 +332,7 @@ class _MapScreenState extends State<MapScreen> {
             ];
 
             return FlutterMap(
+              mapController: _mapController,
               options: const MapOptions(
                 initialCenter: _csulbCenter,
                 initialZoom: 16,
