@@ -1,140 +1,204 @@
 /* Map */
 
 #map-page {
-    height: calc(100dvh - var(--nav-height));
+    overflow: hidden;
 }
 
 #map {
     height: 100%;
     width: 100%;
+    background: var(--background);
+}
+
+.leaflet-container {
+    font-family: var(--font);
+    background: var(--background);
+}
+
+/* Theme the standard OSM tiles: inverted and desaturated in dark, softened in light */
+.leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) grayscale(0.85) brightness(0.85) contrast(0.9);
+}
+
+:root[data-theme="light"] .leaflet-tile-pane {
+    filter: grayscale(0.75) brightness(1.04) contrast(0.92);
+}
+
+/* Legend / category filter */
+
+.map-legend {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    gap: 8px;
+    padding: 0 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    pointer-events: none;
+}
+
+.map-legend::-webkit-scrollbar {
+    display: none;
+}
+
+.map-legend-chip {
+    pointer-events: auto;
+    background: var(--overlay);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text);
+    box-shadow: var(--shadow-sm);
+}
+
+.map-legend-chip[aria-pressed="true"] {
+    background: var(--surface);
+}
+
+/* Controls */
+
+.map-control-button,
+.leaflet-bar a,
+.leaflet-touch .leaflet-bar a {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: var(--surface);
+    color: var(--text);
+    border: none;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.leaflet-bar a:hover {
+    background: var(--surface-2);
+    color: var(--text);
+}
+
+.leaflet-bar,
+.leaflet-touch .leaflet-bar {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.leaflet-bar a:last-child {
+    border-bottom: none;
+}
+
+.map-control-button {
+    position: absolute;
+    right: 10px;
+    bottom: 110px;
+    z-index: 1000;
+    min-height: 40px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.map-control-button[aria-pressed="true"] {
+    background: var(--text);
+    color: var(--background);
+}
+
+.leaflet-container .leaflet-control-attribution {
+    background: var(--overlay) !important;
+    color: var(--subtle-text) !important;
+    font-size: 10px;
+    border-radius: 6px 0 0 0;
+}
+
+.leaflet-container .leaflet-control-attribution a {
+    color: var(--muted-text) !important;
 }
 
 /* Map Markers */
 
+.map-marker-wrapper {
+    background: none;
+    border: none;
+}
+
 .map-pin {
-    width: 42px;
-    height: 42px;
-    background: var(--text);
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    border: 2px solid var(--primary-soft);
-    opacity: 0;
-    transform: scale(0.85);
-    animation: markerPopIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.map-pin:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-}
-
-.map-pin-inner {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: var(--cat);
+    color: #0A0B0D;
+    border: 2px solid var(--background);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--cat) 50%, transparent), 0 6px 14px rgba(0, 0, 0, 0.35);
+    animation: markerPopIn 0.38s var(--ease) both;
+    transition: transform 0.15s ease;
 }
 
-.map-pin-icon svg {
-    width: 32px;
-    height: 32px;
-    color: var(--text);
+.map-pin .icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+}
+
+.map-pin:hover {
+    transform: scale(1.12);
 }
 
 .user-pin {
-    width: 28px;
-    height: 28px;
-    background: var(--text);
+    position: relative;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    border: 2px solid var(--primary-soft);
-    opacity: 0;
-    transform: scale(0.85);
-    animation:
-            markerPopIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-            breathe 2.2s ease-in-out infinite 0.38s;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.user-pin:hover {
-    animation: none;
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-}
-
-.user-pin:hover::after {
-    animation: none !important;
+    background: var(--primary);
+    border: 3px solid var(--background);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    animation: markerPopIn 0.38s var(--ease) both;
 }
 
 .user-pin::after {
     content: "";
     position: absolute;
-    width: 100%;
-    height: 100%;
+    inset: -3px;
     border-radius: 50%;
-    background: var(--pin-color);
-    opacity: 1;
+    background: var(--primary);
     z-index: -1;
     animation: ripple 2.2s ease-out infinite;
 }
 
-.user-pin-inner {
-    width: 24px;
-    height: 24px;
+.placement-pin {
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: teal;
-}
-
-.user-pin-icon svg {
-    width: 20px;
-    height: 20px;
-    display: block;
-    color: var(--text);
+    background: var(--primary);
+    border: 3px solid var(--background);
+    box-shadow: 0 0 0 6px var(--primary-soft), 0 4px 10px rgba(0, 0, 0, 0.35);
+    animation: markerPopIn 0.3s var(--ease) both;
 }
 
 /* Marker Tooltips */
 
-.map-label-tooltip {
-    background: transparent;
-    border: none;
-    box-shadow: none;
+.leaflet-tooltip.map-label-tooltip {
+    background: var(--overlay) !important;
+    border: 1px solid var(--hairline) !important;
+    box-shadow: var(--shadow-sm) !important;
+    padding: 2px 8px !important;
+    border-radius: 6px;
     color: var(--text);
+    font-family: var(--font);
+    font-size: 0.75rem;
     font-weight: 600;
-    font-size: 16px;
+    backdrop-filter: blur(8px);
 }
 
-.dark-mode .map-label-tooltip {
-    color: var(--text);
-}
-
-.map-label-tooltip::before {
+.leaflet-tooltip.map-label-tooltip::before {
     display: none;
 }
 
-.leaflet-tooltip.map-label-tooltip {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-}
-
 /* Marker Popups */
-
-.leaflet-popup {
-    opacity: 1 !important;
-}
 
 .leaflet-popup-content-wrapper {
     background: transparent !important;
@@ -143,162 +207,94 @@
     border-radius: 0 !important;
 }
 
-.leaflet-popup-content p {
-    margin: 0 !important;
-}
-
 .leaflet-popup-content {
     margin: 0 !important;
     padding: 0 !important;
+    width: auto !important;
 }
 
 .leaflet-popup-tip {
-    background: var(--text) !important;
-    width: 18px !important;
-    height: 18px !important;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12) !important;
-}
-
-.leaflet-popup-tip-container {
-    margin-top:-2px;
-}
-
-.leaflet-container a.leaflet-popup-close-button {
-    color: var(--text);
-    font-size: 20px;
-    font-weight: 400;
-}
-
-.leaflet-container .leaflet-control-attribution {
-    background: var(--background) !important;
-    color: var(--muted-text) !important;
-}
-
-.leaflet-container a {
-    color: var(--muted-text) !important;
+    background: var(--surface) !important;
+    box-shadow: none !important;
 }
 
 .map-popup-card {
-    width: 300px;
-    max-width: 85vw;
-    background: var(--text);
-    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    width: 280px;
+    max-width: 80vw;
     padding: 14px;
-    color: var(--card);
-    box-shadow:
-            0 18px 36px rgba(0, 0, 0, 0.18),
-            0 6px 14px rgba(0, 0, 0, 0.08);
-    font-family: -apple-system, Roboto, Arial, sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    font-family: var(--font);
 }
 
 .map-popup-card h3 {
-    display: inline-block;
-    width: fit-content;
-    font-size: 18px;
+    margin: 4px 0 2px;
+    font-size: 1.0625rem;
     font-weight: 600;
-    margin-bottom: 4px;
+    letter-spacing: -0.02em;
 }
 
 .map-popup-card p {
-    display: inline-block;
-    width: fit-content;
-    font-size: 14px;
-    margin: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 !important;
+    font-size: 0.8125rem;
+    color: var(--muted-text);
+}
+
+.map-popup-card p .icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: var(--subtle-text);
 }
 
 .map-popup-card .popup-event-button {
-    width: 100%;
-    margin-top: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s ease;
+    margin-top: 8px;
+    min-height: 40px;
 }
 
-.map-popup-card .popup-event-button:hover {
-    filter: brightness(1.1);
+.map-popup-card .popup-event-button .icon {
+    width: 1rem;
+    height: 1rem;
 }
 
-.map-popup-card .popup-event-button:active {
-    transform: scale(0.97);
+/* Clear View: bigger pins and labels */
+
+:root[data-view="clear"] .map-pin {
+    width: 42px;
+    height: 42px;
+    border-width: 3px;
 }
 
-/* Map Label Toggle Button */
-
-.map-label-button {
-    position: absolute;
-    height: 34px;
-    width: 34px;
-    top: 74px;
-    left: 10px;
-    z-index: 1000;
-    padding: 0;
-    margin: 0;
-    justify-content: center;
-    align-items: center;
-    border-radius: 3px;
-    border: 2px solid var(--border);
-    background: #ffffff;
-    color: #000000;
-    cursor: pointer;
-}
-
-.map-label-button svg {
-    height: 22px;
+:root[data-view="clear"] .map-pin .icon {
     width: 22px;
+    height: 22px;
+}
+
+:root[data-view="clear"] .leaflet-tooltip.map-label-tooltip {
+    font-size: 0.875rem;
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
 }
 
 /* Animations */
 
-@keyframes breathe {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-    50% {
-        transform: scale(1.08);
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-}
-
 @keyframes ripple {
-    0% {
-        transform: scale(1);
-        opacity: 0.4;
-    }
-    70% {
-        transform: scale(2);
-        opacity: 0;
-    }
-    100% {
-        opacity: 0;
-    }
+    0% { transform: scale(1); opacity: 0.45; }
+    70% { transform: scale(2.6); opacity: 0; }
+    100% { opacity: 0; }
 }
 
 @keyframes markerPopIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.3);
-    }
-
-    60% {
-        opacity: 1;
-        transform: scale(1.12);
-    }
-
-    80% {
-        transform: scale(0.96);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+    0% { opacity: 0; transform: scale(0.3); }
+    60% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
 }

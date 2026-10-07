@@ -1,357 +1,345 @@
-/* Variables */
-
-:root {
-    --academics-color: #3b82f6;
-    --alert-color: #ef4444;
-    --athletics-color: #22c55e;
-    --career-color: #8b5cf6;
-    --club-color: #eab308;
-    --social-color: #ec4899;
-}
-
 /* Events Page */
 
 #event-cards-container {
     max-width: var(--max-page-width);
     width: 100%;
     margin: 0 auto;
-    gap: 12px;
-    padding: 20px 20px calc(20px + var(--nav-height)) 20px;
+    padding: 28px 16px 40px;
+}
+
+.feed-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Filters */
+
+.feed-filters {
+    display: flex;
+    gap: 8px;
+    margin: 0 -16px 8px;
+    padding: 0 16px 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.feed-filters::-webkit-scrollbar {
+    display: none;
+}
+
+/* Day groups */
+
+.feed-group + .feed-group {
+    margin-top: 12px;
+}
+
+.feed-day {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    margin: 0 -16px;
+    padding: 14px 16px 10px;
+    background: linear-gradient(var(--background) 70%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-text);
+}
+
+.feed-group.is-past .event-card {
+    opacity: 0.6;
+}
+
+.feed-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+@media (min-width: 680px) {
+    .feed-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* Event Card */
 
 .event-card {
-    background: var(--card);
-    opacity: 0;
-    animation: fadeUp 0.40s ease forwards;
-    color: var(--text);
-    border-radius: 18px;
-    border: 1px solid var(--border);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-xl);
     overflow: hidden;
-    margin-bottom: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    transition:
-            background 0.35s ease,
-            color 0.25s ease,
-            box-shadow 0.2s ease,
-            transform 0.15s ease;
+    animation: fadeUp 0.45s var(--ease) both;
+    animation-delay: var(--card-delay, 0s);
+    transition: border-color 0.2s ease, transform 0.2s var(--ease);
 }
 
 .event-card:hover {
-    box-shadow: 0 12px 30px rgba(0,0,0,.12);
+    border-color: var(--border);
 }
 
-/* Event Card Image */
+.event-card:has(.event-card-link:focus-visible) {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
 
-.event-card-image-wrapper {
-    position: relative;
-    width: 100%;
+.event-card-media {
     aspect-ratio: 16 / 9;
-    max-height: 400px;
     overflow: hidden;
-    opacity: 0;
-    animation: fadeUp 0.40s ease forwards;
-    animation-delay: var(--card-delay);
+    background: var(--surface-2);
 }
 
-.event-card-image {
+.event-card-media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
+    transition: transform 0.6s var(--ease);
 }
 
-.event-feed-empty {
-    text-align: center;
+.event-card:hover .event-card-media img {
+    transform: scale(1.03);
+}
+
+.event-card-placeholder {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 60px 20px;
-    color: var(--muted-text);
-    margin: 0 auto;
-    max-width: 600px;
-    animation: fadeUp 0.4s ease;
+    width: 100%;
+    height: 100%;
+    color: var(--cat);
+    background:
+        radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--cat) 28%, transparent), transparent 60%),
+        var(--surface-2);
 }
 
-.event-feed-empty h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: var(--text);
+.event-card-placeholder .icon {
+    width: 44px;
+    height: 44px;
+    stroke-width: 1.25;
+    opacity: 0.9;
 }
 
-.event-feed-empty p {
-    font-size: 14px;
-    margin-bottom: 16px;
-    line-height: 1.6;
-}
-
-#go-to-interests {
-    max-width: 200px;
-}
-
-/* Event Date Badge */
-
-.event-card-date {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    background: var(--card);
-    color: var(--text);
-    border-radius: 12px;
-    padding: 6px 14px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: 0.15s ease;
-    opacity: 0;
-    transform: translateY(6px);
-    animation: fadeUp 0.40s ease forwards;
-    animation-delay: calc(var(--card-delay) + 0.040);
-}
-
-.event-card-date .month {
-    display: block;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.event-card-date .day {
-    display: block;
-    font-size: 18px;
-    font-weight: 900;
-}
-
-/* Event Card Content */
-
-.event-card-content {
-    position: relative;
-    padding: 18px 20px;
-    display: block;
+.event-card-body {
+    display: flex;
     flex-direction: column;
-    -webkit-font-smoothing: antialiased;
-    transition: color 0.15s ease;
+    flex: 1;
+    gap: 8px;
+    padding: 16px 18px 12px;
 }
 
-.event-card-content > * {
-    opacity: 0;
-    transform: translateY(6px);
-    animation: fadeItem 0.40s ease forwards;
+.event-card-top {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.event-card-content > *:nth-child(1) { animation-delay: calc(var(--card-delay) + 0.080s); }
-.event-card-content > *:nth-child(2) { animation-delay: calc(var(--card-delay) + 0.120s); }
-.event-card-content > *:nth-child(3) { animation-delay: calc(var(--card-delay) + 0.160s); }
-.event-card-content > *:nth-child(4) { animation-delay: calc(var(--card-delay) + 0.200s); }
-.event-card-content > *:nth-child(5) { animation-delay: calc(var(--card-delay) + 0.240s); }
-.event-card-content > *:nth-child(6) { animation-delay: calc(var(--card-delay) + 0.280s); }
-.event-card-content > *:nth-child(7) { animation-delay: calc(var(--card-delay) + 0.320s); }
+.event-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-text);
+}
+
+.event-status.is-live {
+    color: var(--live);
+}
 
 .event-card-title {
-    font-size: 20px;
+    font-size: 1.125rem;
     font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.event-card-link {
     color: var(--text);
-    margin-bottom: 8px;
-    letter-spacing: -0.2px;
+    text-decoration: none;
 }
 
-.event-card-meta {
-    display: inline-block;
-    width: fit-content;
-    align-self: flex-start;
-    color: var(--text);
-    font-size: 14px;
-    margin-top: 4px;
+.event-card-link:focus-visible {
+    outline: none;
 }
 
-.event-card-dot {
-    opacity: 0.5;
-}
-
-.event-card-author {
-    display: inline-block;
-    width: fit-content;
-    align-self: flex-start;
-    font-size: 14px;
-    margin: 4px 0;
-    color: var(--text);
-}
-
-.event-card-author span {
-    font-weight: 600;
-    color: var(--primary);
-    cursor: pointer;
-}
-
-.event-card-description {
-    font-size: 14px;
-    line-height: 1.5;
-    color: var(--text);
-    margin: 8px 0;
-}
-
-.event-card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 8px 0;
-    margin: 0 auto 0 0;
-}
-
-.event-card-tag-bubble {
-    background: rgba(59, 130, 246, 0.12);
-    color: #777777;
-    border: 1px solid rgba(59, 130, 246, 0.35);
-    padding: 4px 10px;
-    border-radius: 16px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.event-card-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-}
-
-/* Compact UI */
-
-body.compact-ui #event-cards-container {
-    gap: 10px;
-}
-
-body.compact-ui .event-card {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    padding: 10px;
-    overflow: hidden;
-    color: white;
-    gap: 12px;
-}
-
-body.compact-ui .event-card::before {
+/* Stretch the title link over the whole card */
+.event-card-link::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.1);
-    pointer-events: none;
-    z-index: 0;
-    transition: background 0.30s ease;
-}
-
-body.compact-ui .event-card > * {
-    position: relative;
     z-index: 1;
 }
 
-body.compact-ui .event-card-image-wrapper {
-    width: 110px;
-    aspect-ratio: 1 / 1;
-    order: 0;
-    border-radius: 12px;
-    overflow: hidden;
+.event-card-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    list-style: none;
+    font-size: 0.875rem;
+    color: var(--muted-text);
 }
 
-body.compact-ui .event-card-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-body.compact-ui .event-card-date {
-    display: none;
-}
-
-body.compact-ui .event-card-content {
-    flex: 1;
+.event-card-info li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     min-width: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
-body.compact-ui .event-card-title {
-    margin-bottom: 4px;
-    color: white;
-    font-size: 15px;
+.event-card-info .icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    color: var(--subtle-text);
+}
+
+.event-card-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.875rem;
+    color: var(--subtle-text);
+}
+
+.event-card-description:empty {
+    display: none;
+}
+
+.event-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 4px;
+}
+
+.event-card-author,
+.event-card-map {
+    position: relative;
+    z-index: 2;
+}
+
+.event-card-author {
+    width: auto;
+    min-height: 32px;
+    padding: 4px 8px;
+    margin-left: -8px;
+    background: transparent;
+    color: var(--muted-text);
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.event-card-author:hover {
+    color: var(--primary-text);
+    background: transparent;
+}
+
+.event-card-map {
+    color: var(--muted-text);
+}
+
+.event-card-map:hover {
+    color: var(--text);
+}
+
+/* Clear View: no imagery, labeled color rail, larger readable rows */
+
+:root[data-view="clear"] #event-cards-container {
+    max-width: 760px;
+}
+
+:root[data-view="clear"] .feed-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+:root[data-view="clear"] .feed-day {
+    font-family: var(--font);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: var(--text);
+}
+
+:root[data-view="clear"] .feed-group.is-past .event-card {
+    opacity: 1;
+}
+
+:root[data-view="clear"] .event-card {
+    border: 1px solid var(--border);
+    border-left: 6px solid var(--cat);
+    border-radius: var(--radius-md);
+}
+
+:root[data-view="clear"] .event-card[data-cat="alert"] {
+    background: color-mix(in srgb, var(--cat-alert) 10%, var(--surface));
+}
+
+:root[data-view="clear"] .event-card-media,
+:root[data-view="clear"] .event-card-description {
+    display: none;
+}
+
+:root[data-view="clear"] .event-card-body {
+    gap: 6px;
+    padding: 14px 16px 10px;
+}
+
+:root[data-view="clear"] .cat-chip {
+    padding: 4px 10px 4px 8px;
+    color: var(--text);
+    font-size: 0.75rem;
+    background: color-mix(in srgb, var(--cat) 22%, transparent);
+}
+
+:root[data-view="clear"] .cat-chip .icon {
+    color: var(--cat);
+    width: 1rem;
+    height: 1rem;
+}
+
+:root[data-view="clear"] .event-status {
+    font-size: 0.75rem;
     font-weight: 600;
+    color: var(--text);
 }
 
-body.compact-ui .event-card-meta {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 13px;
+:root[data-view="clear"] .event-card-title {
+    font-size: 1.1875rem;
+    font-weight: 700;
+    line-height: 1.3;
 }
 
-body.compact-ui br {
-    display: none;
+:root[data-view="clear"] .event-card-info {
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.9375rem;
+    color: var(--text);
 }
 
-body.compact-ui .event-card-author {
-    color: rgba(255, 255, 255, 0.85);
-    margin: 4px 0;
+:root[data-view="clear"] .event-card-info .icon {
+    color: var(--muted-text);
 }
 
-body.compact-ui .event-card-description {
-    display: none;
+:root[data-view="clear"] .event-card-author {
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
-body.compact-ui .event-card-tags {
-    display: none;
-}
-
-body.compact-ui .event-card-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 4px;
-    width: 100%;
-}
-
-body.compact-ui .event-card-actions button {
-    flex: 1;
-    font-size: 13px;
-    padding: 12px 8px;
-}
-
-body.compact-ui .academics-event {
-    background: var(--academics-color);
-}
-
-body.compact-ui .alert-event {
-    background: var(--alert-color);
-}
-
-body.compact-ui .athletics-event {
-    background: var(--athletics-color);
-}
-
-body.compact-ui .career-event {
-    background: var(--career-color);
-}
-
-body.compact-ui .club-event {
-    background: var(--club-color);
-}
-
-body.compact-ui .social-event {
-    background: var(--social-color);
-}
-
-/* Animation */
-
-@keyframes fadeItem {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+:root[data-view="clear"] .event-card-map {
+    width: 44px;
+    height: 44px;
+    color: var(--text);
+    border: 1px solid var(--border);
 }

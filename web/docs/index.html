@@ -4,43 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beach Pulse</title>
-    <link rel="icon" type="image/png" href="assets/images/logos/beach_pulse.png">  <!-- Favicon -->
+    <meta name="theme-color" content="#0A0B0D">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logos/pulse-mark.svg">  <!-- Favicon -->
+    <script src="js/prefs.js"></script>  <!-- Theme and view preferences, before paint -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;600&display=swap">  <!-- Fonts -->
     <link rel="stylesheet" href="css/basic_styles.css">  <!-- CSS -->
     <link rel="stylesheet" href="css/login.css">  <!-- CSS -->
+    <link rel="stylesheet" href="css/policies.css">  <!-- Policy viewer CSS -->
     <script defer src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>  <!-- MSAL -->
     <script defer type="module" src="js/login.js"></script>  <!-- Login JS -->
 </head>
 <body>
     <div class="login-page">
+        <div class="login-glow" aria-hidden="true"></div>
 
         <!-- Cards -->
         <div class="login-wrapper">
             <!-- Login Card -->
             <div class="login-container" id="login-card">
                 <div class="card-content">
-                    <div class="card-top">
-                        <!-- Branding -->
-                        <div class="card-branding">
-                            <img class="app-logo" src="assets/images/logos/beach_pulse.png" alt="Beach Pulse Logo">
-                            <img class="university-brand" src="assets/images/logos/csulb_full.png" alt="CSULB Brand">
-                        </div>
+                    <!-- Branding -->
+                    <div class="card-branding">
+                        <svg class="login-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path pathLength="1" d="M2 13h4l2.5-7 4.5 13 3-9 1.5 3H22"/></svg>
+                        <h1 class="login-title">Beach Pulse</h1>
+                        <p class="login-subtext">Everything happening at The Beach, as it happens.</p>
                     </div>
 
-                    <div class="card-middle">
-                        <!-- Intro -->
-                        <h2>Welcome to Beach Pulse</h2>
-                        <p class="login-subtext">Connect with your campus in real time</p>
-
-                        <!-- Outlook button -->
+                    <div class="card-actions">
+                        <!-- Microsoft button -->
                         <button type="button" class="oauth-button" id="outlook-button">
-                            <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="100px" height="100px"><path d="M 25.505859 4.0253906 C 24.180859 4.0266406 22.854219 4.4051563 21.699219 5.1601562 L 6.5 15.019531 C 5.57 15.619531 5 16.659531 5 17.769531 L 5 18.810547 C 5 18.870547 4.9997656 18.94 5.0097656 19 L 13.849609 19 L 29.230469 9.2304688 C 29.920469 8.7904688 30.329141 8.0697656 30.369141 7.2597656 C 30.399141 6.4597656 30.059687 5.7204688 29.429688 5.2304688 L 29.410156 5.2109375 L 29.310547 5.1503906 C 28.155547 4.4003906 26.830859 4.0241406 25.505859 4.0253906 z M 32.359375 7.1308594 L 32.359375 7.3496094 C 32.299375 8.8196094 31.550781 10.120156 30.300781 10.910156 L 17.160156 19.259766 C 19.360156 19.949766 20.98 22.019219 21 24.449219 L 37.140625 14.220703 C 37.850625 13.770703 38.25 13.039219 38.25 12.199219 C 38.25 11.499219 37.959219 10.869687 37.449219 10.429688 L 32.359375 7.1308594 z M 40.25 12.25 C 40.23 13.74 39.480938 15.110156 38.210938 15.910156 L 21 26.820312 L 21 30.210938 L 24.669922 32.519531 L 44.880859 19.839844 C 45.580859 19.399844 46 18.650078 46 17.830078 L 46 17.769531 C 46 16.649531 45.44 15.609766 44.5 15.009766 L 40.25 12.25 z M 4.5 21 C 2.567 21 1 22.567 1 24.5 L 1 35.5 C 1 37.433 2.567 39 4.5 39 L 15.5 39 C 17.433 39 19 37.433 19 35.5 L 19 24.5 C 19 22.567 17.433 21 15.5 21 L 4.5 21 z M 46 21.5 C 45.98 21.51 45.969219 21.519297 45.949219 21.529297 L 26.550781 33.710938 L 30.980469 36.5 C 32.640469 37.55 33.630859 39.350547 33.630859 41.310547 C 33.630859 42.720547 33.119531 44.01 32.269531 45 L 40 45 C 43.31 45 46 42.31 46 39 L 46 21.5 z M 10.115234 24.798828 C 11.561234 24.798828 12.738484 25.270937 13.646484 26.210938 C 14.558484 27.151937 15.013672 28.390687 15.013672 29.929688 C 15.013672 31.510687 14.542656 32.785906 13.597656 33.753906 C 12.657656 34.717906 11.443078 35.199219 9.9550781 35.199219 C 8.5040781 35.199219 7.3128125 34.732875 6.3828125 33.796875 C 5.4518125 32.860875 4.9863281 31.638813 4.9863281 30.132812 C 4.9863281 28.541813 5.4592969 27.255437 6.4042969 26.273438 C 7.3492969 25.290437 8.5852344 24.798828 10.115234 24.798828 z M 10.052734 26.779297 C 9.2477344 26.779297 8.600375 27.075922 8.109375 27.669922 C 7.618375 28.258922 7.3710937 29.040672 7.3710938 30.013672 C 7.3710937 31.000672 7.618375 31.782422 8.109375 32.357422 C 8.600375 32.928422 9.2290937 33.214844 9.9960938 33.214844 C 10.787094 33.214844 11.42425 32.934906 11.90625 32.378906 C 12.38825 31.821906 12.628906 31.048641 12.628906 30.056641 C 12.628906 29.022641 12.395734 28.218578 11.927734 27.642578 C 11.459734 27.067578 10.834734 26.779297 10.052734 26.779297 z M 21 32.570312 L 21 35.5 C 21 38.53 18.53 41 15.5 41 L 5.3808594 41 C 6.2408594 43.34 8.4891406 45 11.119141 45 L 27.949219 45 C 28.919219 45 29.800937 44.62 30.460938 44 C 31.180938 43.33 31.630859 42.370547 31.630859 41.310547 C 31.630859 40.040547 30.990156 38.869453 29.910156 38.189453 L 24.669922 34.890625 L 22.140625 33.289062 L 21 32.570312 z"/></svg>
-                            Sign in with Microsoft
+                            <svg viewBox="0 0 21 21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
+                            Continue with Microsoft
                         </button>
-                        <div class="error" id="auth-error"></div>
-                    </div>
-
-                    <div class="card-bottom">
-                        <p class="oauth-hint">Only available for CSULB</p>
+                        <div class="error" id="auth-error" role="alert"></div>
+                        <p class="oauth-hint">For CSULB students, faculty and staff</p>
                     </div>
                 </div>
             </div>
@@ -48,32 +47,40 @@
             <!-- Signup Card -->
             <div class="login-container" id="signup-card">
                 <div class="card-content">
-                    <div class="card-top">
-                        <!-- Prompt -->
-                        <h2>Create your profile</h2>
+                    <div class="card-branding">
+                        <p class="login-step">Almost there</p>
+                        <h1 class="login-title">Create your profile</h1>
+                        <p class="login-subtext">This is how you'll appear on events you post.</p>
                     </div>
 
-                    <div class="card-middle">
-                        <!-- Avatar -->
-                        <div class="avatar-picker">
-                            <div class="avatar-picker-inner">
-                                <img id="avatar-preview" src="" alt="Avatar">
-                                <input type="file" id="avatar-input" accept="image/*" hidden>
-                            </div>
+                    <!-- Avatar -->
+                    <div class="avatar-picker" role="button" tabindex="0" aria-label="Choose a profile photo">
+                        <div class="avatar-picker-inner">
+                            <img id="avatar-preview" src="" alt="">
                         </div>
-
-                        <!-- Username -->
-                        <input id="username-input" type="text" placeholder="Username" autocomplete="username">
+                        <input type="file" id="avatar-input" accept="image/*" hidden>
                     </div>
 
-                    <div class="card-bottom">
+                    <div class="card-actions">
+                        <!-- Username -->
+                        <label class="sr-only" for="username-input">Username</label>
+                        <input id="username-input" type="text" placeholder="Username" autocomplete="username">
+
+                        <!-- Policy agreement -->
+                        <label class="policy-agree" for="policy-checkbox">
+                            <input type="checkbox" id="policy-checkbox">
+                            <span>I agree to the <button type="button" class="policy-link" data-policy="terms">Terms of Service</button>, <button type="button" class="policy-link" data-policy="privacy">Privacy Policy</button> and <button type="button" class="policy-link" data-policy="user-policy">User Policy</button>.</span>
+                        </label>
+
                         <!-- Continue button -->
-                        <div class="error" id="signup-error"></div>
+                        <div class="error" id="signup-error" role="alert"></div>
                         <button class="primary-button" id="signup-submit-button">Continue</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <img class="university-brand" src="assets/images/logos/csulb_full.png" alt="California State University, Long Beach">
     </div>
 </body>
 </html>

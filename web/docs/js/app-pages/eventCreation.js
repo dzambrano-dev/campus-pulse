@@ -4,14 +4,14 @@
  */
 
 
-import { API, clearErrors, safeJson, setLoading, showError, updateURL, convertToWebP } from "../utils.js";
+import { API, clearErrors, safeJson, setLoading, showError, convertToWebP, getTileUrl, TILE_ATTRIBUTION } from "../utils.js";
+import { CATEGORIES } from "../categories.js";
+import { icon } from "../icons.js";
 
 
 let eventMap;
 let eventMarker;
 let tileLayer;
-
-const calendarSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.1 0-2 .9-2 2v1h18V6c0-1.1-.9-2-2-2M3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8H3zm5-6h3v-3h2v3h3v2h-3v3h-2v-3H8z"></path></svg>`
 
 
 // Initialize event creation feature
@@ -26,86 +26,143 @@ export function initEventCreation({ currentRole, loadEvents }) {
     const creationButton = document.createElement("button");
     creationButton.className = "nav-button";
     creationButton.dataset.page = "event-creation-page";
-    creationButton.innerHTML = calendarSVG;
+    creationButton.innerHTML = `${icon("create")}<span>Create</span>`;
     navBar.insertBefore(creationButton, navBar.children[1]);
+
+    // Category picker options
+    const typeOptions = Object.entries(CATEGORIES).map(([key, { label }]) => `
+        <label class="type-option" data-cat="${key}">
+            <input type="radio" name="event-type-option" value="${key}">
+            ${icon(key)}<span>${label}</span>
+        </label>
+    `).join("");
 
     // Create the event creation page
     const creationPage = document.createElement("section");
     creationPage.className = "app-page";
     creationPage.id = "event-creation-page";
+    creationPage.setAttribute("aria-label", "Create event");
     creationPage.innerHTML = `
         <div id="event-creation-container">
-            <h2 class="event-header">Create an Event</h2>
-            <form id="event-form" class="event-body">
-                <input id="event-title" placeholder="Event Title" required>
-                <textarea id="event-description" placeholder="Description" maxlength="500" required></textarea>
-
-                <!-- Event Type -->
-                <label>Event Type</label>
-                <select id="event-type" required>
-                    <option value="" disabled selected>Select event type</option>
-                    <option value="alert">Alert</option>
-                    <option value="academics">Academics</option>
-                    <option value="athletics">Athletics</option>
-                    <option value="career">Career</option>
-                    <option value="club">Club</option>
-                    <option value="social">Social</option>
-                </select>
-
-                <!-- Date -->
-                <label>Date</label>
-                <input type="date" id="event-date" required>
-
-                <!-- Time -->
-                <label>Time</label>
-                <input type="time" id="event-time" required>
-                
-                <!-- Location -->
-                <input id="event-location" placeholder="Location" required>
-                
-                <!-- Call-to-action button select -->
-                <label>Call to Action</label>
-                <select id="call-to-action">
-                    <option value="">None</option>
-                    <option value="rsvp">RSVP</option>
-                    <option value="contact">Contact</option>
-                    <option value="discord">Discord</option>
-                    <option value="instagram">Instagram</option>
-                    <option value="custom">Custom Link</option>
-                </select>
-                
-                <!-- Dynamically shown -->
-                <div id="call-to-action-input-container">
-                    <input id="event-action-label" placeholder="Button text (e.g. Learn More)" style="display: none">
-                    <input id="event-action-input" placeholder="" style="display: none">
+            <header class="page-header">
+                <div>
+                    <p class="page-eyebrow">Organizer</p>
+                    <h1 class="page-title event-header">New event</h1>
                 </div>
-                
-                <!-- Map pin -->
-                <label>Click map to place a pin</label>
-                <div id="event-map" class="event-map"></div>
+            </header>
+            <form id="event-form" class="event-body" novalidate>
+                <fieldset class="form-section">
+                    <legend>Basics</legend>
 
-                <!-- Upload event image -->
-                <label>Event Image</label>
-                <input type="file" id="event-image" accept="image/*">
-                
-                <!-- Event tags -->
-                <label>Tags</label>
-                <!-- Tags injected by JS -->
-                <div id="event-tags" class="tag-container"></div>
+                    <div class="field">
+                        <label for="event-title">Title</label>
+                        <input id="event-title" placeholder="What's happening?" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="event-description">Description <span class="field-hint">At least 50 characters</span></label>
+                        <textarea id="event-description" placeholder="Tell people what to expect" maxlength="500" required></textarea>
+                    </div>
+
+                    <div class="field">
+                        <span class="field-label" id="event-type-label">Category</span>
+                        <div class="type-picker" role="radiogroup" aria-labelledby="event-type-label">${typeOptions}</div>
+                        <input type="hidden" id="event-type" value="">
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-section">
+                    <legend>When and where</legend>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="event-date">Date</label>
+                            <input type="date" id="event-date" required>
+                        </div>
+                        <div class="field">
+                            <label for="event-time">Time</label>
+                            <input type="time" id="event-time" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="event-location">Location</label>
+                        <input id="event-location" placeholder="Building or room" required>
+                    </div>
+
+                    <div class="field">
+                        <span class="field-label">Map pin <span class="field-hint">Tap the map to place it</span></span>
+                        <div id="event-map" class="event-map"></div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-section">
+                    <legend>Details</legend>
+
+                    <div class="field">
+                        <span class="field-label">Cover image</span>
+                        <label class="image-drop" for="event-image">
+                            <input type="file" id="event-image" accept="image/*">
+                            <img class="image-drop-preview" alt="" hidden>
+                            <span class="image-drop-empty">${icon("image")}<span>Choose an image</span></span>
+                        </label>
+                    </div>
+
+                    <div class="field">
+                        <span class="field-label">Tags <span class="field-hint">Pick up to 3</span></span>
+                        <!-- Tags injected by JS -->
+                        <div id="event-tags" class="tag-container"></div>
+                    </div>
+
+                    <div class="field">
+                        <label for="call-to-action">Call to action</label>
+                        <select id="call-to-action">
+                            <option value="">None</option>
+                            <option value="rsvp">RSVP</option>
+                            <option value="contact">Contact</option>
+                            <option value="discord">Discord</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="custom">Custom link</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamically shown -->
+                    <div id="call-to-action-input-container">
+                        <input id="event-action-label" placeholder="Button text (e.g. Learn more)" aria-label="Button text" style="display: none">
+                        <input id="event-action-input" placeholder="" aria-label="Link" style="display: none">
+                    </div>
+                </fieldset>
 
                 <!-- Error messages -->
-                <div class="error" id="event-error"></div>
+                <div class="error" id="event-error" role="alert"></div>
 
                 <!-- Action buttons -->
                 <div class="event-actions">
-                    <button type="submit" class="primary-button" id="submit-event-button">Create</button>
-                    <button type="reset" class="secondary-button">Reset</button>
+                    <button type="reset" class="ghost-button">Clear</button>
+                    <button type="submit" class="primary-button" id="submit-event-button">Publish event</button>
                 </div>
             </form>
         </div>
     `;
 
     appContainer.insertBefore(creationPage, appContainer.children[1]);
+
+    // Category picker writes to the hidden type field
+    const typeField = creationPage.querySelector("#event-type");
+    creationPage.querySelectorAll('input[name="event-type-option"]').forEach(radio => {
+        radio.addEventListener("change", () => { typeField.value = radio.value; });
+    });
+
+    // Cover image preview
+    const imageInput = creationPage.querySelector("#event-image");
+    const imagePreview = creationPage.querySelector(".image-drop-preview");
+    imageInput.addEventListener("change", () => {
+        const file = imageInput.files[0];
+        if (imagePreview.src) URL.revokeObjectURL(imagePreview.src);
+        imagePreview.hidden = !file;
+        imagePreview.closest(".image-drop").classList.toggle("has-image", Boolean(file));
+        if (file) imagePreview.src = URL.createObjectURL(file);
+    });
 
     const actionSelect = creationPage.querySelector("#call-to-action");
     const actionContainer = creationPage.querySelector("#call-to-action-input-container");
@@ -176,6 +233,13 @@ export function initEventCreation({ currentRole, loadEvents }) {
         const eventError = creationPage.querySelector("#event-error");
         clearErrors(eventError);
 
+        // Clear category (hidden inputs keep their value on reset)
+        typeField.value = "";
+
+        // Clear image preview
+        imagePreview.hidden = true;
+        imagePreview.closest(".image-drop").classList.remove("has-image");
+
         // Clear tags
         const activeTags = creationPage.querySelectorAll(".tag.active");
         activeTags.forEach((tag) => tag.classList.remove("active"));
@@ -232,11 +296,14 @@ async function loadTags(creationPage) {
     tagContainer.innerHTML = "";
 
     data.interests.forEach(tag => {
-        const button = document.createElement("div");
-        button.classList.add("tag");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.classList.add("tag", "chip");
+        button.setAttribute("aria-pressed", "false");
         button.textContent = String(tag);
         button.addEventListener("click", () => {
-            button.classList.toggle("active");
+            const active = button.classList.toggle("active");
+            button.setAttribute("aria-pressed", String(active));
         });
         tagContainer.appendChild(button);
     });
@@ -249,14 +316,9 @@ function initEventMap(creationPage) {
     if (eventMap) eventMap.remove();
     eventMap = L.map(mapElement).setView([33.7838, -118.1141], 15);
 
-    const isDark = document.body.classList.contains("dark-mode");
-
-    const tileUrl = isDark
-        ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-        : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-
-    tileLayer = L.tileLayer(tileUrl, {
-        attribution: "&copy; OpenStreetMap contributors"
+    tileLayer = L.tileLayer(getTileUrl(), {
+        attribution: TILE_ATTRIBUTION,
+        maxZoom: 19
     }).addTo(eventMap);
 
     eventMarker = null;
@@ -266,7 +328,14 @@ function initEventMap(creationPage) {
         if (eventMarker) {
             eventMarker.setLatLng([lat, lng]);
         } else {
-            eventMarker = L.marker([lat, lng]).addTo(eventMap);
+            eventMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    className: "map-marker-wrapper",
+                    html: `<div class="placement-pin"></div>`,
+                    iconSize: [22, 22],
+                    iconAnchor: [11, 11]
+                })
+            }).addTo(eventMap);
         }
     });
 }
@@ -382,16 +451,13 @@ async function submitEvent(event, creationPage, loadEvents) {
 }
 
 
-export function setEventCreationMapTheme(isDark) {
+export function setEventCreationMapTheme() {
     if (!eventMap || !tileLayer) return;
 
     eventMap.removeLayer(tileLayer);
 
-    const tileUrl = isDark
-        ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-        : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-
-    tileLayer = L.tileLayer(tileUrl, {
-        attribution: "&copy; OpenStreetMap"
+    tileLayer = L.tileLayer(getTileUrl(), {
+        attribution: TILE_ATTRIBUTION,
+        maxZoom: 19
     }).addTo(eventMap);
 }

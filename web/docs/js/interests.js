@@ -87,13 +87,14 @@ async function loadInterests() {
             button.classList.add("interest-button");
 
             // Select previously saved interests
-            if (userInterests.includes(interest)) {
-                button.classList.add("selected");
-            }
+            const selected = userInterests.includes(interest);
+            button.classList.toggle("selected", selected);
+            button.setAttribute("aria-pressed", String(selected));
 
             // Add a listener to toggle each button
             button.addEventListener("click", () => {
-                button.classList.toggle("selected");
+                const isSelected = button.classList.toggle("selected");
+                button.setAttribute("aria-pressed", String(isSelected));
             });
 
             // Append each button to the container

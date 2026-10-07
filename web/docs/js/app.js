@@ -4,21 +4,21 @@
  */
 
 
-import { API, checkSession, safeJson, redirect, updateURL, restorePageFromURL, getPageFromUrl } from "./utils.js";
+import { API, ASSETS, checkSession, safeJson, redirect, updateURL, restorePageFromURL, getPageFromUrl, isDarkTheme, setTheme, isClearView, setClearView } from "./utils.js";
 import { initEventCreation, refreshEventCreationPage, setEventCreationMapTheme } from "./app-pages/eventCreation.js";
 import { initMap, setMapTheme, activateMap } from "./app-pages/map.js";
-import { loadEvents } from "./app-pages/eventFeed.js";
+import { loadEvents, renderFeed } from "./app-pages/eventFeed.js";
 import { openEvent } from "./app-pages/eventPage.js";
 import { openProfile } from "./app-pages/profile.js";
+import { openPolicies } from "./policies.js";
 
 // Data members
 let currentUserId;
 let currentUsername;
 let currentRole;
+let appReady = false;
+let hasNavigated = false;
 
-// Icons
-const moonSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 13.51c-.78.23-1.58.35-2.38.35-4.52 0-8.2-3.68-8.2-8.2 0-.8.12-1.6.35-2.38a1.002 1.002 0 0 0-1.25-1.25A10.17 10.17 0 0 0 2 11.8C2 17.42 6.58 22 12.2 22c4.53 0 8.45-2.91 9.76-7.24a1.002 1.002 0 0 0-1.25-1.25"></path><path d="m16 8 .94-2.06L19 5l-2.06-.94L16 2l-.94 2.06L13 5l2.06.94zm4.25-.5-.55 1.2-1.2.55 1.2.55.55 1.2.55-1.2 1.2-.55-1.2-.55z"></path></svg>`;
-const sunSVG = `<svg width="64" height="64" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg" xmlns="http://www.w3.org/2000/svg"><path d="M12 6.99a5.01 5.01 0 1 0 0 10.02 5.01 5.01 0 1 0 0-10.02M13 19h-2v3h2zm0-17h-2v3h2zM2 11h3v2H2zm17 0h3v2h-3zM4.22 18.36l.71.71.71.71 1.06-1.06 1.06-1.06-.71-.71-.71-.71-1.06 1.06zM19.78 5.64l-.71-.71-.71-.71-1.06 1.06-1.06 1.06.71.71.71.71 1.06-1.06zm-12.02.7L6.7 5.28 5.64 4.22l-.71.71-.71.71L5.28 6.7l1.06 1.06.71-.71zm8.48 11.32 1.06 1.06 1.06 1.06.71-.71.71-.71-1.06-1.06-1.06-1.06-.71.71z"></path></svg>`;
 
 document.addEventListener("DOMContentLoaded", initApp);
 
@@ -44,7 +44,8 @@ async function initApp() {
     currentRole = user.role;
 
     // Initialize application
-    initSettingsMenu();
+    initSettingsMenu(user);
+    initRouteChrome();
     initEventCreation({
         currentRole,
         loadEvents
@@ -54,6 +55,7 @@ async function initApp() {
 
     window.addEventListener("popstate", () => {
         restorePageFromURL();
+        syncRouteChrome();
     });
 
     const { page } = getPageFromUrl();
@@ -63,6 +65,8 @@ async function initApp() {
     }
 
     await showInitialPage();
+    syncRouteChrome();
+    appReady = true;
     await loadEvents();
 }
 
@@ -146,29 +150,137 @@ function initNavigation() {
 
 
 // Initialize settings menu
-function initSettingsMenu () {
-    const icon = document.getElementById("theme-icon");
-    if (icon) {
-        const isDark = document.body.classList.contains("dark-mode");
-        icon.innerHTML = isDark ? sunSVG : moonSVG;
-    }
-
+function initSettingsMenu(user) {
     const menu = document.getElementById("settings-menu");
     const button = document.getElementById("settings-button");
     if (!button || !menu) return;
 
+    // User identity
+    renderAvatar(document.getElementById("settings-avatar"), user);
+    renderAvatar(document.getElementById("menu-avatar"), user);
+    const name = document.getElementById("menu-username");
+    if (name) name.textContent = `@${user.username || "you"}`;
+
     // Attach button listeners
-    document.getElementById("go-to-profile").addEventListener("click", goToProfile);
-    document.getElementById("toggle-theme").addEventListener("click", toggleDarkMode);
-    document.getElementById("toggle-ui").addEventListener("click", toggleCompactUI);
+    document.getElementById("go-to-profile").addEventListener("click", () => {
+        closeMenu();
+        goToProfile();
+    });
+    document.getElementById("policies-button").addEventListener("click", () => {
+        closeMenu();
+        openPolicies();
+    });
     document.getElementById("logout-button").addEventListener("click", logout);
 
-    // Click outside to close
+    // Theme
+    const themeButtons = menu.querySelectorAll("[data-theme-option]");
+    const syncTheme = () => themeButtons.forEach(btn => {
+        btn.setAttribute("aria-checked", String(btn.dataset.themeOption === (isDarkTheme() ? "dark" : "light")));
+    });
+    themeButtons.forEach(btn => btn.addEventListener("click", () => {
+        setTheme(btn.dataset.themeOption);
+        syncTheme();
+        const isDark = isDarkTheme();
+        setMapTheme(isDark);
+        setEventCreationMapTheme(isDark);
+    }));
+    syncTheme();
+
+    // Clear View
+    const clearSwitch = document.getElementById("toggle-ui");
+    clearSwitch.setAttribute("aria-checked", String(isClearView()));
+    document.getElementById("clear-view-row").addEventListener("click", () => {
+        setClearView(!isClearView());
+        clearSwitch.setAttribute("aria-checked", String(isClearView()));
+        renderFeed();
+    });
+
+    // Open, close, click outside and escape
+    function closeMenu() {
+        menu.classList.remove("open");
+        button.setAttribute("aria-expanded", "false");
+    }
+
+    button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const open = menu.classList.toggle("open");
+        button.setAttribute("aria-expanded", String(open));
+    });
+
+    // An outside tap only closes the panel, it doesn't activate what's underneath
     document.addEventListener("click", (event) => {
-        if (button.contains(event.target)) {
-            menu.classList.toggle("open");
-        } else if (!menu.contains(event.target)) {
-            menu.classList.remove("open");
+        if (!menu.classList.contains("open")) return;
+        if (menu.contains(event.target) || button.contains(event.target)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        closeMenu();
+    }, true);
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && menu.classList.contains("open")) {
+            closeMenu();
+            button.focus();
+        }
+    });
+}
+
+
+// Show the user's avatar image, or their initial as a fallback
+function renderAvatar(element, user) {
+    if (!element) return;
+    element.textContent = (user.username || "?").charAt(0);
+
+    if (!user.avatar) return;
+    const url = `${ASSETS}${user.avatar}`;
+    const probe = new Image();
+    probe.onload = () => {
+        element.textContent = "";
+        element.style.backgroundImage = `url("${url}")`;
+    };
+    probe.src = url;
+}
+
+
+// Back button and brand link
+function initRouteChrome() {
+    const backButton = document.getElementById("back-button");
+    const brandLink = document.getElementById("brand-link");
+
+    backButton?.addEventListener("click", () => {
+        // Go back within the app when possible, otherwise to the feed
+        if (hasNavigated) {
+            history.back();
+        } else {
+            document.querySelector('[data-page="events-page"]')?.click();
+        }
+    });
+
+    brandLink?.addEventListener("click", (event) => {
+        event.preventDefault();
+        document.querySelector('[data-page="events-page"]')?.click();
+    });
+
+    window.addEventListener("routechange", () => {
+        if (appReady) hasNavigated = true;
+        syncRouteChrome();
+    });
+}
+
+
+// Reflect the current route in the top bar and navigation
+function syncRouteChrome() {
+    const { page } = getPageFromUrl();
+    const isDetail = page === "event" || page === "profile";
+
+    const backButton = document.getElementById("back-button");
+    if (backButton) backButton.hidden = !isDetail;
+
+    document.querySelectorAll(".nav-button").forEach(btn => {
+        btn.classList.toggle("active", !isDetail && btn.dataset.page === `${page}-page`);
+        if (btn.classList.contains("active")) {
+            btn.setAttribute("aria-current", "page");
+        } else {
+            btn.removeAttribute("aria-current");
         }
     });
 }
@@ -177,21 +289,6 @@ function initSettingsMenu () {
 // Send to user profile
 function goToProfile(){
     openProfile(currentUsername, currentUserId);
-}
-
-
-// Toggle dark mode
-function toggleDarkMode() {
-    const isDark = document.body.classList.toggle("dark-mode");
-    const icon = document.getElementById("theme-icon");
-    if (icon) icon.innerHTML = isDark ? sunSVG : moonSVG;
-    setMapTheme(isDark);
-    setEventCreationMapTheme(isDark);
-}
-
-// Toggle compact UI for events feed
-function toggleCompactUI() {
-    document.body.classList.toggle("compact-ui");
 }
 
 

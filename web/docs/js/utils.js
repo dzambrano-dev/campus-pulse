@@ -11,6 +11,32 @@ export const API = "https://campus-pulse-worker.vindictivity.workers.dev/api"
 export const ASSETS = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
 
 
+// Theme and view preferences (applied early by prefs.js)
+export function isDarkTheme() {
+    return document.documentElement.dataset.theme !== "light";
+}
+
+export function setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem("bp-theme", theme); } catch {}
+}
+
+export function isClearView() {
+    return document.documentElement.dataset.view === "clear";
+}
+
+export function setClearView(enabled) {
+    document.documentElement.dataset.view = enabled ? "clear" : "standard";
+    try { localStorage.setItem("bp-view", enabled ? "clear" : "standard"); } catch {}
+}
+
+// Map tiles; the theme treatment is applied in CSS (see map.css)
+export function getTileUrl() {
+    return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+}
+
+export const TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
 // Clear all visible error messages
 export function clearErrors(...elements) {
     elements.forEach(el => { if (el) el.textContent = "" });
@@ -83,6 +109,7 @@ export function updateURL(page, id = null) {
     if (window.location.hash !== newHash) {
         history.pushState({}, "", newHash);
     }
+    window.dispatchEvent(new Event("routechange"));
 }
 
 // Reopen app page from URL
@@ -109,6 +136,7 @@ export function restorePageFromURL() {
             import("./app-pages/eventPage.js").then(({ loadEventPage }) => {
                 loadEventPage(id);
             });
+            window.dispatchEvent(new Event("routechange"));
         }
         return;
     }
@@ -136,6 +164,7 @@ export function restorePageFromURL() {
                     openProfile(id, userId);
                 }
             });
+            window.dispatchEvent(new Event("routechange"));
         }
 
         return;

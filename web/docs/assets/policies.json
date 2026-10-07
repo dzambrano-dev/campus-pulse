@@ -1,0 +1,165 @@
+{
+    "version": "2026-10-07",
+    "lastUpdated": "October 7, 2026",
+    "contact": "https://github.com/dzambrano-dev/campus-pulse",
+    "documents": [
+        {
+            "id": "terms",
+            "title": "Terms of Service",
+            "shortTitle": "Terms",
+            "summary": "The rules for using Beach Pulse. By creating an account, you agree to them.",
+            "sections": [
+                {
+                    "heading": "About Beach Pulse",
+                    "body": [
+                        "Beach Pulse is a student-developed academic project that helps members of the California State University, Long Beach (CSULB) community discover events happening on campus.",
+                        "Beach Pulse is not an official CSULB service. Events, including events labeled as alerts, are posted by users and are not official university announcements or emergency notifications. In an emergency, always follow official CSULB channels and contact emergency services."
+                    ]
+                },
+                {
+                    "heading": "Eligibility and accounts",
+                    "body": [
+                        "You must sign in with a CSULB Microsoft account to use Beach Pulse. You may create only one account, and you are responsible for activity that happens under it.",
+                        "Your username must be 5 to 20 letters or numbers and must not impersonate another person or organization."
+                    ]
+                },
+                {
+                    "heading": "Roles",
+                    "body": [
+                        "All accounts can browse events. Organizers can post events. Administrators can post events, remove any event, and grant or remove organizer access."
+                    ]
+                },
+                {
+                    "heading": "Content you post",
+                    "body": [
+                        "You keep ownership of the content you post, including event titles, descriptions, images, and your profile photo. By posting it, you give Beach Pulse permission to store and display it to other users of the app.",
+                        "You are responsible for making sure you have the right to share anything you post, and that it follows the User Policy."
+                    ]
+                },
+                {
+                    "heading": "Removing content and accounts",
+                    "body": [
+                        "We may remove content or restrict accounts that break these terms or the User Policy, or that put the community at risk."
+                    ]
+                },
+                {
+                    "heading": "No warranty",
+                    "body": [
+                        "Beach Pulse is provided as is, without guarantees that it will be available, accurate, or error-free. Event details are provided by users and may change or be wrong. To the extent permitted by law, the project maintainers are not liable for losses arising from your use of the app."
+                    ]
+                },
+                {
+                    "heading": "Changes to these terms",
+                    "body": [
+                        "We may update these terms. When we do, we will change the date at the top. Continuing to use Beach Pulse after an update means you accept the updated terms."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "privacy",
+            "title": "Privacy Policy",
+            "shortTitle": "Privacy",
+            "summary": "What information Beach Pulse collects, why, and who can see it.",
+            "sections": [
+                {
+                    "heading": "Information we collect",
+                    "body": [
+                        "From your Microsoft sign-in: your CSULB email address and your name.",
+                        "From your profile: your username, any previous usernames, your profile photo, your role, and the interests you choose. If your Microsoft account has a profile photo, it may be suggested as your avatar when you sign up.",
+                        "From events you post: the title, description, category, tags, date and time, location name, map pin, image, and call-to-action link or email."
+                    ]
+                },
+                {
+                    "heading": "Information we do not store",
+                    "body": [
+                        "If you allow location access, your device's location is used only in your browser to show where you are on the map. It is not sent to or stored by Beach Pulse.",
+                        "Your theme and Clear View settings are saved only in your browser."
+                    ]
+                },
+                {
+                    "heading": "How we use it",
+                    "body": [
+                        "We use your information to sign you in, show your profile, personalize your event feed based on your interests, and attribute events to the people who posted them. We do not sell your information or use it for advertising."
+                    ]
+                },
+                {
+                    "heading": "Who can see it",
+                    "body": [
+                        "Other signed-in users can see your username, profile photo, role, interests, and the events you post. Your email address and name are not shown to other users.",
+                        "Project maintainers with administrative access can view stored account and event data to operate and moderate the app."
+                    ]
+                },
+                {
+                    "heading": "Cookies and sessions",
+                    "body": [
+                        "Beach Pulse uses a single session cookie to keep you signed in. It expires after 7 days or when you log out."
+                    ]
+                },
+                {
+                    "heading": "Services we rely on",
+                    "body": [
+                        "Beach Pulse is hosted on GitHub Pages, and its data and images are stored on Cloudflare. Sign-in is handled by Microsoft. Maps are loaded from OpenStreetMap and fonts from Google Fonts. These services receive standard technical information, such as your IP address, when your browser connects to them, and are governed by their own privacy policies."
+                    ]
+                },
+                {
+                    "heading": "Your choices",
+                    "body": [
+                        "You can change your username, profile photo, and interests at any time from your profile. To request a copy or deletion of your account data, contact the project maintainers."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "user-policy",
+            "title": "User Policy",
+            "shortTitle": "User Policy",
+            "summary": "How to keep Beach Pulse useful, accurate, and safe for everyone.",
+            "sections": [
+                {
+                    "heading": "Post real, accurate events",
+                    "body": [
+                        "Only post events that are actually happening, with an accurate date, time, and location. Update or remove events that are cancelled or changed.",
+                        "Choose the category that fits. Use Alert only for genuine, time-sensitive campus information, and never for promotion."
+                    ]
+                },
+                {
+                    "heading": "Be respectful",
+                    "body": [
+                        "No harassment, hate speech, threats, or content that targets a person or group. Do not post other people's personal information."
+                    ]
+                },
+                {
+                    "heading": "Keep it appropriate",
+                    "body": [
+                        "No sexually explicit, violent, or illegal content, and nothing that promotes dangerous activities. Event images must be appropriate for a general campus audience."
+                    ]
+                },
+                {
+                    "heading": "No spam or deception",
+                    "body": [
+                        "No misleading links, phishing, scams, or repeated posting of the same event. Call-to-action links must go where they say they go."
+                    ]
+                },
+                {
+                    "heading": "Respect others' rights",
+                    "body": [
+                        "Only use images and content you have permission to share. Do not impersonate other students, clubs, departments, or the university."
+                    ]
+                },
+                {
+                    "heading": "Follow campus rules",
+                    "body": [
+                        "Events must follow CSULB policies and the law."
+                    ]
+                },
+                {
+                    "heading": "Enforcement",
+                    "body": [
+                        "Content that breaks this policy may be removed, and organizer access or accounts may be restricted. If you see something that breaks these rules, contact the project maintainers."
+                    ]
+                }
+            ]
+        }
+    ]
+}

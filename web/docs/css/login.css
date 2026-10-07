@@ -1,168 +1,175 @@
 /* Login Page */
 
 .login-page {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 40px;
+    width: 100%;
     height: 100dvh;
-    gap: 8px;
+    padding: 24px 16px;
+    overflow: hidden;
+}
+
+/* Soft gold glow behind the card */
+.login-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 640px;
+    height: 640px;
+    transform: translate(-50%, -60%);
+    background: radial-gradient(circle, rgba(253, 181, 21, 0.10), transparent 60%);
+    pointer-events: none;
 }
 
 /* Login Card */
 
 .login-wrapper {
     position: relative;
-    width: 420px;
-    max-width: 90vw;
-    height: 440px;
-    max-height: 90dvh;
+    width: 400px;
+    max-width: 100%;
+    height: 420px;
+    max-height: 80dvh;
+}
+
+/* Signup card needs room for the policy agreement */
+.login-wrapper:has(#signup-card.active) {
+    height: 560px;
+    max-height: calc(100dvh - 120px);
 }
 
 .login-container {
     position: absolute;
     inset: 0;
-    padding: 40px clamp(20px, 5vw, 40px);
-    border-radius: 18px;
-    background: var(--card);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    padding: 40px clamp(20px, 6vw, 36px) 28px;
+    border-radius: var(--radius-xl);
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    box-shadow: var(--shadow-lg);
     text-align: center;
-    backface-visibility: hidden;
-    overflow: hidden;
-    box-shadow:
-            0 20px 40px rgba(0, 0, 0, 0.08),
-            0 8px 20px rgba(0, 0, 0, 0.04);
 }
 
 #login-card,
 #signup-card {
-    position: absolute;
-    inset: 0;
     opacity: 0;
     transform: translateY(10px) scale(0.98);
     pointer-events: none;
-    transition:
-            opacity 0.3s ease,
-            transform 0.3s ease;
+    transition: opacity 0.35s ease, transform 0.45s var(--ease);
 }
 
 #login-card.active,
 #signup-card.active {
     opacity: 1;
-    transform: translate(0) scale(1);
+    transform: none;
     pointer-events: auto;
 }
 
 .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
     height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.card-top {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.card-middle {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin: auto 0 0 0;
-}
-
-.card-bottom {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 /* Branding */
 
 .card-branding {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    opacity: 0.90;
+    gap: 8px;
 }
 
-.card-branding img {
-    object-fit: contain;
+.login-mark {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 12px;
+    color: var(--primary);
 }
 
-.app-logo {
-    width: clamp(40px, 15vw, 80px);
-    height: auto;
+/* Draw the pulse line once on load */
+.login-mark path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: drawPulse 1.4s 0.2s var(--ease) forwards;
 }
 
-.university-brand {
-    width: clamp(120px, 45vw, 240px);
-    height: auto;
-}
-
-.login-container h2 {
-    margin: 6px 0 2px 0;
-    color: var(--text);
-    font-size: 20px;
+.login-title {
+    font-size: 1.75rem;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: -0.035em;
 }
 
 .login-subtext {
-    font-size: 14px;
+    max-width: 280px;
+    font-size: 0.9375rem;
     color: var(--muted-text);
-    margin-bottom: 10px;
+}
+
+.login-step {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary-text);
+}
+
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
 }
 
 .oauth-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 8px;
-    background: var(--card);
-    color: var(--outlook-color);
-    border: 2px solid var(--outlook-color);
-    transform: translateY(0);
-    transition: background 0.2s, color 0.2s, transform 0.05s;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    min-height: 50px;
+    gap: 12px;
+    background: var(--text);
+    color: var(--background);
+    font-size: 1rem;
 }
 
 .oauth-button:hover {
-    background: var(--outlook-soft);
-    transform: translateY(-1px);
-}
-
-.oauth-button:active {
-    transform: scale(0.97);
+    opacity: 0.9;
 }
 
 .oauth-button svg {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    fill: currentColor;
+    width: 18px;
+    height: 18px;
 }
 
 .oauth-hint {
-    font-size: 12px;
-    color: var(--muted-text);
-    margin-top: 6px;
+    font-size: 0.8125rem;
+    color: var(--subtle-text);
 }
 
-#signup-submit-button {
-    width: 100px;
+.university-brand {
+    position: relative;
+    width: 180px;
+    height: auto;
+    opacity: 0.55;
 }
+
+:root[data-theme="dark"] .university-brand {
+    filter: grayscale(1) brightness(2.2);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* Avatar picker */
 
 .avatar-picker {
     position: relative;
@@ -170,37 +177,38 @@
     height: 96px;
     border-radius: 50%;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s var(--ease);
 }
 
 .avatar-picker:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    transform: scale(1.04);
 }
 
 .avatar-picker::after {
     content: "+";
     position: absolute;
-    bottom: 0;
     right: 0;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: var(--card);
-    font-size: 18px;
+    bottom: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--primary-ink);
+    border: 3px solid var(--surface);
+    font-size: 1.125rem;
+    font-weight: 600;
 }
 
 .avatar-picker-inner {
-    width: 96px;
-    height: 96px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     overflow: hidden;
-    border: 2px solid var(--primary);
-    background: var(--card);
+    border: 1px dashed var(--border);
+    background: var(--surface-2);
 }
 
 .avatar-picker-inner img {
@@ -209,28 +217,18 @@
     object-fit: cover;
 }
 
-input {
-    width: 100%;
-    padding: 12px 16px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    font-size: 14px;
-    color: var(--text);
-    background: #fafafa;
-    transition: border 0.2s ease, box-shadow 0.2s ease;
+.avatar-picker-inner img:not([src]),
+.avatar-picker-inner img[src=""] {
+    visibility: hidden;
 }
 
-input:focus {
-    outline: none;
-    border: 1px solid var(--primary);
-    background: white;
-    box-shadow: 0 0 0 3px var(--primary-soft);
+#username-input {
+    text-align: center;
+    background: var(--surface-2);
 }
 
 /* Animations */
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes drawPulse {
+    to { stroke-dashoffset: 0; }
 }

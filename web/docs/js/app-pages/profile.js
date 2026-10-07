@@ -5,6 +5,7 @@
 
 
 import {API, ASSETS, convertToWebP, redirect, safeJson, setLoading, showError, updateURL} from "../utils.js";
+import { escapeHTML } from "../categories.js";
 
 
 let isEditing = false;
@@ -15,6 +16,8 @@ let selectedAvatarFile = null;
 export function openProfile(username, userId) {
     if (!username || !userId) return;
     updateURL("profile", username);
+    const page = document.getElementById("profile-page");
+    if (page) page.scrollTop = 0;
     loadProfile(userId);
     animateProfile();
 }
@@ -64,46 +67,51 @@ function renderProfile(user, sessionUser) {
     const container = document.getElementById("profile-page-container");
     if (!container) return;
 
-    const avatar = user.avatar
-        ? `${ASSETS}${user.avatar}`
-        : "assets/images/default-avatar.png";
-
-    const username = user.username || "unknown";
+    const avatar = user.avatar ? `${ASSETS}${user.avatar}` : "";
+    const username = escapeHTML(user.username || "unknown");
     const interests = user.interests || [];
-    const role = user.role || "user";
+    const role = escapeHTML(user.role || "user");
+    const editing = isOwner && isEditing;
 
     container.innerHTML = `
         <div class="profile-card">
             <!-- Avatar -->
             <div class="avatar-section">
-            <div class="profile-avatar-wrapper ${isOwner && isEditing ? "editable" : ""}">
-                <img src="${avatar}" class="profile-avatar" alt="Avatar">
+                <div class="profile-avatar-wrapper ${editing ? "editable" : ""}" ${editing ? `role="button" tabindex="0" aria-label="Change profile photo"` : ""}>
+                    <span class="profile-avatar profile-avatar-initial" aria-hidden="true">${username.charAt(0)}</span>
+                    ${avatar ? `<img src="${avatar}" class="profile-avatar" alt="">` : ""}
+                </div>
+                ${editing ? `<input type="file" id="avatar-input" accept="image/*" hidden>` : ""}
             </div>
-                ${isOwner && isEditing ? `
-                    <input type="file" id="avatar-input" accept = "image/*" hidden>
-                ` : ""}
-            </div>
-            
+
             <!-- Header -->
             <div class="profile-header">
-                ${isOwner && isEditing
-                    ? `<input id="username-input" class="profile-input" value="${username}">`
+                ${editing
+                    ? `<label class="profile-input-label" for="username-input">Username</label>
+                       <input id="username-input" class="profile-input" value="${username}" autocomplete="username">`
                     : `<h1 class="profile-title">@${username}</h1>`
                 }
-                <p class="profile-role profile-role-${role}">${role}</p>
+                <span class="profile-role profile-role-${role}">${role}</span>
+            </div>
+
+            <!-- Interests -->
+            <div class="profile-section">
+                <h2>Interests</h2>
                 <div class="profile-interests">
-                    ${isOwner && isEditing
-                        ? `<button id="edit-interests-button" class="secondary-button">Update Interests</button>`
-                        : interests.length > 0
-                            ? interests.map(tag => `<span class="profile-interest-bubble">${tag}</span>`).join("")
-                            : `<span class="profile-note">No interests yet</span>`
+                    ${interests.length > 0
+                        ? interests.map(tag => `<span class="tag-chip profile-interest-bubble">${escapeHTML(tag)}</span>`).join("")
+                        : `<span class="profile-note">No interests yet</span>`
                     }
+                    ${isOwner ? `<button id="edit-interests-button" class="chip">Edit interests</button>` : ""}
                 </div>
             </div>
         </div>
-        
+
         ${renderProfileActions(isOwner, isAdmin, profileIsAdmin, user)}
     `
+
+    // Hide a broken avatar so the initial shows through
+    container.querySelector("img.profile-avatar")?.addEventListener("error", (e) => e.target.remove(), { once: true });
 
     attachProfileActions(user, sessionUser);
 }
@@ -142,8 +150,9 @@ function renderProfileActions(isOwner, isAdmin, profileIsAdmin, user) {
     // Show the edit profile button to the profile owner
     if (isOwner) {
         buttons.push(`
-            <button id="edit-profile-button">
-                ${isEditing ? "Save Changes" : "Edit Profile"}
+            ${isEditing ? `<button id="cancel-edit-button" class="ghost-button">Cancel</button>` : ""}
+            <button id="edit-profile-button" class="${isEditing ? "primary-button" : "secondary-button"}">
+                ${isEditing ? "Save changes" : "Edit profile"}
             </button>
         `);
     }
@@ -153,7 +162,7 @@ function renderProfileActions(isOwner, isAdmin, profileIsAdmin, user) {
         const isOrganizer = user.role === "organizer";
 
         buttons.push(`
-            <button class="toggle-role-button ${isOrganizer ? "demote" : "promote"}" id="toggle-role-button">
+            <button class="secondary-button toggle-role-button ${isOrganizer ? "demote" : "promote"}" id="toggle-role-button">
                 ${isOrganizer ? "Remove Organizer" : "Make Organizer"}
             </button>
         `);
@@ -199,6 +208,13 @@ async function attachProfileActions(user, sessionUser) {
             });
         }
 
+        // Cancel editing
+        document.getElementById("cancel-edit-button")?.addEventListener("click", () => {
+            isEditing = false;
+            selectedAvatarFile = null;
+            renderProfile(user, sessionUser);
+        });
+
         // Interests button
         const interestsBtn = document.getElementById("edit-interests-button");
 
@@ -211,16 +227,28 @@ async function attachProfileActions(user, sessionUser) {
         // Avatar upload
         const avatarWrapper = document.querySelector(".profile-avatar-wrapper");
         const avatarInput = document.getElementById("avatar-input");
-        const avatarImg = document.querySelector(".profile-avatar");
+        let avatarImg = document.querySelector("img.profile-avatar");
 
         if (avatarInput && avatarWrapper) {
             avatarWrapper.addEventListener("click", () => avatarInput.click());
+            avatarWrapper.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    avatarInput.click();
+                }
+            });
             avatarInput.addEventListener("change", async e => {
                 const file = e.target.files[0];
                 if (!file) return;
 
                 const webp = await convertToWebP(file);
                 selectedAvatarFile = webp;
+                if (!avatarImg) {
+                    avatarImg = document.createElement("img");
+                    avatarImg.className = "profile-avatar";
+                    avatarImg.alt = "";
+                    avatarWrapper.appendChild(avatarImg);
+                }
                 avatarImg.src = webp;
             });
         }

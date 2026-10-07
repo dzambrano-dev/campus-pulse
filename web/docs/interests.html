@@ -4,21 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beach Pulse</title>
-    <link rel="icon" type="image/png" href="assets/images/logos/beach_pulse.png">  <!-- Favicon -->
+    <meta name="theme-color" content="#0A0B0D">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logos/pulse-mark.svg">  <!-- Favicon -->
+    <script src="js/prefs.js"></script>  <!-- Theme and view preferences, before paint -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500;600&display=swap">  <!-- Fonts -->
     <link rel="stylesheet" href="css/basic_styles.css">  <!-- CSS -->
     <link rel="stylesheet" href="css/interests.css">  <!-- CSS -->
     <script defer type="module" src="js/interests.js"></script>  <!-- Interests JS -->
 </head>
 <body>
     <div class="interests-container">
-        <h2>Choose your interests</h2>
+        <p class="interests-step">Personalize your feed</p>
+        <h1>What are you into?</h1>
+        <p class="interests-subtext">Pick a few. We'll show you events that match.</p>
         <form id="interests-form" novalidate>
             <!-- Interests will be injected here through javascript -->
-            <div id="interests-list" class="interests-grid"></div>
-            <div class="error" id="interests-error"></div>
+            <div id="interests-list" class="interests-grid" role="group" aria-label="Interests"></div>
+            <div class="error" id="interests-error" role="alert"></div>
             <div class="button-row">
-                <button type="submit" class="primary-button" id="submit-interests">Save Interests</button>
-                <button type="button" class="secondary-button" id="skip-interests">Skip</button>
+                <button type="button" class="ghost-button" id="skip-interests">Skip for now</button>
+                <button type="submit" class="primary-button" id="submit-interests">Save interests</button>
             </div>
         </form>
     </div>

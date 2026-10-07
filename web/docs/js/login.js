@@ -9,6 +9,7 @@
 
 
 import { API, checkSession, clearErrors, showError, redirect, safeJson, setLoading, convertToWebP } from "./utils.js";
+import { openPolicies } from "./policies.js";
 
 
 // Cards
@@ -26,6 +27,7 @@ const signupError = document.getElementById("signup-error");
 // Inputs
 const avatarPreview = document.getElementById("avatar-preview");
 const usernameInput = document.getElementById("username-input");
+const policyCheckbox = document.getElementById("policy-checkbox");
 
 // Outlook
 const msalConfig = {
@@ -90,8 +92,24 @@ function init() {
     // Add avatar interaction
     const avatarInput = document.getElementById("avatar-input");
 
-    document.querySelector(".avatar-picker").addEventListener("click", () => {
+    // Policy links open the viewer without toggling the checkbox
+    document.querySelectorAll(".policy-link").forEach(link => {
+        link.addEventListener("click", (event) => {
+            event.preventDefault();
+            openPolicies(link.dataset.policy);
+        });
+    });
+    policyCheckbox.addEventListener("change", () => clearErrors(signupError));
+
+    const avatarPicker = document.querySelector(".avatar-picker");
+    avatarPicker.addEventListener("click", () => {
         avatarInput.click();
+    });
+    avatarPicker.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            avatarInput.click();
+        }
     });
 
     avatarInput.addEventListener("change", async () => {
@@ -199,6 +217,12 @@ async function handleSignupSubmit() {
     if (!avatar) {
         setLoading(signupSubmitButton, false);
         showError(signupError, "Choose a profile picture");
+        return;
+    }
+
+    if (!policyCheckbox.checked) {
+        setLoading(signupSubmitButton, false);
+        showError(signupError, "Please agree to the terms and policies to continue");
         return;
     }
 

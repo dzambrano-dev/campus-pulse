@@ -6,19 +6,23 @@
 
 import { API, ASSETS, attachMapButton, safeJson, showError, updateURL } from "../utils.js";
 import { loadEvents } from "./eventFeed.js";
+import { getCategoryKey, categoryChipHTML, formatFullDate, formatDayLabel, relativeStatus, escapeHTML } from "../categories.js";
+import { icon } from "../icons.js";
 import { openProfile } from "./profile.js";
 
 
 export function openEvent(eventId) {
     if (!eventId) return;
     updateURL("event", eventId);
+    const page = document.getElementById("event-page");
+    if (page) page.scrollTop = 0;
     loadEventPage(eventId);
     animateEventPage();
 }
 
 
 // Generate an event from the given id
-async function loadEventPage(eventId) {
+export async function loadEventPage(eventId) {
     const container = document.getElementById("event-page-container");
     const eventPageError = document.getElementById("event-page-error");
     if (!container) return;
@@ -63,50 +67,70 @@ function renderEvent(event, userData) {
     const currentUser = userData?.username;
     const currentRole = userData?.role;
 
-    const title = event.title || "Untitled Event";
-    const image = event.image
-        ? `${ASSETS}${event.image}`
-        : "assets/eventImages/default.png";
-    const location = event.location || "Unknown";
-    const description = event.description || "No description available.";
-    const createdBy = event.createdBy;
-    const createdByUsername = event.createdByUsername || "unknown";
+    const type = getCategoryKey(event.type);
+    const title = escapeHTML(event.title || "Untitled Event");
+    const location = escapeHTML(event.location || "Location TBA");
+    const description = escapeHTML(event.description || "No description available.");
+    const createdBy = escapeHTML(event.createdBy);
+    const createdByUsername = escapeHTML(event.createdByUsername || "unknown");
     const canDelete = currentRole === "admin" || currentUser === event.createdBy;
+    const status = relativeStatus(event.datetime);
+
+    const hero = event.image
+        ? `<img src="${ASSETS}${event.image}" alt="">`
+        : `<div class="event-card-placeholder" data-cat="${type}">${icon(type)}</div>`;
 
     container.innerHTML = `
-        <!-- Hero Image -->
-        <div class="event-page-hero">
-            <img src="${image}" alt="${title}">
-        </div>
-        
-        <!-- Content -->
-        <div class="event-page-content">
-            <h1 class="event-page-title">${title}</h1>
-            <div class="event-page-meta">
-                <span class="event-page-location">${location}</span>
-                <span class="event-page-dot">•</span>
-                <span class="event-page-meta-date">${formatDate(event.datetime)}</span>
-            </div>
-            <br>
-            <div class="event-page-author">
-                Posted by 
-                <span class="clickable-user" data-user-id="${createdBy}" data-username="${createdByUsername}">
-                @${createdByUsername}
-                </span>
-            </div>
+        <article class="event-page" data-cat="${type}">
+            <!-- Hero Image -->
+            <div class="event-page-hero">${hero}</div>
 
-            <p class="event-page-description">${description}</p>
+            <!-- Content -->
+            <div class="event-page-content">
+                <div class="event-card-top">
+                    ${categoryChipHTML(type)}
+                    ${status ? `<span class="event-status${status.live ? " is-live" : ""}">${status.live ? `<span class="live-dot"></span>` : ""}${status.label}</span>` : ""}
+                </div>
 
-            ${renderTags(event.tags || [])}
-            
-            <div class="event-page-actions">
-                ${renderActionButtonHTML(event)}
-                ${createMapButtonHTML()}
+                <h1 class="event-page-title">${title}</h1>
+
+                <ul class="event-page-info">
+                    <li>
+                        <span class="info-icon">${icon("calendar")}</span>
+                        <span><strong>${formatDayLabel(event.datetime)}</strong><small>${formatFullDate(event.datetime)}</small></span>
+                    </li>
+                    <li>
+                        <span class="info-icon">${icon("pin")}</span>
+                        <span><strong>${location}</strong></span>
+                    </li>
+                    <li>
+                        <span class="info-icon">${icon("user")}</span>
+                        <span><button class="clickable-user" data-user-id="${createdBy}" data-username="${createdByUsername}">@${createdByUsername}</button><small>Posted by</small></span>
+                    </li>
+                </ul>
+
+                <div class="event-page-actions">
+                    ${renderActionButtonHTML(event)}
+                    ${createMapButtonHTML()}
+                </div>
+
+                <section class="event-page-section">
+                    <h2>About</h2>
+                    <p class="event-page-description">${description}</p>
+                </section>
+
+                ${renderTags(event.tags || [])}
+
+                ${canDelete ? renderDeleteButton() : ""}
             </div>
-        </div>
-        
-        ${canDelete ? renderDeleteButton() : ""}
+        </article>
         `;
+
+    // Fall back to the placeholder if the image fails
+    const heroImg = container.querySelector(".event-page-hero img");
+    heroImg?.addEventListener("error", () => {
+        heroImg.parentElement.innerHTML = `<div class="event-card-placeholder" data-cat="${type}">${icon(type)}</div>`;
+    }, { once: true });
 
     attachEventPageButtons(event, canDelete);
 }
@@ -117,52 +141,33 @@ function renderTags(tags) {
 
     return `
         <div class="event-page-tags">
-            ${tags.map(tag =>
-        `<span class="event-page-tag-bubble">${toTitleCase(tag)}</span>`
-    ).join("")}
+            ${tags.map(tag => `<span class="tag-chip">${escapeHTML(toTitleCase(tag))}</span>`).join("")}
         </div>
     `;
 }
 
 
+const ACTION_LABELS = {
+    discord: "Join the Discord",
+    instagram: "Open Instagram",
+    contact: "Contact organizer",
+    rsvp: "RSVP"
+};
+
+
 function renderActionButtonHTML(event) {
     const { action } = event;
+    if (!action) return "";
 
-    if (!action) return `<div class="event-page-action-spacer"></div>`;
+    const label = action === "custom"
+        ? escapeHTML(event.actionLabel || "Visit website")
+        : ACTION_LABELS[action] || "Learn more";
 
-    let label = "";
-    let color = "";
-
-    switch (action) {
-        case "discord":
-            label = "Discord";
-            color = "#5865F2";
-            break;
-        case "instagram":
-            label = "Instagram";
-            color = "#22d3ee";
-            break;
-        case "contact":
-            label = "Contact";
-            color = "#22c55e";
-            break;
-        case "custom":
-            label = event.actionLabel || "Website";
-            color = "#1e3a8a";
-            break;
-        case "rsvp":
-            label = "RSVP";
-            color = "#f97316";
-            break;
-    }
-
-    const actionBtn = `
-        <button class="primary-button event-page-action-button" data-action="${action}" style="background:${color}">
+    return `
+        <button class="primary-button event-page-action-button" data-action="${escapeHTML(action)}">
             ${label}
         </button>
     `;
-
-    return actionBtn;
 }
 
 
@@ -170,7 +175,7 @@ function renderDeleteButton() {
     return `
         <div class="event-page-delete-button-container">
             <button class="danger-button" id="delete-event-button">
-                Delete Event
+                ${icon("trash")} Delete event
             </button>
         </div>
     `;
@@ -180,7 +185,7 @@ function renderDeleteButton() {
 // Generate event card map button
 function createMapButtonHTML() {
     const mapBtn = `
-        <button class="tertiary-button event-map-button">Show on Map</button>
+        <button class="secondary-button event-map-button">${icon("map")} Show on map</button>
     `
     return mapBtn;
 }
@@ -271,21 +276,6 @@ function animateEventPage() {
             currentPage.classList.remove("fade-out");
         }
     }, 250);
-}
-
-
-function formatDate(datetime) {
-    if (!datetime) return "Date not available";
-
-    try {
-        if (typeof datetime === "number") {
-            return new Date(datetime * 1000).toLocaleString();
-        }
-
-        return new Date(datetime).toLocaleString();
-    } catch {
-        return "Date not available";
-    }
 }
 
 

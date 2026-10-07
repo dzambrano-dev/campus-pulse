@@ -1,50 +1,62 @@
 /* Navigation bar */
 
 .navigation-bar {
-    display: flex;
-    height: var(--nav-height);
-    width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
-    padding: 0 6px;
-    justify-content: space-around;
-    background: var(--background);
-    border-top: 1px solid var(--primary-soft);
-    box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.06);
-    gap: clamp(6px, 2vw, 24px);
-    z-index: 9999;
+    z-index: 600;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    height: var(--nav-height);
+    padding: 6px max(8px, calc((100% - 480px) / 2));
+    background: var(--overlay);
+    backdrop-filter: saturate(160%) blur(16px);
+    -webkit-backdrop-filter: saturate(160%) blur(16px);
+    border-top: 1px solid var(--hairline);
 }
 
 .nav-button {
-    display: flex;
     flex: 1;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: 3px;
+    min-height: 0;
+    height: 100%;
+    padding: 4px;
+    border-radius: var(--radius-md);
     background: transparent;
-    border: none;
-    position: relative;
-    margin: 6px 0;
-    border-radius: 12px;
-    max-width: 250px;
-    transition: background 0.25s ease, transform 0.15s ease;
+    color: var(--subtle-text);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
 }
 
-.nav-button svg {
-    width: 48px;
-    height: 48px;
-    color: var(--text);
+.nav-button .icon {
+    width: 1.375rem;
+    height: 1.375rem;
 }
 
 .nav-button:hover {
-    transform: translateY(-2px);
-    background: rgba(0, 0, 0, 0.03);
-}
-
-.nav-button:active {
-    background: rgba(0, 0, 0, 0.08);
+    color: var(--text);
 }
 
 .nav-button.active {
-    background: rgba(0, 0, 0, 0.06);
+    color: var(--text);
+}
+
+.nav-button.active .icon {
+    color: var(--primary);
+}
+
+/* Clear View: always-visible labels at a readable size */
+:root[data-view="clear"] .nav-button {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--muted-text);
+}
+
+:root[data-view="clear"] .nav-button.active {
+    background: var(--surface-2);
+    color: var(--text);
 }

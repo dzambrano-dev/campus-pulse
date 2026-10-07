@@ -4,26 +4,32 @@
  */
 
 
-import { API, attachMapButton, safeJson, redirect } from "../utils.js";
+import { API, ASSETS, attachMapButton, safeJson, redirect } from "../utils.js";
+import { CATEGORIES, getCategoryKey, categoryChipHTML, formatTime, formatDayLabel, relativeStatus, escapeHTML } from "../categories.js";
+import { icon } from "../icons.js";
 import { openEvent } from "./eventPage.js";
 import { openProfile } from "./profile.js";
 
 
-const ASSET_BASE = "https://campus-pulse-worker.vindictivity.workers.dev/assets/";
+// Events stay visible for two hours after they start
+const LIVE_WINDOW = 2 * 60 * 60;
+
+let cachedEvents = [];
+let activeFilter = "all";
 
 
 export async function loadEvents() {
+    const eventsContainer = document.getElementById("event-cards-container");
+    if (!eventsContainer) return;
+
+    if (cachedEvents.length === 0) renderSkeleton(eventsContainer);
+
     try {
         // Fetch list of events the user is interested in
         const eventsEndpoint = `${API}/get-events`
         const eventsResponse = await fetch(eventsEndpoint, {
             credentials: "include"
         });
-
-        // Clear events container
-        const eventsContainer = document.getElementById("event-cards-container");
-        if (!eventsContainer) return;
-        eventsContainer.innerHTML = "";
 
         // Error fetching events
         if (!eventsResponse.ok) {
@@ -33,270 +39,252 @@ export async function loadEvents() {
 
         const data = await safeJson(eventsResponse);
         const events = data.events || data;
-
-        // No events found
-        if (!Array.isArray(events) || events.length === 0) {
-            renderEmptyState(eventsContainer, "no-events");
-            return;
-        }
-
-        // Create a card for each event
-        const fragment = document.createDocumentFragment();
-        events.forEach((event, index) => {
-            const card = createEventCard(event);
-            const baseDelay = index * 0.360;
-            card.style.animationDelay = `${baseDelay}s`;
-            card.style.setProperty("--card-delay", `${baseDelay}s`);
-            fragment.appendChild(card);
-        });
-
-        eventsContainer.appendChild(fragment);
+        cachedEvents = Array.isArray(events) ? events : [];
+        renderFeed();
     } catch (err) {
         console.error("Failed to load events:", err);
+        renderEmptyState(eventsContainer, "network");
     }
 }
 
 
+// Render the feed from the cached events (also used when the view mode changes)
+export function renderFeed() {
+    const container = document.getElementById("event-cards-container");
+    if (!container) return;
+    container.innerHTML = "";
+
+    // No events found
+    if (cachedEvents.length === 0) {
+        renderEmptyState(container, "no-events");
+        return;
+    }
+
+    const now = Date.now() / 1000;
+    const sorted = [...cachedEvents].sort((a, b) => a.datetime - b.datetime);
+    const upcoming = sorted.filter(event => event.datetime > now - LIVE_WINDOW);
+    const past = sorted.filter(event => event.datetime <= now - LIVE_WINDOW).reverse();
+
+    container.append(createHeader(upcoming.length), createFilters(sorted));
+
+    const visible = list => list.filter(event =>
+        activeFilter === "all" || getCategoryKey(event.type) === activeFilter
+    );
+
+    const feed = document.createElement("div");
+    feed.className = "feed-groups";
+    let index = 0;
+
+    // Group upcoming events by day
+    const groups = new Map();
+    visible(upcoming).forEach(event => {
+        const label = formatDayLabel(event.datetime);
+        if (!groups.has(label)) groups.set(label, []);
+        groups.get(label).push(event);
+    });
+
+    groups.forEach((events, label) => {
+        feed.appendChild(createGroup(label, events, () => index++));
+    });
+
+    const visiblePast = visible(past);
+    if (visiblePast.length > 0) {
+        feed.appendChild(createGroup("Past events", visiblePast, () => index++, true));
+    }
+
+    if (index === 0) {
+        feed.appendChild(createFilteredEmpty());
+    }
+
+    container.appendChild(feed);
+}
+
+
+function createHeader(count) {
+    const header = document.createElement("header");
+    header.className = "page-header feed-header";
+    header.innerHTML = `
+        <div>
+            <p class="page-eyebrow">${count} upcoming</p>
+            <h1 class="page-title">What's happening</h1>
+        </div>
+    `;
+    return header;
+}
+
+
+// Category filters, only for categories present in the feed
+function createFilters(events) {
+    const present = new Set(events.map(event => getCategoryKey(event.type)));
+    const row = document.createElement("div");
+    row.className = "feed-filters";
+    row.setAttribute("role", "group");
+    row.setAttribute("aria-label", "Filter by category");
+
+    const makeChip = (key, label, iconName) => {
+        const chip = document.createElement("button");
+        chip.className = "chip";
+        chip.setAttribute("aria-pressed", String(activeFilter === key));
+        if (key !== "all") chip.dataset.cat = key;
+        chip.innerHTML = `${iconName ? icon(iconName) : ""}<span>${label}</span>`;
+        chip.addEventListener("click", () => {
+            activeFilter = activeFilter === key ? "all" : key;
+            renderFeed();
+        });
+        return chip;
+    };
+
+    row.appendChild(makeChip("all", "All"));
+    Object.entries(CATEGORIES).forEach(([key, { label }]) => {
+        if (present.has(key)) row.appendChild(makeChip(key, label, key));
+    });
+
+    return row;
+}
+
+
+function createGroup(label, events, nextIndex, isPast = false) {
+    const group = document.createElement("section");
+    group.className = `feed-group${isPast ? " is-past" : ""}`;
+
+    const heading = document.createElement("h2");
+    heading.className = "feed-day";
+    heading.textContent = label;
+
+    const grid = document.createElement("div");
+    grid.className = "feed-grid";
+    events.forEach(event => {
+        const card = createEventCard(event);
+        card.style.setProperty("--card-delay", `${Math.min(nextIndex() * 0.04, 0.32)}s`);
+        grid.appendChild(card);
+    });
+
+    group.append(heading, grid);
+    return group;
+}
+
+
+function renderSkeleton(container) {
+    container.innerHTML = `
+        <div class="feed-skeleton" aria-hidden="true">
+            <div class="skeleton" style="height: 28px; width: 50%"></div>
+            <div class="skeleton" style="height: 260px"></div>
+            <div class="skeleton" style="height: 260px"></div>
+        </div>
+    `;
+}
+
+
 function renderEmptyState(container, type) {
+    container.innerHTML = "";
     const empty = document.createElement("div");
-    empty.className = "event-feed-empty";
+    empty.className = "empty-state";
 
     if (type === "network") {
         empty.innerHTML = `
+            ${icon("alert")}
             <h3>Couldn't load events</h3>
-            <p>Please check your internet connection and try again.</p>
+            <p>Check your connection and try again.</p>
+            <button class="secondary-button" id="retry-events">Try again</button>
         `;
+        empty.querySelector("#retry-events").addEventListener("click", loadEvents);
     } else {
         empty.innerHTML = `
-            <h3>No events for your interests</h3>
-            <p>Try adding more interests to discover events around you.</p>
-            <button class="primary-button" id="go-to-interests">
-                Update Interests
-            </button>
+            ${icon("calendar")}
+            <h3>Nothing on your radar yet</h3>
+            <p>Add more interests to discover events around campus.</p>
+            <button class="primary-button" id="go-to-interests">Update interests</button>
         `;
-    }
-
-    container.appendChild(empty);
-
-    // Add navigation for interests
-    const btn = empty.querySelector("#go-to-interests");
-    if (btn) {
-        btn.addEventListener("click", () => {
+        empty.querySelector("#go-to-interests").addEventListener("click", () => {
             redirect("interests.html");
         });
     }
+
+    container.appendChild(empty);
+}
+
+
+function createFilteredEmpty() {
+    const empty = document.createElement("div");
+    empty.className = "empty-state";
+    empty.innerHTML = `
+        ${icon("calendar")}
+        <h3>No ${CATEGORIES[activeFilter]?.label.toLowerCase() || ""} events</h3>
+        <p>Try another category.</p>
+        <button class="secondary-button">Show all events</button>
+    `;
+    empty.querySelector("button").addEventListener("click", () => {
+        activeFilter = "all";
+        renderFeed();
+    });
+    return empty;
 }
 
 
 // Create an event card
 function createEventCard(event) {
-    const card = document.createElement("div");
-    card.className = "event-card";
+    const type = getCategoryKey(event.type);
+    const title = escapeHTML(event.title || "Untitled event");
+    const location = escapeHTML(event.location || "Location TBA");
+    const status = relativeStatus(event.datetime);
 
-    const type = (event.type || "club").toLowerCase();
-    card.classList.add(`${type}-event`);
+    const card = document.createElement("article");
+    card.className = `event-card ${type}-event`;
+    card.dataset.cat = type;
 
-    // Event image
-    const imageWrapper = createImageSection(event);
+    card.innerHTML = `
+        <div class="event-card-media">${createMedia(event, type)}</div>
+        <div class="event-card-body">
+            <div class="event-card-top">
+                ${categoryChipHTML(type)}
+                ${status ? `<span class="event-status${status.live ? " is-live" : ""}">${status.live ? `<span class="live-dot"></span>` : ""}${status.label}</span>` : ""}
+            </div>
+            <h3 class="event-card-title">
+                <a class="event-card-link" href="#event/${encodeURIComponent(event.id)}">${title}</a>
+            </h3>
+            <ul class="event-card-info">
+                <li>${icon("calendar")}<span>${formatTime(event.datetime)}</span></li>
+                <li>${icon("pin")}<span>${location}</span></li>
+            </ul>
+            <p class="event-card-description">${escapeHTML(event.description || "")}</p>
+            <div class="event-card-footer">
+                <button class="event-card-author">@${escapeHTML(event.createdByUsername || "unknown")}</button>
+                <button class="icon-button event-card-map" aria-label="Show ${title} on map" title="Show on map">${icon("map")}</button>
+            </div>
+        </div>
+    `;
 
-    // Event content
-    const content = document.createElement("div");
-    content.className = "event-card-content";
-    content.append(
-        createTitle(event),
-        createMeta(event),
-        createBreak(),
-        createAuthor(event),
-        createDescription(event),
-        createTags(event),
-        createActions(event)
-    );
+    // Whole card opens the event
+    card.querySelector(".event-card-link").addEventListener("click", (e) => {
+        e.preventDefault();
+        openEvent(event.id);
+    });
 
-    card.append(imageWrapper, content);
+    // Author opens their profile
+    card.querySelector(".event-card-author").addEventListener("click", (e) => {
+        e.stopPropagation();
+        openProfile(event.createdByUsername || "unknown", event.createdBy);
+    });
+
+    // Map button
+    attachMapButton(event, card.querySelector(".event-card-map"));
+
+    // Fall back to the placeholder if the image fails
+    const img = card.querySelector(".event-card-media img");
+    img?.addEventListener("error", () => {
+        img.parentElement.innerHTML = placeholderHTML(type);
+    }, { once: true });
+
     return card;
 }
 
 
-// Generate event card image wrapper
-function createImageSection(event) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "event-card-image-wrapper";
-
-    const img = document.createElement("img");
-    img.className = "event-card-image";
-    img.src = event.image
-        ? `${ASSET_BASE}${event.image}`
-        : "assets/eventImages/default.png";
-    img.alt = event.title;
-
-    const badge = createDateBadge(event);
-    wrapper.append(img, badge);
-    return wrapper;
+function createMedia(event, type) {
+    if (!event.image) return placeholderHTML(type);
+    return `<img src="${ASSETS}${event.image}" alt="" loading="lazy">`;
 }
 
 
-// Generate event card date badge
-function createDateBadge(event) {
-    const dateBadge = document.createElement("div");
-    dateBadge.className = "event-card-date";
-
-    const date = new Date(event.datetime * 1000)
-    const month = document.createElement("span");
-    month.className = "month";
-    month.textContent = date.toLocaleString("default", { month: "short" }).toUpperCase();
-
-    const day = document.createElement("span");
-    day.className = "day";
-    day.textContent = `${date.getDate()}`;
-
-    dateBadge.append(month, day);
-    return dateBadge;
-}
-
-
-// Generate event card title
-function createTitle(event) {
-    const title = document.createElement("h3");
-    title.className = "event-card-title";
-    title.textContent = event.title;
-    return title;
-}
-
-
-// Generate event card meta
-function createMeta(event) {
-    const meta = document.createElement("div");
-    meta.className = "event-card-meta";
-    meta.innerHTML = `
-        <span class="event-card-location">${event.location || "Unknown location"}</span>
-        <span class="event-card-dot">•</span>
-        <span class="event-card-meta-date">${formatDate(event.datetime)}</span>
-    `;
-    return meta;
-}
-
-
-// Generate event card break
-function createBreak() {
-    return document.createElement("br");
-}
-
-
-// Generate event card author
-function createAuthor(event) {
-    const author = document.createElement("div");
-    author.className = "event-card-author";
-    const userId = event.createdBy;
-    const username = event.createdByUsername || "unknown";
-    author.innerHTML = `
-        Posted by 
-        <span class="clickable-user" data-user-id="${event.createdBy}">
-            @${username}
-        </span>
-    `;
-
-    // Attach navigation
-    author.querySelector(".clickable-user")?.addEventListener("click", (e) => {
-        e.stopPropagation();
-        openProfile(username, userId);
-    });
-
-    return author;
-}
-
-
-// Generate event card description
-function createDescription(event) {
-    const description = document.createElement("p");
-    description.className = "event-card-description";
-    const text = event.description || "";
-    const maxLength = 200;
-    if (text.length > maxLength) {
-        description.textContent = text.slice(0, maxLength).trim() + "...";
-    } else {
-        description.textContent = text;
-    }
-    return description;
-}
-
-
-// Generate event card tags
-function createTags(event) {
-    const tags = document.createElement("div");
-    tags.className = "event-card-tags";
-
-    (event.tags || []).forEach(tag => {
-        const bubble = document.createElement("span");
-        bubble.className = "event-card-tag-bubble";
-        bubble.textContent = toTitleCase(tag);
-        tags.appendChild(bubble);
-    });
-
-    return tags;
-}
-
-
-// Generate event card buttons
-function createActions(event) {
-    const actions = document.createElement("div");
-    actions.className = "event-card-actions";
-
-    actions.append(
-        createDetailsButton(event),
-        createMapButton(event)
-    );
-
-    return actions;
-}
-
-
-// Generate event card details button
-function createDetailsButton(event) {
-    const detailsBtn = document.createElement("button");
-    detailsBtn.className = "primary-button";
-    detailsBtn.textContent = "See Details";
-
-    detailsBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        openEvent(event.id);
-    });
-
-    return detailsBtn;
-}
-
-
-// Generate event card map button
-function createMapButton(event) {
-    const mapBtn = document.createElement("button");
-    mapBtn.className = "tertiary-button";
-    mapBtn.textContent = "Show on Map";
-
-    // Add map button listeners
-    if (mapBtn) {
-        attachMapButton(event, mapBtn);
-    }
-
-    return mapBtn;
-}
-
-
-// Uppercase the first letter of each word
-function toTitleCase(str) {
-    return str.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
-}
-
-
-// Format event datetime
-function formatDate(timestamp) {
-    const date = new Date(timestamp * 1000); // assuming UNIX timestamp
-
-    const month = date.toLocaleString("default", { month: "long" });
-    const day = date.getDate();
-    const time = date.toLocaleString("default", {
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true
-    });
-
-    return `${month} ${day}, ${time}`;
+function placeholderHTML(type) {
+    return `<div class="event-card-placeholder" data-cat="${type}">${icon(type)}</div>`;
 }
