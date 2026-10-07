@@ -12,6 +12,7 @@ import { icon } from "../icons.js";
 let eventMap;
 let eventMarker;
 let tileLayer;
+let scrollTimer;
 
 
 // Initialize event creation feature
@@ -367,25 +368,26 @@ async function submitEvent(event, creationPage, loadEvents) {
     const latlng = eventMarker ? eventMarker.getLatLng() : null;
     const imageFile = creationPage.querySelector("#event-image").files[0];
 
-    // Validate data
-    if (!title) return fail("Event title is required");
-    if (description.length < 50) return fail("Description must be at least 50 characters");
-    if (!type) return fail("Please select an event type");
-    if (tags.length === 0) return fail("Please select at least one tag");
-    if (tags.length > 3) return fail("You can select at most 3 tags");
-    if (!location) return fail("Please provide a location");
-    if (!date || !time) return fail("Date and time are required");
-    if (!latlng) return fail("Please place a pin on the map");
-    if (!imageFile) return fail("Event image is required");
+    // Validate data, pointing at the field that needs attention
+    const field = selector => creationPage.querySelector(selector);
+    if (!title) return fail("Event title is required", field("#event-title"));
+    if (description.length < 50) return fail("Description must be at least 50 characters", field("#event-description"));
+    if (!type) return fail("Please select an event type", field(".type-picker"));
+    if (tags.length === 0) return fail("Please select at least one tag", field("#event-tags"));
+    if (tags.length > 3) return fail("You can select at most 3 tags", field("#event-tags"));
+    if (!location) return fail("Please provide a location", field("#event-location"));
+    if (!date || !time) return fail("Date and time are required", field(!date ? "#event-date" : "#event-time"));
+    if (!latlng) return fail("Please place a pin on the map", field("#event-map"));
+    if (!imageFile) return fail("Event image is required", field(".image-drop"));
     let actionLink = null; let actionLabel = null;
     if (action) {
         if (action !== "rsvp") {
-            if (!rawLink) return fail("Please provide a link");
+            if (!rawLink) return fail("Please provide a link", field("#event-action-input"));
             actionLink = rawLink.trim();
 
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (action === "contact" && !emailRegex.test(actionLink)) {
-                return fail("Enter a valid email");
+                return fail("Enter a valid email", field("#event-action-input"));
             }
 
             if (["discord", "instagram", "custom"].includes(action)) {
@@ -396,7 +398,7 @@ async function submitEvent(event, creationPage, loadEvents) {
         }
 
         if (action === "custom") {
-            if (!rawLabel) return fail("Please provide a button label");
+            if (!rawLabel) return fail("Please provide a button label", field("#event-action-label"));
             actionLabel = rawLabel.trim();
         }
     }
@@ -444,9 +446,19 @@ async function submitEvent(event, creationPage, loadEvents) {
         fail("Network error, please try again");
     }
 
-    function fail(message) {
+    function fail(message, target) {
         showError(eventError, message);
         setLoading(submitButton, false);
+
+        // After a short pause, scroll to the field that needs attention
+        if (!target) return;
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+            // Focus first: focusing mid-scroll would cancel the smooth scroll
+            const focusable = target.matches("input, textarea, select") ? target : target.querySelector("input");
+            focusable?.focus({ preventScroll: true });
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 500);
     }
 }
 
